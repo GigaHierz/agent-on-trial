@@ -101,7 +101,7 @@ export function ProjectorClient({ round, gateway, qrSvg }: { round: string; gate
   const distrust = tally?.distrust ?? 0;
 
   return (
-    <div className="grid h-screen w-screen grid-rows-[auto_1fr_auto] overflow-hidden px-10 py-6">
+    <div className="grid min-h-0 w-full flex-1 grid-rows-[auto_1fr_auto] overflow-hidden px-6 py-5 lg:px-10">
       <header className="flex items-center justify-between pb-4">
         <h1 className="flex items-center gap-4 text-4xl font-bold tracking-tight">
           <LogoMark size={40} />

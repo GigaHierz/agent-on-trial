@@ -14,7 +14,7 @@ export function TallyBar({ tally, size = 'md' }: { tally: VoteTally | null; size
     <div className="w-full" aria-label="vote tally">
       <div className={`flex flex-wrap items-baseline justify-between gap-x-4 ${text} font-semibold`}>
         <span className="text-mint">Trust {trust}</span>
-        <span className="order-last w-full text-center text-fg-3 sm:order-none sm:w-auto">
+        <span className={`order-last w-full text-center text-fg-3 sm:order-none sm:w-auto ${size === 'lg' ? 'text-xl' : ''}`}>
           {tally ? (tally.open ? 'Vote open' : 'Vote closed') : 'No tally'}
           {total > 0 ? ` · ${pct}% trust · ${total} votes` : ' · no votes yet'}
         </span>

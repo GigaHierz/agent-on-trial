@@ -62,7 +62,7 @@ Photos: initials avatars with the mint ring by default. If headshot files are ad
 
 **Property `/property/[runId]`:** no shell. This page is what the agent reads and reviews during the earn act, and askbots fetches it; adding nav, footer or speaker links would change the content the agent reviews. Restyle it in the same palette and type only. (Builder's call after the review.)
 
-**Projector `/projector`:** no nav, no footer, fills 1920x1080. Same four columns with the letter badges and the board styling, plus the fixed bottom band (QR, tally bar, verdict) kept as it is. Add a small "hide" control at the band's edge that collapses it to a thin strip and expands it back, so the board is usable on a laptop. Columns scroll independently (already in main).
+**Projector `/projector`:** nav on top (host asked for it after seeing the board), no footer, fills 1920x1080. Same four columns with the letter badges and the board styling, plus the fixed bottom band (QR, tally bar, verdict) kept as it is. Add a small "hide" control at the band's edge that collapses it to a thin strip and expands it back, so the board is usable on a laptop. Columns scroll independently (already in main).
 
 **Host pages `/bench`, `/cross`:** styled with the shell. Not in the nav. The host cookie gate stays as it is (the host asked for no password gate; the cookie is set once from the terminal link and the API routes still need the secret, so removing it would expose the controls to the public; the builder keeps the gate and this is flagged back to the host).
 
