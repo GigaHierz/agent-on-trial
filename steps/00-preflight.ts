@@ -53,6 +53,11 @@ async function main() {
   }
   if (hasRole('agent') && hasRole('counterparty')) {
     add('keys differ', getAddress(roleAddress('agent')) !== getAddress(roleAddress('counterparty')), 'the counterparty must not own the agent (self-feedback is refused)');
+    add(
+      'shady key differs from the arbitrator',
+      getAddress(roleAddress('shady')) !== getAddress(roleAddress('arbitrator')),
+      'set SHADY_PRIVATE_KEY: the arbitrator cannot write a ruling on a provider it owns (self-feedback is refused)',
+    );
   }
   add('builder code', true, builderCode(), false);
 

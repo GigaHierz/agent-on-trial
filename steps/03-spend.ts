@@ -2,7 +2,7 @@ import { CHAIN_ID, TAGS, USEBUY_URL, canonicalJson } from '@trial/shared';
 import { lastArtifact, type ActContext } from '../agent/context.js';
 import { runAct } from '../agent/loop.js';
 import { getStorage } from '../adapters/storage/index.js';
-import { ensureBuyAccount } from '../lib/buy.js';
+import { describeReceipt, ensureBuyAccount } from '../lib/buy.js';
 import { env } from '../lib/env.js';
 import { replayFixture } from '../lib/evidence.js';
 import { writeFeedback } from '../lib/feedback.js';
@@ -41,7 +41,7 @@ export async function spendAct(ctx: ActContext) {
     letter: 'B',
     act: 'spend',
     kind: 'tx',
-    title: `Paid ${receipt.amount} ${receipt.asset} through x402 for ${new URL(receipt.url).pathname}`,
+    title: `Paid ${describeReceipt(receipt).amount} ${describeReceipt(receipt).asset} through x402 for ${new URL(receipt.url).pathname}`,
     txHash: receipt.txHash,
     detail: { url: receipt.url, network: receipt.network, settledBy: 'api.x402.celo.org' },
   });

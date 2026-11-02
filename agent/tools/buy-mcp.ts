@@ -1,8 +1,9 @@
 import { betaTool } from '@anthropic-ai/sdk/helpers/beta/json-schema';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { parseUnits } from 'viem';
 import { approve } from '../../lib/approve.js';
-import { mcpServeCommand, receiptsSince } from '../../lib/buy.js';
+import { describeReceipt, mcpServeCommand, receiptsSince } from '../../lib/buy.js';
 import { log } from '../../lib/log.js';
 import type { ActContext } from '../context.js';
 
@@ -14,8 +15,12 @@ import type { ActContext } from '../context.js';
 const ALLOWED = ['buy_whoami', 'buy_balance', 'buy_discover', 'buy_pay_quote', 'buy_curl', 'buy_verify_status'];
 const PAYING = new Set(['buy_curl']);
 const DEFAULT_TOKEN = 'USDT';
-/** Hard ceiling per paid call, in USD₮. The system prompt says the same; this one the model cannot talk its way past. */
-const MAX_AMOUNT = process.env.AGENT_MAX_AMOUNT ?? '0.05';
+/**
+ * Hard ceiling per paid call, in USD₮. The system prompt says the same; this one
+ * the model cannot talk its way past. buy_curl wants it in atomic units (6
+ * decimals), so "0.05" becomes "50000".
+ */
+const MAX_AMOUNT = parseUnits(process.env.AGENT_MAX_AMOUNT ?? '0.05', 6).toString();
 
 let client: Client | null = null;
 
@@ -76,7 +81,7 @@ export async function buyTools(ctx: ActContext) {
             ctx.artifacts.push({ kind: 'x402_response', url, body: text });
             for (const r of receiptsSince(since)) {
               ctx.artifacts.push({ kind: 'x402_receipt', url: r.url, txHash: r.txHash, amount: r.amount, asset: r.asset, network: r.network, raw: r as unknown as Record<string, unknown> });
-              if (r.txHash) log.tx(`x402 settled ${r.amount} ${r.asset} for ${r.url}`, r.txHash);
+              if (r.txHash) log.tx(`x402 settled ${describeReceipt(r).amount} ${describeReceipt(r).asset} for ${r.url}`, r.txHash);
             }
           }
           log.toolResult(t.name, res.isError ? `error: ${text}` : text);
