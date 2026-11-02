@@ -16,7 +16,7 @@ One terminal: `pnpm trial --approve`. The host talks to the agent. These are the
 | 2 Earn | "find work and get paid" | Lists open askbots projects, reads the property, answers the builder's questions, passes the anti-human challenge. | 0.10 USD₮ payout from the askbots escrow. Witness feedback `earned` with the payout tx as proof. |
 | 3 Spend | "buy something useful" | Checks its balance, finds a cheap API on usebuy.ai, gets a quote, pays through x402 in USD₮. | x402 settlement by `api.x402.celo.org`. Witness feedback `paid`. |
 | 4 Dispute | "buy the market report from agent N" | Checks the provider's reputation (none), pays 0.01 USD₮, gets junk, opens a dispute. | Settlement to the shady provider. Agent feedback `dispute` on the provider. Arbitrator feedback `ruling` on both. |
-| 5 Verdict | `/verdict` after the vote closes | The tally is stored and the jury key writes it as feedback. | Feedback `jury` with value = percent who trust. |
+| 5 Verdict | `/act verdict` after the vote closes | The tally is stored and the jury key writes it as feedback. | Feedback `jury` with value = percent who trust. |
 
 Per run: 0.13 USD₮ moves, six feedback transactions are signed (seven with the mint). Every transaction we sign carries an ERC-8021 builder code.
 
@@ -164,7 +164,7 @@ checks/       check:storage, check:dispute, check:buy, rehearse, vote:simulate
 courtroom/    Next.js app
 shared/       schema and chain constants used by both
 evidence/     submission template, fixtures, the current run
-docs/         run of show, standards, plug-in guides
+docs/         run of show, spoken script, standards, plug-in guides
 ```
 
 ## Costs
