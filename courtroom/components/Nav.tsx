@@ -3,7 +3,8 @@ import { Logo } from '@/components/ui/Logo';
 
 const LINKS: { href: string; label: string; className?: string }[] = [
   { href: '/', label: 'Home' },
-  { href: '/live', label: 'Live log' },
+  { href: '/chat', label: 'Chat' },
+  { href: '/live', label: 'Live log', className: 'hidden sm:inline-flex' },
   { href: '/projector', label: 'Evidence board', className: 'hidden md:inline-flex' },
   { href: '/vote', label: 'Vote' },
 ];
