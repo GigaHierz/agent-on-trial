@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 const LINKS: { href: string; label: string; className?: string }[] = [
   { href: '/', label: 'Home' },
   { href: '/chat', label: 'Chat' },
-  { href: '/live', label: 'Live log', className: 'hidden sm:inline-flex' },
   { href: '/projector', label: 'Evidence board', className: 'hidden md:inline-flex' },
   { href: '/vote', label: 'Vote' },
 ];
