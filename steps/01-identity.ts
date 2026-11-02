@@ -140,11 +140,14 @@ async function ensureAskbots(ctx: ActContext, agentId: string, address: `0x${str
   if (!creds) {
     log.host('registering the agent on askbots.ai (creates a real bot account)');
     if (!(await approve('create an askbots.ai bot account for the defendant'))) return null;
+    log.toolCall('askbots.register', { name: AGENT_NAME, description: AGENT_DESCRIPTION });
     creds = await client.register(AGENT_NAME, AGENT_DESCRIPTION);
     await saveCreds(creds);
-    log.info(`askbots account ${creds.agentId} · credentials saved to ${env.askbotsCreds}`);
+    log.toolResult('askbots.register', `account ${creds.agentId} created, API key saved locally`);
   }
+  log.toolCall('askbots.me', {});
   const me = await client.me();
+  log.toolResult('askbots.me', me.ok && me.body?.profileId ? `profile ${me.body.botName}` : `no bot profile yet (${me.status})`);
   if (me.ok && me.body?.profileId) {
     log.host(`askbots profile ${me.body.botName} · ${me.body.totalReviews ?? 0} reviews · rating ${me.body.rating ?? '-'} · payouts to ${me.body.celoAddress}`);
     ctx.evidence.add({
