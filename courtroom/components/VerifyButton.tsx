@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from './ui/Button';
 
 interface VerifyResult {
   ok: boolean;
@@ -31,29 +32,27 @@ export function VerifyButton({ id, round }: { id: string; round: string }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <button
-        type="button"
-        onClick={() => void verify()}
-        disabled={busy}
-        className="self-start rounded-lg bg-neutral-100 px-5 py-2 text-lg font-semibold text-neutral-950 disabled:opacity-50"
-      >
-        {busy ? 'Checking…' : 'Verify'}
-      </button>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button variant="primary" onClick={() => void verify()} disabled={busy}>
+          {busy ? 'Checking…' : 'Verify'}
+        </Button>
+        <span className="text-sm text-fg-3">Fetches the bytes, hashes them, compares with the chain.</span>
+      </div>
       {result && (
         <div
-          className={`rounded-lg border p-4 ${
-            result.ok ? 'border-emerald-500/60 bg-emerald-950/40 text-emerald-200' : 'border-rose-500/60 bg-rose-950/40 text-rose-200'
+          className={`rounded-2xl border p-4 ${
+            result.ok ? 'border-mint/60 bg-mint/10 text-mint' : 'border-rose-400/60 bg-rose-500/10 text-rose-200'
           }`}
         >
           <p className="text-xl font-semibold">{result.ok ? 'Verified' : 'Does not match'}</p>
-          {result.note && <p>{result.note}</p>}
-          {result.status && <p>receipt status: {result.status}</p>}
-          {result.error && <p>{result.error}</p>}
+          {result.note && <p className="mt-1 text-sm">{result.note}</p>}
+          {result.status && <p className="mt-1 text-sm">receipt status: {result.status}</p>}
+          {result.error && <p className="mt-1 text-sm">{result.error}</p>}
           {result.computedHash && (
-            <dl className="mt-2 font-mono text-sm break-all">
-              <dt className="text-neutral-400">computed</dt>
+            <dl className="mt-3 text-xs break-all sm:text-sm">
+              <dt className="eyebrow text-fg-3">computed</dt>
               <dd>{result.computedHash}</dd>
-              <dt className="mt-1 text-neutral-400">expected</dt>
+              <dt className="eyebrow mt-2 text-fg-3">expected</dt>
               <dd>{result.expectedHash}</dd>
             </dl>
           )}

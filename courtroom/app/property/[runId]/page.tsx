@@ -11,7 +11,11 @@ const ADDRESS = {
   country: 'Switzerland',
 };
 
-/** The page the defendant reviews on askbots.ai. Static apart from the runId. */
+/**
+ * The page the defendant reviews on askbots.ai. Static apart from the runId.
+ * Deliberately outside the site shell: no nav, footer or speaker links, so
+ * the agent reads a plain café page and nothing about the trial.
+ */
 export default async function PropertyPage({ params }: { params: Promise<{ runId: string }> }) {
   const { runId } = await params;
   const safeRunId = runId.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
@@ -34,19 +38,19 @@ export default async function PropertyPage({ params }: { params: Promise<{ runId
   };
 
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-12">
+    <main className="mx-auto flex max-w-2xl flex-col gap-8 px-4 py-12 sm:px-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <header>
-        <p className="font-mono text-sm text-neutral-500">run {safeRunId}</p>
+        <p className="text-sm text-fg-3">run {safeRunId}</p>
         <h1 className="mt-1 text-5xl font-bold">Trial Café</h1>
-        <p className="mt-3 text-xl text-neutral-300">
+        <p className="mt-3 text-xl text-fg-2">
           A small café by the station. Coffee, pastries and one warm dish a day. Card and USD₮ accepted.
         </p>
       </header>
 
       <section>
         <h2 className="text-2xl font-semibold">Opening hours</h2>
-        <ul className="mt-2 text-lg text-neutral-300">
+        <ul className="mt-2 text-lg text-fg-2">
           <li>Monday to Friday, 07:00 to 18:00</li>
           <li>Saturday, 08:00 to 16:00</li>
           <li>Sunday closed</li>
@@ -58,9 +62,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ runId
         <table className="mt-2 w-full text-lg">
           <tbody>
             {MENU.map((item) => (
-              <tr key={item.name} className="border-b border-neutral-800">
+              <tr key={item.name} className="border-b border-line">
                 <td className="py-2">{item.name}</td>
-                <td className="py-2 text-right font-mono">{item.price} USD₮</td>
+                <td className="py-2 text-right">{item.price} USD₮</td>
               </tr>
             ))}
           </tbody>
@@ -69,7 +73,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ runId
 
       <section>
         <h2 className="text-2xl font-semibold">Address</h2>
-        <address className="mt-2 text-lg not-italic text-neutral-300">
+        <address className="mt-2 text-lg not-italic text-fg-2">
           Trial Café
           <br />
           {ADDRESS.street}

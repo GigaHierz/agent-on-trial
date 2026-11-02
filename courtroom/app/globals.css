@@ -1,13 +1,26 @@
 @import "tailwindcss";
 
+/* The Agentic Hub palette: near-black with a green cast, one mint accent. */
+@theme {
+  --color-ink: #0b0f0d;
+  --color-ink-2: #111816;
+  --color-mint: #a8e6c3;
+  --color-mint-deep: #5fbf8f;
+  --color-line: rgba(255, 255, 255, 0.12);
+  --color-fg: #ffffff;
+  --color-fg-2: rgba(255, 255, 255, 0.7);
+  --color-fg-3: rgba(255, 255, 255, 0.58);
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
 :root {
   color-scheme: dark;
 }
 
 html,
 body {
-  background: #0a0a0a;
-  color: #f5f5f5;
+  background: #0b0f0d;
+  color: #ffffff;
 }
 
 a {
@@ -15,13 +28,42 @@ a {
   text-underline-offset: 3px;
 }
 
+/* Faint square grid with two soft mint glows, as on the speaker banners. */
+.grid-bg {
+  background-color: #0b0f0d;
+  background-image:
+    radial-gradient(600px 400px at 85% 0%, rgba(168, 230, 195, 0.14), transparent 70%),
+    radial-gradient(500px 400px at 10% 100%, rgba(168, 230, 195, 0.1), transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    48px 48px,
+    48px 48px;
+  background-attachment: fixed;
+}
+
+/*
+ * Small letter-spaced labels: the date pill, section titles, badges. Lives in
+ * the base layer so Tailwind size utilities (text-sm, text-[10px]) override
+ * the default size; an unlayered rule would always win over them.
+ */
+@layer base {
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+  }
+}
+
 /* Thin, quiet scrollbars: visible enough to show there is more, never loud. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3f3f46 transparent;
+  scrollbar-color: #2b3530 transparent;
 }
 *:hover {
-  scrollbar-color: #71717a transparent;
+  scrollbar-color: #4a5a52 transparent;
 }
 ::-webkit-scrollbar {
   width: 6px;
@@ -31,11 +73,11 @@ a {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
+  background: #2b3530;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #71717a;
+  background: #4a5a52;
 }
 ::-webkit-scrollbar-corner {
   background: transparent;

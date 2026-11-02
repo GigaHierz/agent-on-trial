@@ -6,8 +6,13 @@ import { askStream } from '@/lib/ask-client';
 import { usePoll } from '@/lib/use-poll';
 import { Cited } from './Cited';
 import { TallyBar } from './TallyBar';
+import { Button } from './ui/Button';
+import { Card } from './ui/Card';
+import { Pill } from './ui/Pill';
 
 type Action = 'open' | 'close' | 'reset' | 'set' | 'current';
+
+const INPUT = 'rounded-xl border border-line bg-white/5 px-3 py-2 text-base focus:border-mint focus:outline-none';
 
 export function BenchClient({ round: initialRound, baseUrl }: { round: string; baseUrl: string }) {
   const [round, setRound] = useState(initialRound);
@@ -48,60 +53,57 @@ export function BenchClient({ round: initialRound, baseUrl }: { round: string; b
   }
 
   const counts = countByAct(evidence);
-  const btn = 'rounded-lg border border-neutral-600 px-4 py-2 text-lg hover:bg-neutral-800';
-  const input = 'rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-lg';
   const links = ['/live', '/projector', `/vote?r=${q}`, '/cross', '/agent/registration.json', '/.well-known/agent-card.json'];
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-8 px-6 py-10">
-      <header className="flex items-baseline justify-between">
-        <h1 className="text-4xl font-bold">Bench</h1>
-        <span className="font-mono text-neutral-400">round {round}</span>
+    <main className="mx-auto flex max-w-4xl flex-col gap-6 px-4 py-10 sm:px-6">
+      <header className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-bold sm:text-4xl">Bench</h1>
+        <Pill tone="mint">round {round}</Pill>
       </header>
 
-      <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-semibold text-neutral-300">Round</h2>
-        <div className="flex gap-3">
-          <input className={input} value={roundInput} onChange={(e) => setRoundInput(e.target.value)} />
-          <button type="button" className={btn} onClick={() => post('current')}>
-            Set current round
-          </button>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-semibold text-neutral-300">Vote</h2>
-        <TallyBar tally={tally} />
-        {tallyError && <p className="text-rose-400">{tallyError}</p>}
+      <Card className="flex flex-col gap-3">
+        <h2 className="eyebrow text-fg-3">Round</h2>
         <div className="flex flex-wrap gap-3">
-          <button type="button" className={btn} onClick={() => post('open')}>
+          <input className={INPUT} value={roundInput} onChange={(e) => setRoundInput(e.target.value)} aria-label="Round id" />
+          <Button variant="secondary" onClick={() => post('current')}>
+            Set current round
+          </Button>
+        </div>
+      </Card>
+
+      <Card className="flex flex-col gap-4">
+        <h2 className="eyebrow text-fg-3">Vote</h2>
+        <TallyBar tally={tally} />
+        {tallyError && <p className="text-rose-300">{tallyError}</p>}
+        <div className="flex flex-wrap gap-3">
+          <Button variant="primary" onClick={() => post('open')}>
             Open vote
-          </button>
-          <button type="button" className={btn} onClick={() => post('close')}>
+          </Button>
+          <Button variant="secondary" onClick={() => post('close')}>
             Close vote
-          </button>
-          <button
-            type="button"
-            className={`${btn} border-rose-700 text-rose-300`}
+          </Button>
+          <Button
+            variant="secondary"
+            className="border-rose-400/60 text-rose-300 hover:bg-rose-500/10"
             onClick={() => {
               if (window.confirm(`Reset the tally and voters for round ${round}?`)) void post('reset');
             }}
           >
             Reset vote
-          </button>
+          </Button>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <input className={`${input} w-28`} placeholder="trust" inputMode="numeric" value={trustIn} onChange={(e) => setTrustIn(e.target.value)} />
+          <input className={`${INPUT} w-28`} placeholder="trust" inputMode="numeric" value={trustIn} onChange={(e) => setTrustIn(e.target.value)} />
           <input
-            className={`${input} w-28`}
+            className={`${INPUT} w-28`}
             placeholder="distrust"
             inputMode="numeric"
             value={distrustIn}
             onChange={(e) => setDistrustIn(e.target.value)}
           />
-          <button
-            type="button"
-            className={btn}
+          <Button
+            variant="secondary"
             onClick={() => {
               const extra: Record<string, number> = {};
               if (trustIn !== '') extra.trust = Number(trustIn);
@@ -110,57 +112,57 @@ export function BenchClient({ round: initialRound, baseUrl }: { round: string; b
             }}
           >
             Set tally by hand
-          </button>
+          </Button>
         </div>
-        {status && <p className="font-mono text-neutral-400">{status}</p>}
-      </section>
+        {status && <p className="text-sm text-fg-2">{status}</p>}
+      </Card>
 
-      <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-semibold text-neutral-300">Evidence</h2>
+      <Card className="flex flex-col gap-3">
+        <h2 className="eyebrow text-fg-3">Evidence</h2>
         {evidence ? (
-          <p className="text-lg">
+          <p className="text-base">
             {evidence.exhibits.length} exhibits
             {evidence.agentId ? ` · agent #${evidence.agentId}` : ' · no agentId yet'} · run {evidence.runId}
             <br />
-            <span className="text-neutral-400">
+            <span className="text-fg-2">
               {Object.entries(counts)
                 .map(([act, n]) => `${act} ${n}`)
                 .join(' · ')}
             </span>
           </p>
         ) : (
-          <p className="text-neutral-500">No evidence posted for this round.</p>
+          <p className="text-fg-3">No evidence posted for this round.</p>
         )}
-      </section>
+      </Card>
 
-      <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-semibold text-neutral-300">Closing statements</h2>
-        <button type="button" className={`${btn} self-start`} disabled={generating} onClick={() => void generate()}>
+      <Card className="flex flex-col gap-4">
+        <h2 className="eyebrow text-fg-3">Closing statements</h2>
+        <Button variant="primary" className="self-start" disabled={generating} onClick={() => void generate()}>
           {generating ? 'Generating…' : 'Generate prosecutor + defense'}
-        </button>
+        </Button>
         {(['prosecutor', 'defense'] as const).map((r) => (
-          <article key={r} className="rounded-xl border border-neutral-800 p-4">
-            <p className="text-sm uppercase tracking-widest text-neutral-500">{r}</p>
-            <p className="mt-2 whitespace-pre-wrap text-xl leading-relaxed">
-              {statements[r] ? <Cited text={statements[r]} round={round} /> : <span className="text-neutral-600">—</span>}
+          <article key={r} className="rounded-xl border border-line p-4">
+            <p className="eyebrow text-fg-3">{r}</p>
+            <p className="mt-2 whitespace-pre-wrap text-lg leading-relaxed">
+              {statements[r] ? <Cited text={statements[r]} round={round} /> : <span className="text-fg-3">—</span>}
             </p>
           </article>
         ))}
-      </section>
+      </Card>
 
-      <section className="flex flex-col gap-2">
-        <h2 className="text-xl font-semibold text-neutral-300">Links</h2>
-        <ul className="font-mono text-lg">
+      <Card className="flex flex-col gap-2">
+        <h2 className="eyebrow text-fg-3">Links</h2>
+        <ul className="text-sm">
           {links.map((p) => (
             <li key={p}>
-              <a className="text-sky-300 underline" href={p} target="_blank" rel="noreferrer">
+              <a className="text-mint no-underline hover:underline break-all" href={p} target="_blank" rel="noreferrer">
                 {baseUrl}
                 {p}
               </a>
             </li>
           ))}
         </ul>
-      </section>
+      </Card>
     </main>
   );
 }
