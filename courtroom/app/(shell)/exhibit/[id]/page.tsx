@@ -6,10 +6,10 @@ import { Card } from '@/components/ui/Card';
 import { LetterBadge } from '@/components/ui/LetterBadge';
 import { Pill } from '@/components/ui/Pill';
 import { gatewayUrl } from '@/lib/env';
-import { DEFAULT_ROUND, RoundId } from '@/lib/keys';
 import { COLUMN_TITLES, exhibitHref } from '@/lib/links';
 import { getRedis } from '@/lib/redis';
-import { currentRound, getEvidence } from '@/lib/store';
+import { getEvidence } from '@/lib/store';
+import { resolveRounds } from '@/lib/view-round';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,8 +30,7 @@ export default async function ExhibitPage({
       </main>
     );
   }
-  const round =
-    roundParam && RoundId.safeParse(roundParam).success ? roundParam : await currentRound().catch(() => DEFAULT_ROUND);
+  const { round } = await resolveRounds(roundParam);
   const evidence = await getEvidence(round);
   const exhibit = evidence?.exhibits.find((e) => e.id === id);
   const gateway = gatewayUrl();

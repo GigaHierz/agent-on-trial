@@ -1,9 +1,8 @@
 import { ChatClient } from '@/components/ChatClient';
 import { RedisNotice } from '@/components/RedisNotice';
 import { gatewayUrl } from '@/lib/env';
-import { DEFAULT_ROUND, RoundId } from '@/lib/keys';
 import { getRedis } from '@/lib/redis';
-import { currentRound } from '@/lib/store';
+import { resolveRounds } from '@/lib/view-round';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,7 +16,6 @@ export default async function ChatPage({ searchParams }: { searchParams: Promise
       </main>
     );
   }
-  const live = await currentRound().catch(() => DEFAULT_ROUND);
-  const round = r && RoundId.safeParse(r).success ? r : live;
+  const { round, live } = await resolveRounds(r);
   return <ChatClient round={round} voteRound={live} gateway={gatewayUrl()} />;
 }
