@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 
 const RoundPost = z.object({
   round: RoundId,
-  action: z.enum(['open', 'close', 'reset', 'set', 'current']),
+  action: z.enum(['open', 'close', 'reset', 'set', 'current', 'clear']),
   trust: z.number().int().nonnegative().optional(),
   distrust: z.number().int().nonnegative().optional(),
 });
@@ -44,6 +44,10 @@ export async function POST(req: NextRequest) {
       }
       case 'current':
         await setCurrentRound(round);
+        break;
+      case 'clear':
+        // Wipe a round completely: evidence, log, closing statements and the vote. For rehearsals.
+        await r.del(K.evidence(round), K.log(round), K.statements(round), K.tally(round), K.voters(round), K.voteOpen(round), K.voteClosedAt(round));
         break;
     }
     return NextResponse.json(await getTally(round));

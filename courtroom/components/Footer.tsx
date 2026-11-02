@@ -10,7 +10,7 @@ export function Footer() {
   const row = 'mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-xs';
   return (
     <footer className="shrink-0 border-t border-line bg-ink/80 backdrop-blur">
-      <div className="mx-auto grid max-w-6xl items-start gap-x-8 gap-y-3 px-4 py-3 sm:px-6 md:grid-cols-[auto_1fr_auto]">
+      <div className="mx-auto grid max-w-6xl items-start justify-start gap-x-10 gap-y-3 px-4 py-3 sm:px-6 md:grid-cols-[auto_auto_auto]">
         <div>
           <div className={label}>Agentic Hub · Devcon</div>
           <div className={`${row} text-fg-2`}>
@@ -30,9 +30,9 @@ export function Footer() {
             ))}
           </div>
         </div>
-        <div className="md:text-right">
+        <div>
           <div className={label}>Tooling</div>
-          <div className={`${row} md:justify-end`}>
+          <div className={row}>
             {BUILT_WITH.map((b) => (
               <a key={b.name} href={b.href} target="_blank" rel="noopener noreferrer" className="text-fg-2 no-underline hover:text-fg">
                 {b.name}
