@@ -10,6 +10,7 @@
   "packageManager": "pnpm@10.34.5",
   "scripts": {
     "trial": "tsx agent/session.ts",
+    "flow": "bash scripts/flow.sh",
     "preflight": "tsx steps/00-preflight.ts",
     "act:identity": "tsx steps/01-identity.ts",
     "act:earn": "tsx steps/02-earn.ts",
@@ -31,6 +32,7 @@
     "@anthropic-ai/sdk": "^0.133.0",
     "@celo/attribution-tags": "^0.5.0",
     "@celo/buy": "^0.8.2",
+    "@ethersphere/bee-js": "^13.1.0",
     "@modelcontextprotocol/sdk": "^1.20.0",
     "@trial/shared": "workspace:*",
     "askbots": "^0.5.0",

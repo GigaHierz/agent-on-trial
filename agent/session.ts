@@ -5,7 +5,7 @@ import { approveModeOn, setApproveMode, setPrompter } from '../lib/approve.js';
 import { AskbotsClient, loadCreds } from '../lib/askbots.js';
 import { env } from '../lib/env.js';
 import { EvidenceStore } from '../lib/evidence.js';
-import { flushLog, log } from '../lib/log.js';
+import { flushLog, log, showUri } from '../lib/log.js';
 import { publish } from '../lib/publish.js';
 import { identityAct } from '../steps/01-identity.js';
 import { earnAct } from '../steps/02-earn.js';
@@ -68,7 +68,7 @@ async function main() {
       }
       if (line === '/exhibits') {
         for (const e of evidence.data.exhibits) {
-          console.log(`  ${e.id.padEnd(3)} ${e.title}${e.txHash ? `  ${celoscanTx(e.txHash)}` : ''}${e.uri ? `  ${e.uri.slice(0, 48)}…` : ''}${e.fixture ? '  (recorded)' : ''}`);
+          console.log(`  ${e.id.padEnd(3)} ${e.title}${e.txHash ? `  ${celoscanTx(e.txHash)}` : ''}${e.uri ? `  ${showUri(e.uri, e.gatewayUrl)}` : ''}${e.fixture ? '  (recorded)' : ''}`);
         }
         continue;
       }

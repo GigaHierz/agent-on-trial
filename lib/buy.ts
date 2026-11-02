@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { createRequire } from 'node:module';
+import { dirname, join, resolve } from 'node:path';
 import { DEMO_TOKEN } from '@trial/shared';
 import { formatUnits } from 'viem';
 import { env, roleKey } from './env.js';
@@ -14,9 +15,18 @@ import { env, roleKey } from './env.js';
  */
 export const ACCOUNT = 'defendant';
 
-export function buyBin(): string {
-  const local = resolve('node_modules/.bin/buy');
-  return existsSync(local) ? local : 'buy';
+/**
+ * How to start the buy CLI. The installed package's JS entry runs under this
+ * node, which works on Windows too, where node_modules/.bin/buy is a shell
+ * script that spawn cannot start. Falls back to `buy` on PATH.
+ */
+export function buyCommand(): { command: string; args: string[] } {
+  try {
+    const pkg = createRequire(import.meta.url).resolve('@celo/buy/package.json');
+    return { command: process.execPath, args: [join(dirname(pkg), 'dist', 'main.js')] };
+  } catch {
+    return { command: 'buy', args: [] };
+  }
 }
 
 export function buyEnv(extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
@@ -30,7 +40,8 @@ export function buyEnv(extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
 
 export function runBuy(args: string[], opts: { env?: NodeJS.ProcessEnv; input?: string } = {}): Promise<{ code: number; stdout: string; stderr: string }> {
   return new Promise((res, rej) => {
-    const child = spawn(buyBin(), args, { env: buyEnv(opts.env), stdio: ['pipe', 'pipe', 'pipe'] });
+    const buy = buyCommand();
+    const child = spawn(buy.command, [...buy.args, ...args], { env: buyEnv(opts.env), stdio: ['pipe', 'pipe', 'pipe'] });
     let stdout = '';
     let stderr = '';
     child.stdout.on('data', (d) => (stdout += d));
@@ -63,24 +74,30 @@ export interface Receipt {
  * `receipts.json`. Read whichever is there.
  */
 export function readReceipts(): Receipt[] {
-  const home = resolve(env.buyHome);
-  if (!existsSync(home)) return [];
-  const versioned = readdirSync(home)
-    .map((n) => /^receipts\.(\d+)\.json$/.exec(n))
-    .filter((m): m is RegExpExecArray => m !== null)
-    .sort((a, b) => Number(b[1]) - Number(a[1]));
-  const path = versioned.length ? join(home, versioned[0][0]) : join(home, 'receipts.json');
-  if (!existsSync(path)) return [];
+  const path = receiptsPath(resolve(env.buyHome));
+  if (!path) return [];
   const parsed = JSON.parse(readFileSync(path, 'utf8'));
   const list: Receipt[] = Array.isArray(parsed) ? parsed : (parsed.receipts ?? []);
   return list;
+}
+
+/** buy 0.8 writes versioned receipts.<n>.json (newest = highest n); older releases wrote receipts.json. */
+function receiptsPath(home: string): string | null {
+  if (!existsSync(home)) return null;
+  const versions = readdirSync(home)
+    .map((f) => f.match(/^receipts\.(\d+)\.json$/)?.[1])
+    .filter((n): n is string => n !== undefined)
+    .map(Number);
+  if (versions.length) return join(home, `receipts.${Math.max(...versions)}.json`);
+  const legacy = join(home, 'receipts.json');
+  return existsSync(legacy) ? legacy : null;
 }
 
 /** Human figures for a receipt: amount is stored in atomic units and asset as an address. */
 export function describeReceipt(r: Receipt): { amount: string; asset: string } {
   const atomic = /^\d+$/.test(r.amount);
   const symbol = r.asset.toLowerCase() === DEMO_TOKEN.address.toLowerCase() ? DEMO_TOKEN.display : r.asset.startsWith('0x') ? `${r.asset.slice(0, 6)}…` : r.asset;
-  return { amount: atomic ? formatUnits(BigInt(r.amount), 6) : r.amount, asset: symbol };
+  return { amount: atomic ? formatUnits(BigInt(r.amount), DEMO_TOKEN.decimals) : r.amount, asset: symbol };
 }
 
 /** Receipts newer than `since`, newest first. */
@@ -117,5 +134,6 @@ export async function buyWhoami(): Promise<string> {
 
 /** Args for `buy mcp serve` so the agent loop can spawn it over stdio. */
 export function mcpServeCommand(): { command: string; args: string[]; env: NodeJS.ProcessEnv } {
-  return { command: buyBin(), args: ['mcp', 'serve', '--account', ACCOUNT], env: buyEnv() };
+  const buy = buyCommand();
+  return { command: buy.command, args: [...buy.args, 'mcp', 'serve', '--account', ACCOUNT], env: buyEnv() };
 }

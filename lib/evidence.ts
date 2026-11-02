@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { Evidence, Exhibit, Fixtures, type Evidence as EvidenceT, type Exhibit as ExhibitT } from '@trial/shared';
 import { currentRunId, env } from './env.js';
-import { log } from './log.js';
+import { log, showUri } from './log.js';
 import { publish } from './publish.js';
 
 const RUN_FILE = 'evidence/run.json';
@@ -70,7 +70,7 @@ export class EvidenceStore {
     const exhibit = Exhibit.parse({ ...rest, id: this.nextId(letter), at: new Date().toISOString() });
     this.data.exhibits.push(exhibit);
     this.save();
-    const where = exhibit.txHash ? `tx ${exhibit.txHash}` : exhibit.uri ? `${exhibit.uri.slice(0, 48)}…` : exhibit.url ?? '';
+    const where = exhibit.txHash ? `tx ${exhibit.txHash}` : exhibit.uri ? showUri(exhibit.uri, exhibit.gatewayUrl) : exhibit.url ?? '';
     log.info(`exhibit ${exhibit.id} ${exhibit.title}${where ? ` · ${where}` : ''}${exhibit.fixture ? ' · recorded' : ''}`);
     return exhibit;
   }

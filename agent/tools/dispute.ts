@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { getDispute } from '../../adapters/dispute/index.js';
 import { getStorage } from '../../adapters/storage/index.js';
 import { roleAddress } from '../../lib/env.js';
-import { log } from '../../lib/log.js';
+import { log, showUri } from '../../lib/log.js';
 import { lastArtifact, type ActContext } from '../context.js';
 
 /**
@@ -64,9 +64,10 @@ export function disputeTools(ctx: ActContext) {
         deliveredHash: delivered.hash,
         claim: input.claim,
       });
-      log.toolResult('open_dispute', `${result.disputeId} evidence ${result.uri.slice(0, 40)}…`);
+      log.toolResult('open_dispute', `${result.disputeId} evidence ${showUri(result.uri)}`);
       return JSON.stringify({ disputeId: result.disputeId, evidenceUri: result.uri, url: result.url, status: 'open' });
     },
   });
   return [open_dispute];
 }
+

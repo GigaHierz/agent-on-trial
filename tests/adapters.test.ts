@@ -1,13 +1,15 @@
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { BeeResponseError } from '@ethersphere/bee-js';
 import { CAIP2, DEMO_TOKEN, hashBytes } from '@trial/shared';
 import { afterAll, describe, expect, it } from 'vitest';
 import { LocalDispute, requiredSections } from '../adapters/dispute/local.js';
 import { makeDispute } from '../adapters/dispute/index.js';
 import { LocalStorage } from '../adapters/storage/local.js';
 import { makeStorage } from '../adapters/storage/index.js';
-import { refOf } from '../adapters/storage/swarm.js';
+import { type BeeLike, refOf, SwarmStorage } from '../adapters/storage/swarm.js';
+import { NotImplemented } from '../adapters/storage/types.js';
 
 const dir = mkdtempSync(join(tmpdir(), 'trial-'));
 afterAll(() => rmSync(dir, { recursive: true, force: true }));
@@ -71,5 +73,64 @@ describe('local dispute', () => {
   it('extracts required sections from the spec', () => {
     expect(requiredSections('a Celo market report with sections: price, volume and sources')).toEqual(['price', 'volume', 'sources']);
     expect(requiredSections('whatever')).toEqual([]);
+  });
+});
+
+describe('swarm storage (bee-js)', () => {
+  const REF = 'ab'.repeat(32);
+  const MANIFEST = 'cd'.repeat(32);
+  const ref = (hex: string) => ({ toHex: () => hex });
+  const KEY = '0x' + '11'.repeat(32);
+
+  function stub() {
+    const calls: unknown[][] = [];
+    const heads = new Map<string, string>();
+    const bee = {
+      file: {
+        upload: async (...args: unknown[]) => (calls.push(['upload', ...args]), { reference: ref(REF) }),
+        download: async () => ({ data: { toUint8Array: () => new TextEncoder().encode('{"a":1}') } }),
+      },
+      feed: {
+        makeWriter: (topic: { toHex(): string }) => ({
+          uploadReference: async (batch: string, r: string) => (calls.push(['feed', batch, r]), heads.set(topic.toHex(), r), { reference: ref(REF) }),
+        }),
+        makeReader: (topic: { toHex(): string }) => ({
+          downloadReference: async () => {
+            const r = heads.get(topic.toHex());
+            if (!r) throw new BeeResponseError('GET', 'http://bee/feeds', 'Not Found', undefined, 404, 'Not Found');
+            return { reference: ref(r) };
+          },
+        }),
+        createManifest: async () => (calls.push(['manifest']), ref(MANIFEST)),
+      },
+      status: { getHealth: async () => ({ status: 'ok', version: '2.8.1', apiVersion: '8.1.0' }) },
+    } as unknown as BeeLike;
+    return { bee, calls };
+  }
+
+  it('puts a /bzz file and hashes the bytes itself', async () => {
+    const { bee, calls } = stub();
+    const storage = new SwarmStorage({ BEE_API_URL: 'http://bee', SWARM_GATEWAY_URL: 'https://gw' }, bee);
+    const out = await storage.put('{"a":1}', { name: 'x.json' });
+    expect(out).toEqual({ uri: `bzz://${REF}`, hash: hashBytes('{"a":1}'), gatewayUrl: `https://gw/bzz/${REF}/`, bytes: 7 });
+    expect(calls[0].slice(0, 2)).toEqual(['upload', '0'.repeat(64)]);
+    expect(new TextDecoder().decode(await storage.get(out.uri))).toBe('{"a":1}');
+  });
+
+  it('has no feeds without a feed key', async () => {
+    const storage = new SwarmStorage({ BEE_API_URL: 'http://bee' }, stub().bee);
+    await expect(storage.feedUpdate('t', `bzz://${REF}`)).rejects.toBeInstanceOf(NotImplemented);
+    await expect(storage.feedRead('t')).rejects.toBeInstanceOf(NotImplemented);
+  });
+
+  it('points the feed at the reference and returns one manifest per topic', async () => {
+    const { bee, calls } = stub();
+    const storage = new SwarmStorage({ BEE_API_URL: 'http://bee', SWARM_GATEWAY_URL: 'https://gw', SWARM_FEED_PRIVATE_KEY: KEY }, bee);
+    expect(await storage.feedRead('t')).toBeNull();
+    const feed = await storage.feedUpdate('t', `bzz://${REF}`);
+    await storage.feedUpdate('t', `bzz://${REF}`);
+    expect(feed).toEqual({ feedUri: `bzz://${MANIFEST}`, gatewayUrl: `https://gw/bzz/${MANIFEST}/` });
+    expect(await storage.feedRead('t')).toBe(`bzz://${REF}`);
+    expect(calls.filter((c) => c[0] === 'manifest')).toHaveLength(1);
   });
 });

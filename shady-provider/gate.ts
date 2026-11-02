@@ -3,7 +3,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { FACILITATOR_URL } from '@trial/shared';
-import { buyBin, buyEnv } from '../lib/buy.js';
+import { buyCommand, buyEnv } from '../lib/buy.js';
 import { env, roleAddress } from '../lib/env.js';
 import { log } from '../lib/log.js';
 
@@ -32,7 +32,8 @@ export async function startShadyGate(): Promise<Gate> {
   writeFileSync(path, yml);
 
   const args = ['gate', path, '--facilitator', FACILITATOR_URL, '--port', String(SHADY_PORT)];
-  const child: ChildProcess = spawn(buyBin(), args, {
+  const buy = buyCommand();
+  const child: ChildProcess = spawn(buy.command, [...buy.args, ...args], {
     env: buyEnv({ BUY_FACILITATOR_API_KEY: apiKey }),
     stdio: ['ignore', 'pipe', 'pipe'],
   });

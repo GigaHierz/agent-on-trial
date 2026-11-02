@@ -19,7 +19,17 @@ const C = {
   reset: '\x1b[0m',
 };
 
-const SECRET_KEY = /(private|secret|api[_-]?key|authorization|token|password|mnemonic)/i;
+/**
+ * A stored reference for display: the gateway link when there is one, a
+ * bzz:// reference in full, and only data: URIs (whole files inline) cut short.
+ */
+export function showUri(uri: string, gatewayUrl?: string): string {
+  if (gatewayUrl) return gatewayUrl;
+  if (uri.startsWith('data:')) return `${uri.slice(0, 48)}…`;
+  return uri;
+}
+
+const SECRET_KEY =/(private|secret|api[_-]?key|authorization|token|password|mnemonic)/i;
 
 export function redact(value: unknown, depth = 0): unknown {
   if (depth > 6) return '[deep]';
