@@ -9,7 +9,7 @@
   --color-line: rgba(255, 255, 255, 0.12);
   --color-fg: #ffffff;
   --color-fg-2: rgba(255, 255, 255, 0.7);
-  --color-fg-3: rgba(255, 255, 255, 0.45);
+  --color-fg-3: rgba(255, 255, 255, 0.58);
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -44,11 +44,17 @@ a {
   background-attachment: fixed;
 }
 
-/* Small letter-spaced labels: the date pill, section titles, badges. */
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 0.75rem;
+/*
+ * Small letter-spaced labels: the date pill, section titles, badges. Lives in
+ * the base layer so Tailwind size utilities (text-sm, text-[10px]) override
+ * the default size; an unlayered rule would always win over them.
+ */
+@layer base {
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+  }
 }
 
 /* Thin, quiet scrollbars: visible enough to show there is more, never loud. */

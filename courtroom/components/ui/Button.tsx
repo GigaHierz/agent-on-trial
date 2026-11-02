@@ -16,7 +16,7 @@ const SIZES: Record<Size, string> = {
 };
 
 const BASE =
-  'inline-flex items-center justify-center gap-2 font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-mint disabled:opacity-50 active:scale-[0.98]';
+  'inline-flex items-center justify-center gap-2 font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-mint focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:opacity-50 active:scale-[0.98]';
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   href?: string;

@@ -24,7 +24,7 @@ export function HostLogin({ to, denied }: { to: string; denied?: boolean }) {
           />
           <button
             type="submit"
-            className="rounded-xl bg-mint px-4 py-3 text-lg font-semibold text-ink hover:bg-mint-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-mint"
+            className="rounded-xl bg-mint px-4 py-3 text-lg font-semibold text-ink hover:bg-mint-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-mint focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
           >
             Enter
           </button>
