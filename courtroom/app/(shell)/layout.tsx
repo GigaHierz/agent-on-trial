@@ -1,14 +1,16 @@
 import type { ReactNode } from 'react';
-import { Footer } from '@/components/Footer';
 import { Nav } from '@/components/Nav';
 
-/** Nav and footer for every public and host page. The projector and the property page stay outside. */
+/**
+ * Nav for every public and host page. The viewport is the frame: full-height
+ * views (chat, live log, vote) fill the space under the nav and scroll inside;
+ * document pages live in (pages) and add the footer.
+ */
 export default function ShellLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-dvh flex-col">
       <Nav />
-      <div className="flex-1">{children}</div>
-      <Footer />
+      <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
     </div>
   );
 }

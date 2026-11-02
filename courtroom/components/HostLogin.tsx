@@ -3,7 +3,7 @@ import { Pill } from './ui/Pill';
 
 export function HostLogin({ to, denied }: { to: string; denied?: boolean }) {
   return (
-    <main className="mx-auto flex min-h-[calc(100vh-57px)] max-w-md flex-col justify-center px-4 py-10 sm:px-6">
+    <main className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-10 sm:px-6">
       <Card className="flex flex-col gap-5">
         <Pill tone="mint" className="self-start">
           Host only

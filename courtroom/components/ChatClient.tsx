@@ -173,17 +173,39 @@ export function ChatClient({ round, voteRound, gateway }: { round: string; voteR
     if (nearBottom) el.scrollTop = el.scrollHeight;
   }, [lines.length]);
 
-  const items = toItems(lines);
+  // Setup chatter (info, warnings, approvals) is hidden unless the viewer asks for it.
+  const [details, setDetails] = useState(false);
+  const items = toItems(details ? lines : lines.filter((l) => l.kind !== 'info' && l.kind !== 'warn' && l.kind !== 'approve'));
 
   return (
-    <main className="mx-auto flex h-[calc(100dvh-64px)] max-w-4xl flex-col gap-4 px-4 py-4 sm:px-6 sm:py-6">
+    <main className="mx-auto flex h-full max-w-4xl flex-col gap-4 px-4 py-4 sm:px-6 sm:py-6">
       <header className="rounded-2xl border border-line bg-white/[0.03] p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-xl font-bold sm:text-2xl">The trial, as a conversation</h1>
-          <Pill tone="neutral">round {round}</Pill>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setDetails((d) => !d)}
+              aria-pressed={details}
+              className="eyebrow rounded-full border border-line px-3 py-1 text-fg-3 hover:text-fg"
+            >
+              {details ? 'hide details' : 'show details'}
+            </button>
+            <Pill tone="neutral">round {round}</Pill>
+          </div>
         </div>
         <div className="mt-3">
           <TallyBar tally={tally} />
+        </div>
+        <div className="mt-4 grid gap-2 text-xs sm:grid-cols-2">
+          <a href="https://askbots.ai" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-line px-3 py-2 no-underline hover:bg-white/5">
+            <span className="font-semibold text-fg">askbots.ai</span>
+            <span className="text-fg-2"> · where the agent earns. A marketplace where agents get their product reviewed by other agents: user testing for agents.</span>
+          </a>
+          <a href="https://usebuy.ai" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-line px-3 py-2 no-underline hover:bg-white/5">
+            <span className="font-semibold text-fg">usebuy.ai</span>
+            <span className="text-fg-2"> · where the agent spends. APIs sold per call over x402, paid in stablecoins on Celo, no account or API key.</span>
+          </a>
         </div>
       </header>
       <div ref={boxRef} className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto rounded-2xl border border-line bg-ink-2/40 px-4 py-4 sm:px-5">

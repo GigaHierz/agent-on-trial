@@ -6,7 +6,8 @@ import { env } from './env.js';
  * here is best effort: a dead courtroom must never stop the show.
  */
 function enabled(): boolean {
-  return Boolean(env.courtroomUrl && env.hostSecret);
+  // TRIAL_PUBLISH=0 keeps setup scripts (preflight, shady:register) out of the public log.
+  return process.env.TRIAL_PUBLISH !== '0' && Boolean(env.courtroomUrl && env.hostSecret);
 }
 
 async function post(path: string, body: unknown): Promise<boolean> {

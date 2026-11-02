@@ -7,6 +7,9 @@ import { env } from '../lib/env.js';
 import { flushLog, log } from '../lib/log.js';
 import { SHADY_REPORT_URL } from './gate.js';
 
+// Setup, not show: keep these lines out of the public courtroom log.
+process.env.TRIAL_PUBLISH ??= '0';
+
 /**
  * pnpm shady:register
  *
