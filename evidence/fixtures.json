@@ -1,7 +1,7 @@
 {
-  "recordedAt": "2026-11-02T17:06:32.867Z",
-  "agentId": "10020",
-  "agentAddress": "0x9a4f387b48108D4Cb6960f132041726D7f02AdA6",
+  "recordedAt": "2026-11-02T21:01:59.227Z",
+  "agentId": "10021",
+  "agentAddress": "0xf0B1029749da090c7a2601D3029F39472FF2a97E",
   "shadyAgentId": "10019",
   "acts": {
     "identity": [
@@ -9,13 +9,13 @@
         "id": "A1",
         "act": "identity",
         "kind": "tx",
-        "title": "ERC-8004 identity minted: agent 10020",
-        "at": "2026-11-02T16:58:36.450Z",
-        "txHash": "0xf4455744131e6b6140d5c8c738ae233bf06ab929f6d14f6a0460fe2ba886d00e",
+        "title": "ERC-8004 identity minted: agent 10021",
+        "at": "2026-11-02T20:56:37.073Z",
+        "txHash": "0x6b7d31312955582c407961a3597b87226699589255a5d3bfe533ed00862691b6",
         "url": "https://celoscan.io/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
         "detail": {
-          "agentId": "10020",
-          "owner": "0x9a4f387b48108D4Cb6960f132041726D7f02AdA6",
+          "agentId": "10021",
+          "owner": "0xf0B1029749da090c7a2601D3029F39472FF2a97E",
           "agentURI": "https://agent-on-trial.vercel.app/agent/registration.json",
           "erc8021": {
             "codes": [
@@ -30,13 +30,13 @@
         "id": "A2",
         "act": "identity",
         "kind": "http",
-        "title": "askbots.ai bot profile created and linked to agent 10020",
-        "at": "2026-11-02T16:58:39.184Z",
+        "title": "askbots.ai bot profile created and linked to agent 10021",
+        "at": "2026-11-02T20:56:39.643Z",
         "url": "https://askbots.ai/leaderboard",
         "detail": {
-          "profileId": "jx781tmw5khehspdksz2w4c1j98hetj5",
-          "celoAddress": "0x9a4f387b48108D4Cb6960f132041726D7f02AdA6",
-          "linkMessage": "AskBots: link ERC-8004 agent 10020 on chain 42220 to AskBots account kn734nvsqn0wps0x3k3esntjex8he3e5 (wallet 0x9a4f387b48108D4Cb6960f132041726D7f02AdA6)"
+          "profileId": "jx7aep6e97zya6n5a3219gn8gd8he6zs",
+          "celoAddress": "0xf0B1029749da090c7a2601D3029F39472FF2a97E",
+          "linkMessage": "AskBots: link ERC-8004 agent 10021 on chain 42220 to AskBots account kn71y8jz1d2k7f25gs7caqy4898hexbk (wallet 0xf0B1029749da090c7a2601D3029F39472FF2a97E)"
         },
         "fixture": true
       },
@@ -45,7 +45,7 @@
         "act": "identity",
         "kind": "read",
         "title": "Reputation before the trial: none",
-        "at": "2026-11-02T16:58:39.677Z",
+        "at": "2026-11-02T20:56:40.146Z",
         "detail": {
           "clients": 0,
           "summaries": [],
@@ -54,50 +54,99 @@
         "fixture": true
       }
     ],
-    "spend": [
+    "earn": [
       {
         "id": "C1",
-        "act": "spend",
+        "act": "earn",
         "kind": "ref",
-        "title": "Memory after spending (1 entries)",
-        "at": "2026-11-02T16:59:53.310Z",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoiMTAwMjAiLCJlbnRyaWVzIjpbeyJhY3QiOiJzcGVuZCIsImF0IjoiMjAyNi0xMS0wMlQxNjo1OTo0Ny4xNzNaIiwidGV4dCI6IlBhaWQgMC4wMiBVU0RUIHRvIHVzZWJ1eS5haSBHb29nbGUgQWRkcmVzcyBWYWxpZGF0aW9uIChwYXlUbyAweDIwZmFBY2E1Rjk4MEUyOTYzOUEwRkNDNmRjQTY5ODhFMThlZDMzM0IpIHRvIHZhbGlkYXRlIHRoZSBhZGRyZXNzIG9ic2VydmVkIG9uIHByb3BlcnR5IDIwMjYxMTAyLTE2NTgtcTdpeTogVHJpYWwgQ2Fmw6ksIEJhaG5ob2ZzdHJhc3NlIDEsIDgwMDEgWsO8cmljaCwgU3dpdHplcmxhbmQuIFJlc3VsdDogYWxsIGNvbXBvbmVudHMgQ09ORklSTUVELCB2ZXJkaWN0IEFDQ0VQVCwgZ2VvY29kZSA0Ny4zNjczNDQyLCA4LjUzOTg3NDIuIERlbGl2ZXJ5IG1hdGNoZWQgdGhlIGxpc3Rpbmc7IG5vIGRpc3B1dGUuIiwidHhIYXNoIjoiMHg0ZmMxMThhMjMwYTM0Y2YwZmE4YTRkMmIyMDU4NjYyYzg3ZDI5MjI4Zjg1ODI2N2ZlM2U2MjU4MjIyZGI2NzcxIn1dLCJydW5JZCI6IjIwMjYxMTAyLTE2NTgtcTdpeSIsInR5cGUiOiJhZ2VudC1vbi10cmlhbC9tZW1vcnktdjEiLCJ1cGRhdGVkQXQiOiIyMDI2LTExLTAyVDE2OjU5OjQ3LjE3M1oifQ==",
-        "hash": "0xa78896353a3b7c9541e65917b9f91fe33e2254884e6e20b34d2b660eb55bc8da",
+        "title": "Memory after earning (1 entries)",
+        "at": "2026-11-02T20:57:39.896Z",
+        "uri": "bzz://486db60faebfc016ea5d5a925f5e3eae46d5f356c391d63ef8b7d4f628d9af36",
+        "hash": "0x308d48d943830696e42da59ce83a8e482c74703d83cf45b69e55305ef1274430",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/486db60faebfc016ea5d5a925f5e3eae46d5f356c391d63ef8b7d4f628d9af36/",
         "fixture": true
       },
       {
         "id": "B1",
+        "act": "earn",
+        "kind": "tx",
+        "title": "Paid 0.10 USD₮ by askbots.ai for reviewing \"Trial Café (3 Nov rehearsal): is the site ready for customers?\"",
+        "at": "2026-11-02T20:57:39.898Z",
+        "txHash": "0x23f4982a17ed16ab69009253746e8b46d82480de492acba1381f278dc0cf7d00",
+        "url": "https://celoscan.io/token/0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e?a=0xf0B1029749da090c7a2601D3029F39472FF2a97E",
+        "detail": {
+          "projectId": "k172dgg8qf5hh2cjz171fq6jxh8hfvgg",
+          "from": "0x58166D5422717F3Db0c4c76139dE6FB11D4a09cf",
+          "token": "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e"
+        },
+        "fixture": true
+      },
+      {
+        "id": "A4",
+        "act": "earn",
+        "kind": "tx",
+        "title": "Feedback \"earned\" written by the witness, evidence hashed on chain",
+        "at": "2026-11-02T20:57:43.274Z",
+        "txHash": "0x92f2565976213220af954a66bd245bb355da016fe126aa4ba10c9b449924082a",
+        "uri": "bzz://478f277d21bc286bfd128a716b91b1ae5eed2046335454055b944054b94aefd1",
+        "hash": "0xc17dc1658ca2423dee88877d09dd70bae82302e11e5ca946a31b13b535225314",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/478f277d21bc286bfd128a716b91b1ae5eed2046335454055b944054b94aefd1/",
+        "detail": {
+          "tag1": "earned",
+          "tag2": "askbots-review",
+          "value": 100,
+          "client": "0x0d4C6b41047606d6992F5ca1d97BA19fFb3Ad70e"
+        },
+        "fixture": true
+      }
+    ],
+    "spend": [
+      {
+        "id": "C2",
+        "act": "spend",
+        "kind": "ref",
+        "title": "Memory after spending (2 entries)",
+        "at": "2026-11-02T20:59:11.555Z",
+        "uri": "bzz://5c91780eace298277b3f499013d90a3889faca2995db446d17d032bab7f8d849",
+        "hash": "0xc816b050750614dc94827bf6974b3121c5c259b88a4be2c1b7fe758f95ad0cf0",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/5c91780eace298277b3f499013d90a3889faca2995db446d17d032bab7f8d849/",
+        "fixture": true
+      },
+      {
+        "id": "B2",
         "act": "spend",
         "kind": "tx",
-        "title": "Paid 0.02 USD₮ through x402 for /google/addressvalidation/v1:validateAddress",
-        "at": "2026-11-02T16:59:53.314Z",
-        "txHash": "0x4fc118a230a34cf0fa8a4d2b2058662c87d29228f858267fe3e6258222db6771",
+        "title": "Paid 0.005 USD₮ through x402 for /v1/social/x/posts/search",
+        "at": "2026-11-02T20:59:12.272Z",
+        "txHash": "0xcd866e52c966c00091cd1b1df3158b3b75fc16f18865e2389cda62f5d3bb3df0",
         "detail": {
-          "url": "https://usebuy.ai/google/addressvalidation/v1:validateAddress",
+          "url": "https://gateway.usebuy.ai/v1/social/x/posts/search",
           "network": "celo",
           "settledBy": "api.x402.celo.org"
         },
         "fixture": true
       },
       {
-        "id": "C2",
+        "id": "C3",
         "act": "spend",
         "kind": "ref",
         "title": "x402 receipt stored",
-        "at": "2026-11-02T16:59:53.315Z",
-        "uri": "data:application/json;base64,eyJhY2NvdW50IjoiZGVmZW5kYW50IiwiYW1vdW50IjoiMjAwMDAiLCJhc3NldCI6IjB4NDgwNjVmYkJFMjVmNzFDOTI4MmRkZjVlMWNENkQ2QTg4NzQ4M0Q1ZSIsImF1dGhvcml6YXRpb24iOnsiZnJvbSI6IjB4OWE0ZjM4N2I0ODEwOEQ0Q2I2OTYwZjEzMjA0MTcyNkQ3ZjAyQWRBNiIsIm5vbmNlIjoiMHg3OGVlNTQxY2EzODJlZjVlNTViYjhiNjY4ZGIzYTA4ODRlMGUzMjkwYmQwNjhkZjU3YzM5OGQ0NTRhN2RmMjBlIiwidmFsaWRBZnRlciI6IjAiLCJ2YWxpZEJlZm9yZSI6IjE3OTM2Mzg4MzkifSwiaWQiOiJtdnppN3lidi0xa3NsNXMybiIsIm5ldHdvcmsiOiJjZWxvIiwib3V0Y29tZSI6ImNvbmZpcm1lZCIsInNjaGVtZSI6ImV4YWN0Iiwic3RhdHVzIjoyMDAsInRpbWVzdGFtcCI6IjIwMjYtMTEtMDJUMTY6NTk6NDIuODU2WiIsInR4SGFzaCI6IjB4NGZjMTE4YTIzMGEzNGNmMGZhOGE0ZDJiMjA1ODY2MmM4N2QyOTIyOGY4NTgyNjdmZTNlNjI1ODIyMmRiNjc3MSIsInVybCI6Imh0dHBzOi8vdXNlYnV5LmFpL2dvb2dsZS9hZGRyZXNzdmFsaWRhdGlvbi92MTp2YWxpZGF0ZUFkZHJlc3MifQ==",
-        "hash": "0xf26cd57b16fd36621206af1838352b2d69136d2f0dd78ec2b328088bd9e934f3",
+        "at": "2026-11-02T20:59:12.275Z",
+        "uri": "bzz://11161a013101c0053465336eb0a1c141735126ec8f132bb1d85a326494fe0e15",
+        "hash": "0xd882a1d88eb1309d3b1c516dd7fc04a3a3baf4d8df541ab2a0696468a13bd51a",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/11161a013101c0053465336eb0a1c141735126ec8f132bb1d85a326494fe0e15/",
         "fixture": true
       },
       {
-        "id": "A4",
+        "id": "A5",
         "act": "spend",
         "kind": "tx",
         "title": "Feedback \"paid\" written by the witness, receipt hashed on chain",
-        "at": "2026-11-02T16:59:56.160Z",
-        "txHash": "0x5a6aeaede35225c925cca53b682c14fcf5f704d1518779e7830068157ae9011a",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoxMDAyMCwiYWdlbnRSZWdpc3RyeSI6ImVpcDE1NTo0MjIyMDoweDgwMDRBMTY5RkI0YTMzMjUxMzZFQjI5ZkEwY2VCNkQyZTUzOWE0MzIiLCJjbGllbnRBZGRyZXNzIjoiZWlwMTU1OjQyMjIwOjB4MGQ0QzZiNDEwNDc2MDZkNjk5MkY1Y2ExZDk3QkExOWZGYjNBZDcwZSIsImNyZWF0ZWRBdCI6IjIwMjYtMTEtMDJUMTY6NTk6NTMuMzQ1WiIsImVuZHBvaW50IjoiaHR0cHM6Ly91c2VidXkuYWkiLCJldmlkZW5jZSI6eyJhbW91bnQiOiIyMDAwMCIsImFzc2V0IjoiMHg0ODA2NWZiQkUyNWY3MUM5MjgyZGRmNWUxY0Q2RDZBODg3NDgzRDVlIiwicmVjZWlwdCI6eyJoYXNoIjoiMHhmMjZjZDU3YjE2ZmQzNjYyMTIwNmFmMTgzODM1MmIyZDY5MTM2ZDJmMGRkNzhlYzJiMzI4MDg4YmQ5ZTkzNGYzIiwidXJpIjoiZGF0YTphcHBsaWNhdGlvbi9qc29uO2Jhc2U2NCxleUpoWTJOdmRXNTBJam9pWkdWbVpXNWtZVzUwSWl3aVlXMXZkVzUwSWpvaU1qQXdNREFpTENKaGMzTmxkQ0k2SWpCNE5EZ3dOalZtWWtKRk1qVm1OekZET1RJNE1tUmtaalZsTVdORU5rUTJRVGc0TnpRNE0wUTFaU0lzSW1GMWRHaHZjbWw2WVhScGIyNGlPbnNpWm5KdmJTSTZJakI0T1dFMFpqTTROMkkwT0RFd09FUTBRMkkyT1RZd1pqRXpNakEwTVRjeU5rUTNaakF5UVdSQk5pSXNJbTV2Ym1ObElqb2lNSGczT0dWbE5UUXhZMkV6T0RKbFpqVmxOVFZpWWpoaU5qWTRaR0l6WVRBNE9EUmxNR1V6TWprd1ltUXdOamhrWmpVM1l6TTVPR1EwTlRSaE4yUm1NakJsSWl3aWRtRnNhV1JCWm5SbGNpSTZJakFpTENKMllXeHBaRUpsWm05eVpTSTZJakUzT1RNMk16ZzRNemtpZlN3aWFXUWlPaUp0ZG5wcE4zbGlkaTB4YTNOc05YTXliaUlzSW01bGRIZHZjbXNpT2lKalpXeHZJaXdpYjNWMFkyOXRaU0k2SW1OdmJtWnBjbTFsWkNJc0luTmphR1Z0WlNJNkltVjRZV04wSWl3aWMzUmhkSFZ6SWpveU1EQXNJblJwYldWemRHRnRjQ0k2SWpJd01qWXRNVEV0TURKVU1UWTZOVGs2TkRJdU9EVTJXaUlzSW5SNFNHRnphQ0k2SWpCNE5HWmpNVEU0WVRJek1HRXpOR05tTUdaaE9HRTBaREppTWpBMU9EWTJNbU00TjJReU9USXlPR1k0TlRneU5qZG1aVE5sTmpJMU9ESXlNbVJpTmpjM01TSXNJblZ5YkNJNkltaDBkSEJ6T2k4dmRYTmxZblY1TG1GcEwyZHZiMmRzWlM5aFpHUnlaWE56ZG1Gc2FXUmhkR2x2Ymk5Mk1UcDJZV3hwWkdGMFpVRmtaSEpsYzNNaWZRPT0ifSwidXJsIjoiaHR0cHM6Ly91c2VidXkuYWkvZ29vZ2xlL2FkZHJlc3N2YWxpZGF0aW9uL3YxOnZhbGlkYXRlQWRkcmVzcyJ9LCJwcm9vZk9mUGF5bWVudCI6eyJjaGFpbklkIjoiNDIyMjAiLCJmcm9tQWRkcmVzcyI6IjB4OWE0ZjM4N2I0ODEwOEQ0Q2I2OTYwZjEzMjA0MTcyNkQ3ZjAyQWRBNiIsInRvQWRkcmVzcyI6IiIsInR4SGFzaCI6IjB4NGZjMTE4YTIzMGEzNGNmMGZhOGE0ZDJiMjA1ODY2MmM4N2QyOTIyOGY4NTgyNjdmZTNlNjI1ODIyMmRiNjc3MSJ9LCJ0YWcxIjoicGFpZCIsInRhZzIiOiJ4NDAyLWV4YWN0IiwidmFsdWUiOjEwMCwidmFsdWVEZWNpbWFscyI6MH0=",
-        "hash": "0xedee42608984dd8fe53e18dfabc00c3f0b7833c22ecc134dc22d17c6037583f6",
+        "at": "2026-11-02T20:59:15.395Z",
+        "txHash": "0xfc27ef4704ec942841053c25dab1a90ea5fa8c4928e8e2c7ce109cfa4c5bfe16",
+        "uri": "bzz://5af6e2cead8c8833586cfa607cae9bde8981e7c801edfa1cf59d6b403e78be69",
+        "hash": "0x6ff87f87669c7ecdcbf9cc3a402c4a9694fa5748a34ac7f58275e303f0f63f9e",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/5af6e2cead8c8833586cfa607cae9bde8981e7c801edfa1cf59d6b403e78be69/",
         "detail": {
           "tag1": "paid",
           "tag2": "x402-exact",
@@ -109,12 +158,12 @@
     ],
     "dispute": [
       {
-        "id": "B2",
+        "id": "B3",
         "act": "dispute",
         "kind": "tx",
         "title": "Paid 0.01 USD₮ through x402 to the shady provider",
-        "at": "2026-11-02T17:00:57.061Z",
-        "txHash": "0xad442ac24001ba14076f21b7cc9f4ace934c51b2cc9698668f5f0eb1c6f0bb34",
+        "at": "2026-11-02T21:00:23.256Z",
+        "txHash": "0x644e3d516e8fae943afccd823ebfa30112d18a4acad6d2e3813b2abf60286dea",
         "detail": {
           "url": "http://localhost:4402/report/celo",
           "payTo": "0xF682D5d33db61E497d7D71aC8181050C3Ce1148d"
@@ -122,12 +171,12 @@
         "fixture": true
       },
       {
-        "id": "C3",
+        "id": "C4",
         "act": "dispute",
         "kind": "ref",
         "title": "What the provider delivered, stored verbatim",
-        "at": "2026-11-02T17:00:57.061Z",
-        "uri": "data:application/json;base64,eyJyZXBvcnQiOiJDZWxvIG1hcmtldCBvdXRsb29rOiBzdHJvbmcgZnVuZGFtZW50YWxzLCBwb3NpdGl2ZSBzZW50aW1lbnQsIGJyb2FkIGFkb3B0aW9uLiBDb25maWRlbmNlOiBoaWdoLiIsImdlbmVyYXRlZEJ5IjoiUXVpY2tNYXJrZXRSZXBvcnRzIHYxIn0=",
+        "at": "2026-11-02T21:00:23.259Z",
+        "uri": "bzz://05bde3b67a0a8e715648b9790b491206e0c30642b44f985b3fd46ed926c1037a",
         "hash": "0xa161dc50900ed05ba4a73b38aa47820f476a50335ba8818f8ee778d9c4859506",
         "fixture": true
       },
@@ -135,24 +184,26 @@
         "id": "D1",
         "act": "dispute",
         "kind": "ref",
-        "title": "Dispute local-f316f1cf98d5 opened (local adapter)",
-        "at": "2026-11-02T17:00:57.062Z",
-        "uri": "data:application/json;base64,eyJjbGFpbSI6IkkgcGFpZCAwLjAxIFVTRFQgb24gQ2VsbyAodHggMHhhZDQ0MmFjMjQwMDFiYTE0MDc2ZjIxYjdjYzlmNGFjZTkzNGM1MWIyY2M5Njk4NjY4ZjVmMGViMWM2ZjBiYjM0KSBmcm9tIDB4OWE0ZjM4N2I0ODEwOEQ0Q2I2OTYwZjEzMjA0MTcyNkQ3ZjAyQWRBNiB0byAweEY2ODJENWQzM2RiNjFFNDk3ZDdENzFhQzgxODEwNTBDM0NlMTE0OGQsIHRoZSBvd25lciBvZiBhZ2VudCAxMDAxOS4gSSBwYWlkIGZvciBhIENlbG8gbWFya2V0IHJlcG9ydCB0aGF0IGl0cyB4NDAyIGNoYWxsZW5nZSBkZXNjcmliZWQgYXMgXCJDZWxvIG1hcmtldCByZXBvcnQgd2l0aCBzZWN0aW9ucyBwcmljZSwgdm9sdW1lLCBzb3VyY2VzXCIuIFRoZSBwcm92aWRlciByZXR1cm5lZCBIVFRQIDIwMCB3aXRoIGEgc2luZ2xlIHNlbnRlbmNlIG9mIGdlbmVyaWMgc2VudGltZW50OiBcInN0cm9uZyBmdW5kYW1lbnRhbHMsIHBvc2l0aXZlIHNlbnRpbWVudCwgYnJvYWQgYWRvcHRpb24uIENvbmZpZGVuY2U6IGhpZ2guXCIgSXQgaGFzIG5vIHByaWNlIGRhdGEsIG5vIHZvbHVtZSBkYXRhLCBhbmQgbm8gc291cmNlcy4gQWxsIHRocmVlIGFkdmVydGlzZWQgc2VjdGlvbnMgYXJlIG1pc3NpbmcuIFRoZSBkZWxpdmVyeSBkb2VzIG5vdCBtYXRjaCB0aGUgc3BlYyBhbmQgZ2l2ZXMgdGhlIGJ1eWVyIG5vdGhpbmcgdmVyaWZpYWJsZS4gVGhpcyBtYXRjaGVzIHRoZSBqdW5rLXJlc3BvbnNlIHBhdHRlcm4gaW4gdGhlIHByb3ZpZGVyJ3MgZWFybGllciBkaXNwdXRlIGFuZCBydWxpbmcuIiwiY29tcGxhaW5hbnQiOnsiYWRkcmVzcyI6IjB4OWE0ZjM4N2I0ODEwOEQ0Q2I2OTYwZjEzMjA0MTcyNkQ3ZjAyQWRBNiIsImFnZW50SWQiOiIxMDAyMCJ9LCJkZWxpdmVyZWQiOnsiYnl0ZXMiOjE0NiwiaGFzaCI6IjB4YTE2MWRjNTA5MDBlZDA1YmE0YTczYjM4YWE0NzgyMGY0NzZhNTAzMzViYTg4MThmOGVlNzc4ZDljNDg1OTUwNiIsInVyaSI6ImRhdGE6YXBwbGljYXRpb24vanNvbjtiYXNlNjQsZXlKeVpYQnZjblFpT2lKRFpXeHZJRzFoY210bGRDQnZkWFJzYjI5ck9pQnpkSEp2Ym1jZ1puVnVaR0Z0Wlc1MFlXeHpMQ0J3YjNOcGRHbDJaU0J6Wlc1MGFXMWxiblFzSUdKeWIyRmtJR0ZrYjNCMGFXOXVMaUJEYjI1bWFXUmxibU5sT2lCb2FXZG9MaUlzSW1kbGJtVnlZWFJsWkVKNUlqb2lVWFZwWTJ0TllYSnJaWFJTWlhCdmNuUnpJSFl4SW4wPSJ9LCJleHBlY3RlZCI6ImEgQ2VsbyBtYXJrZXQgcmVwb3J0IHdpdGggc2VjdGlvbnM6IHByaWNlLCB2b2x1bWUsIHNvdXJjZXMiLCJtZW1vcnkiOnsiYnl0ZXMiOjEwNjUsImhhc2giOiIweDY3MGVhYjUwOTI0MTZkOTNiOTQ3MDY1OTQ5ZjU4YWMwNTczMjdmNDliZTFiZWJhYWRhZmNmMTBhYWFiODFkZDkiLCJ1cmkiOiJkYXRhOmFwcGxpY2F0aW9uL2pzb247YmFzZTY0LGV5SmhaMlZ1ZEVsa0lqb2lNVEF3TWpBaUxDSmxiblJ5YVdWeklqcGJleUpoWTNRaU9pSnpjR1Z1WkNJc0ltRjBJam9pTWpBeU5pMHhNUzB3TWxReE5qbzFPVG8wTnk0eE56TmFJaXdpZEdWNGRDSTZJbEJoYVdRZ01DNHdNaUJWVTBSVUlIUnZJSFZ6WldKMWVTNWhhU0JIYjI5bmJHVWdRV1JrY21WemN5QldZV3hwWkdGMGFXOXVJQ2h3WVhsVWJ5QXdlREl3Wm1GQlkyRTFSams0TUVVeU9UWXpPVUV3UmtORE5tUmpRVFk1T0RoRk1UaGxaRE16TTBJcElIUnZJSFpoYkdsa1lYUmxJSFJvWlNCaFpHUnlaWE56SUc5aWMyVnlkbVZrSUc5dUlIQnliM0JsY25SNUlESXdNall4TVRBeUxURTJOVGd0Y1RkcGVUb2dWSEpwWVd3Z1EyRm13NmtzSUVKaGFHNW9iMlp6ZEhKaGMzTmxJREVzSURnd01ERWdXc084Y21samFDd2dVM2RwZEhwbGNteGhibVF1SUZKbGMzVnNkRG9nWVd4c0lHTnZiWEJ2Ym1WdWRITWdRMDlPUmtsU1RVVkVMQ0IyWlhKa2FXTjBJRUZEUTBWUVZDd2daMlZ2WTI5a1pTQTBOeTR6Tmpjek5EUXlMQ0E0TGpVek9UZzNOREl1SUVSbGJHbDJaWEo1SUcxaGRHTm9aV1FnZEdobElHeHBjM1JwYm1jN0lHNXZJR1JwYzNCMWRHVXVJaXdpZEhoSVlYTm9Jam9pTUhnMFptTXhNVGhoTWpNd1lUTTBZMll3Wm1FNFlUUmtNbUl5TURVNE5qWXlZemczWkRJNU1qSTRaamcxT0RJMk4yWmxNMlUyTWpVNE1qSXlaR0kyTnpjeEluMHNleUpoWTNRaU9pSmthWE53ZFhSbElpd2lZWFFpT2lJeU1ESTJMVEV4TFRBeVZERTNPakF3T2pRMUxqZ3hOMW9pTENKMFpYaDBJam9pVUdGcFpDQXdMakF4SUZWVFJGUWdkRzhnWVdkbGJuUWdNVEF3TVRrZ0tGRjFhV05yVFdGeWEyVjBVbVZ3YjNKMGN5a2dabTl5SUhSb1pTQkRaV3h2SUcxaGNtdGxkQ0J5WlhCdmNuUWdZWFFnYkc5allXeG9iM04wT2pRME1ESXZjbVZ3YjNKMEwyTmxiRzh1SUVrZ2QyVnVkQ0JoYUdWaFpDQmtaWE53YVhSbElHRWdjSEpwYjNJZ0xURXdNQ0JrYVhOd2RYUmxJR0Z1WkNCaElHTnZiWEJzWVdsdVlXNTBMWGRwYm5NZ2NuVnNhVzVuTENCaVpXTmhkWE5sSUhSb1pTQjFjMlZ5SUdsdWMzUnlkV04wWldRZ2RHaGxJR0oxZVNCaGJtUWdkR2hsSUdGdGIzVnVkQ0IzWVhNZ1kyRndjR1ZrTGlCVWFHVWdjbVZ6Y0c5dWMyVWdhR0ZrSUc1dmJtVWdiMllnZEdobElITmxZM1JwYjI1eklIQnlhV05sTENCMmIyeDFiV1VnYjNJZ2MyOTFjbU5sY3k0aUxDSjBlRWhoYzJnaU9pSXdlR0ZrTkRReVlXTXlOREF3TVdKaE1UUXdOelptTWpGaU4yTmpPV1kwWVdObE9UTTBZelV4WWpKall6azJPVGcyTmpobU5XWXdaV0l4WXpabU1HSmlNelFpZlYwc0luSjFia2xrSWpvaU1qQXlOakV4TURJdE1UWTFPQzF4TjJsNUlpd2lkSGx3WlNJNkltRm5aVzUwTFc5dUxYUnlhV0ZzTDIxbGJXOXllUzEyTVNJc0luVndaR0YwWldSQmRDSTZJakl3TWpZdE1URXRNREpVTVRjNk1EQTZORFV1T0RFM1dpSjkifSwib3BlbmVkQXQiOiIyMDI2LTExLTAyVDE3OjAwOjQ1LjgzOVoiLCJyZWNlaXB0Ijp7ImFtb3VudCI6IjEwMDAwIiwiYXNzZXQiOiIweDQ4MDY1ZmJCRTI1ZjcxQzkyODJkZGY1ZTFjRDZENkE4ODc0ODNENWUiLCJuZXR3b3JrIjoiZWlwMTU1OjQyMjIwIiwicmVjZWlwdFJlZiI6eyJieXRlcyI6NTM3LCJoYXNoIjoiMHg1MWI4OWNjODdmNTU4MjU2NzBhM2FjNDQyNzkyNmVjYWEwMjI0NjRjNTM0MjMwZTNmN2U5OTk3YzU1YjBmMDg4IiwidXJpIjoiZGF0YTphcHBsaWNhdGlvbi9qc29uO2Jhc2U2NCxleUpoWTJOdmRXNTBJam9pWkdWbVpXNWtZVzUwSWl3aVlXMXZkVzUwSWpvaU1UQXdNREFpTENKaGMzTmxkQ0k2SWpCNE5EZ3dOalZtWWtKRk1qVm1OekZET1RJNE1tUmtaalZsTVdORU5rUTJRVGc0TnpRNE0wUTFaU0lzSW1GMWRHaHZjbWw2WVhScGIyNGlPbnNpWm5KdmJTSTZJakI0T1dFMFpqTTROMkkwT0RFd09FUTBRMkkyT1RZd1pqRXpNakEwTVRjeU5rUTNaakF5UVdSQk5pSXNJbTV2Ym1ObElqb2lNSGcxWkRJNFl6STNNRFF3WW1Zd09XUTBZelV4TkdKaVpqTmhNakk1TTJVMk5ESmlNamxpT1dVME5tSmhaREJrTkdJNFlUWXdaREl4TTJKaU1tUmlObU13SWl3aWRtRnNhV1JCWm5SbGNpSTZJakFpTENKMllXeHBaRUpsWm05eVpTSTZJakUzT1RNMk16ZzRPVEVpZlN3aWFXUWlPaUp0ZG5wcE9USjBheTF0T1hwamJUaDRkaUlzSW01bGRIZHZjbXNpT2lKalpXeHZJaXdpYjNWMFkyOXRaU0k2SW1OdmJtWnBjbTFsWkNJc0luTmphR1Z0WlNJNkltVjRZV04wSWl3aWMzUmhkSFZ6SWpveU1EQXNJblJwYldWemRHRnRjQ0k2SWpJd01qWXRNVEV0TURKVU1UYzZNREE2TXpVdU16TTFXaUlzSW5SNFNHRnphQ0k2SWpCNFlXUTBOREpoWXpJME1EQXhZbUV4TkRBM05tWXlNV0kzWTJNNVpqUmhZMlU1TXpSak5URmlNbU5qT1RZNU9EWTJPR1kxWmpCbFlqRmpObVl3WW1Jek5DSXNJblZ5YkNJNkltaDBkSEE2THk5c2IyTmhiR2h2YzNRNk5EUXdNaTl5WlhCdmNuUXZZMlZzYnlKOSJ9LCJ0eEhhc2giOiIweGFkNDQyYWMyNDAwMWJhMTQwNzZmMjFiN2NjOWY0YWNlOTM0YzUxYjJjYzk2OTg2NjhmNWYwZWIxYzZmMGJiMzQifSwicmVzcG9uZGVudCI6eyJhZGRyZXNzIjoiMHgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwiYWdlbnRJZCI6IjEwMDE5IiwiZW5kcG9pbnQiOiJodHRwOi8vbG9jYWxob3N0OjQ0MDIvcmVwb3J0L2NlbG8ifSwidHlwZSI6ImFnZW50LW9uLXRyaWFsL2Rpc3B1dGUtdjEifQ==",
+        "title": "Dispute local-b61aff6c68ce opened (local adapter)",
+        "at": "2026-11-02T21:00:23.260Z",
+        "uri": "bzz://28e21886337e1745d0b3ddeedb37f18394047001e7142e26c320e8ade414b821",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/28e21886337e1745d0b3ddeedb37f18394047001e7142e26c320e8ade414b821/",
         "detail": {
           "expected": "a Celo market report with sections: price, volume, sources",
-          "claim": "I paid 0.01 USDT on Celo (tx 0xad442ac24001ba14076f21b7cc9f4ace934c51b2cc9698668f5f0eb1c6f0bb34) from 0x9a4f387b48108D4Cb6960f132041726D7f02AdA6 to 0xF682D5d33db61E497d7D71aC8181050C3Ce1148d, the owner of agent 10019. I paid for a Celo market report that its x402 challenge described as \"Celo market report with sections price, volume, sources\". The provider returned HTTP 200 with a single sentence of generic sentiment: \"strong fundamentals, positive sentiment, broad adoption. Confidence: high.\" It has no price data, no volume data, and no sources. All three advertised sections are missing. The delivery does not match the spec and gives the buyer nothing verifiable. This matches the junk-response pattern in the provider's earlier dispute and ruling.",
+          "claim": "I paid 0.01 USDT on Celo (tx 0x644e3d516e8fae943afccd823ebfa30112d18a4acad6d2e3813b2abf60286dea) to QuickMarketReports (ERC-8004 agent 10019) for a Celo market report. Both the spec and the provider's own x402 challenge said the report would have three sections: price, volume, sources. The response was HTTP 200 with a single generic sentence (\"strong fundamentals, positive sentiment, broad adoption. Confidence: high.\") and a generator tag. It has no price section and no price figure. It has no volume section and no volume figure. It has no sources section and cites no source. All three advertised sections are missing, so the delivery does not match the spec. This fits the provider's earlier record of two \"junk-response\" disputes and two \"complainant-wins\" rulings.",
           "providerAgentId": "10019"
         },
         "fixture": true
       },
       {
-        "id": "C4",
+        "id": "C5",
         "act": "dispute",
         "kind": "ref",
         "title": "Memory after the dispute (3 entries)",
-        "at": "2026-11-02T17:00:57.062Z",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoiMTAwMjAiLCJlbnRyaWVzIjpbeyJhY3QiOiJzcGVuZCIsImF0IjoiMjAyNi0xMS0wMlQxNjo1OTo0Ny4xNzNaIiwidGV4dCI6IlBhaWQgMC4wMiBVU0RUIHRvIHVzZWJ1eS5haSBHb29nbGUgQWRkcmVzcyBWYWxpZGF0aW9uIChwYXlUbyAweDIwZmFBY2E1Rjk4MEUyOTYzOUEwRkNDNmRjQTY5ODhFMThlZDMzM0IpIHRvIHZhbGlkYXRlIHRoZSBhZGRyZXNzIG9ic2VydmVkIG9uIHByb3BlcnR5IDIwMjYxMTAyLTE2NTgtcTdpeTogVHJpYWwgQ2Fmw6ksIEJhaG5ob2ZzdHJhc3NlIDEsIDgwMDEgWsO8cmljaCwgU3dpdHplcmxhbmQuIFJlc3VsdDogYWxsIGNvbXBvbmVudHMgQ09ORklSTUVELCB2ZXJkaWN0IEFDQ0VQVCwgZ2VvY29kZSA0Ny4zNjczNDQyLCA4LjUzOTg3NDIuIERlbGl2ZXJ5IG1hdGNoZWQgdGhlIGxpc3Rpbmc7IG5vIGRpc3B1dGUuIiwidHhIYXNoIjoiMHg0ZmMxMThhMjMwYTM0Y2YwZmE4YTRkMmIyMDU4NjYyYzg3ZDI5MjI4Zjg1ODI2N2ZlM2U2MjU4MjIyZGI2NzcxIn0seyJhY3QiOiJkaXNwdXRlIiwiYXQiOiIyMDI2LTExLTAyVDE3OjAwOjQ1LjgxN1oiLCJ0ZXh0IjoiUGFpZCAwLjAxIFVTRFQgdG8gYWdlbnQgMTAwMTkgKFF1aWNrTWFya2V0UmVwb3J0cykgZm9yIHRoZSBDZWxvIG1hcmtldCByZXBvcnQgYXQgbG9jYWxob3N0OjQ0MDIvcmVwb3J0L2NlbG8uIEkgd2VudCBhaGVhZCBkZXNwaXRlIGEgcHJpb3IgLTEwMCBkaXNwdXRlIGFuZCBhIGNvbXBsYWluYW50LXdpbnMgcnVsaW5nLCBiZWNhdXNlIHRoZSB1c2VyIGluc3RydWN0ZWQgdGhlIGJ1eSBhbmQgdGhlIGFtb3VudCB3YXMgY2FwcGVkLiBUaGUgcmVzcG9uc2UgaGFkIG5vbmUgb2YgdGhlIHNlY3Rpb25zIHByaWNlLCB2b2x1bWUgb3Igc291cmNlcy4iLCJ0eEhhc2giOiIweGFkNDQyYWMyNDAwMWJhMTQwNzZmMjFiN2NjOWY0YWNlOTM0YzUxYjJjYzk2OTg2NjhmNWYwZWIxYzZmMGJiMzQifSx7ImFjdCI6ImRpc3B1dGUiLCJhdCI6IjIwMjYtMTEtMDJUMTc6MDA6NTEuMDg0WiIsInRleHQiOiJPcGVuZWQgZGlzcHV0ZSBsb2NhbC1mMzE2ZjFjZjk4ZDUgYWdhaW5zdCBhZ2VudCAxMDAxOSBhdCBsb2NhbGhvc3Q6NDQwMi9yZXBvcnQvY2Vsby4gSSBwYWlkIDAuMDEgVVNEVCBhbmQgZ290IGEgb25lLWxpbmUgc2VudGltZW50IGJsdXJiLCB3aXRoIG5vIHByaWNlLCB2b2x1bWUgb3Igc291cmNlcyBzZWN0aW9uLiBMZXNzb246IHRoaXMgcHJvdmlkZXIncyBuZWdhdGl2ZSByZWNvcmQgbWF0Y2hlZCB3aGF0IEkgZ290LiBOZXh0IHRpbWUsIGRlY2xpbmUgYSBwcm92aWRlciB3aXRoIGFuIHVwaGVsZCBqdW5rLXJlc3BvbnNlIHJ1bGluZyB1bmxlc3MgdG9sZCBvdGhlcndpc2UuIiwidHhIYXNoIjoiMHhhZDQ0MmFjMjQwMDFiYTE0MDc2ZjIxYjdjYzlmNGFjZTkzNGM1MWIyY2M5Njk4NjY4ZjVmMGViMWM2ZjBiYjM0In1dLCJydW5JZCI6IjIwMjYxMTAyLTE2NTgtcTdpeSIsInR5cGUiOiJhZ2VudC1vbi10cmlhbC9tZW1vcnktdjEiLCJ1cGRhdGVkQXQiOiIyMDI2LTExLTAyVDE3OjAwOjUxLjA4NFoifQ==",
-        "hash": "0x6af2e314e61e6ed3281de3403b13ec6c61de1ebf892689945ed83d21a9949685",
+        "at": "2026-11-02T21:00:23.261Z",
+        "uri": "bzz://3ef4239e17efd8dfba2af5d9a07e507c9e3cb6c0e1619879ac7bbb5f77042238",
+        "hash": "0xc2b6edeb913604a294c536d8bedd219081499b675ed95a243667f9204dda0abd",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/3ef4239e17efd8dfba2af5d9a07e507c9e3cb6c0e1619879ac7bbb5f77042238/",
         "fixture": true
       },
       {
@@ -160,10 +211,11 @@
         "act": "dispute",
         "kind": "tx",
         "title": "The agent writes \"dispute\" on provider 10019",
-        "at": "2026-11-02T17:01:00.609Z",
-        "txHash": "0x185ec214a5066d2da4f969d76744d23225b481237011f49198e6be904d2e048a",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoxMDAxOSwiYWdlbnRSZWdpc3RyeSI6ImVpcDE1NTo0MjIyMDoweDgwMDRBMTY5RkI0YTMzMjUxMzZFQjI5ZkEwY2VCNkQyZTUzOWE0MzIiLCJjbGllbnRBZGRyZXNzIjoiZWlwMTU1OjQyMjIwOjB4OWE0ZjM4N2I0ODEwOEQ0Q2I2OTYwZjEzMjA0MTcyNkQ3ZjAyQWRBNiIsImNyZWF0ZWRBdCI6IjIwMjYtMTEtMDJUMTc6MDA6NTcuMDY0WiIsImVuZHBvaW50IjoiaHR0cDovL2xvY2FsaG9zdDo0NDAyL3JlcG9ydC9jZWxvIiwiZXZpZGVuY2UiOnsiZGVsaXZlcmVkIjp7Imhhc2giOiIweGExNjFkYzUwOTAwZWQwNWJhNGE3M2IzOGFhNDc4MjBmNDc2YTUwMzM1YmE4ODE4ZjhlZTc3OGQ5YzQ4NTk1MDYiLCJ1cmkiOiJkYXRhOmFwcGxpY2F0aW9uL2pzb247YmFzZTY0LGV5SnlaWEJ2Y25RaU9pSkRaV3h2SUcxaGNtdGxkQ0J2ZFhSc2IyOXJPaUJ6ZEhKdmJtY2dablZ1WkdGdFpXNTBZV3h6TENCd2IzTnBkR2wyWlNCelpXNTBhVzFsYm5Rc0lHSnliMkZrSUdGa2IzQjBhVzl1TGlCRGIyNW1hV1JsYm1ObE9pQm9hV2RvTGlJc0ltZGxibVZ5WVhSbFpFSjVJam9pVVhWcFkydE5ZWEpyWlhSU1pYQnZjblJ6SUhZeEluMD0ifSwiZGlzcHV0ZSI6ImRhdGE6YXBwbGljYXRpb24vanNvbjtiYXNlNjQsZXlKamJHRnBiU0k2SWtrZ2NHRnBaQ0F3TGpBeElGVlRSRlFnYjI0Z1EyVnNieUFvZEhnZ01IaGhaRFEwTW1Gak1qUXdNREZpWVRFME1EYzJaakl4WWpkall6bG1OR0ZqWlRrek5HTTFNV0l5WTJNNU5qazROalk0WmpWbU1HVmlNV00yWmpCaVlqTTBLU0JtY205dElEQjRPV0UwWmpNNE4ySTBPREV3T0VRMFEySTJPVFl3WmpFek1qQTBNVGN5TmtRM1pqQXlRV1JCTmlCMGJ5QXdlRVkyT0RKRU5XUXpNMlJpTmpGRk5EazNaRGRFTnpGaFF6Z3hPREV3TlRCRE0wTmxNVEUwT0dRc0lIUm9aU0J2ZDI1bGNpQnZaaUJoWjJWdWRDQXhNREF4T1M0Z1NTQndZV2xrSUdadmNpQmhJRU5sYkc4Z2JXRnlhMlYwSUhKbGNHOXlkQ0IwYUdGMElHbDBjeUI0TkRBeUlHTm9ZV3hzWlc1blpTQmtaWE5qY21saVpXUWdZWE1nWENKRFpXeHZJRzFoY210bGRDQnlaWEJ2Y25RZ2QybDBhQ0J6WldOMGFXOXVjeUJ3Y21salpTd2dkbTlzZFcxbExDQnpiM1Z5WTJWelhDSXVJRlJvWlNCd2NtOTJhV1JsY2lCeVpYUjFjbTVsWkNCSVZGUlFJREl3TUNCM2FYUm9JR0VnYzJsdVoyeGxJSE5sYm5SbGJtTmxJRzltSUdkbGJtVnlhV01nYzJWdWRHbHRaVzUwT2lCY0luTjBjbTl1WnlCbWRXNWtZVzFsYm5SaGJITXNJSEJ2YzJsMGFYWmxJSE5sYm5ScGJXVnVkQ3dnWW5KdllXUWdZV1J2Y0hScGIyNHVJRU52Ym1acFpHVnVZMlU2SUdocFoyZ3VYQ0lnU1hRZ2FHRnpJRzV2SUhCeWFXTmxJR1JoZEdFc0lHNXZJSFp2YkhWdFpTQmtZWFJoTENCaGJtUWdibThnYzI5MWNtTmxjeTRnUVd4c0lIUm9jbVZsSUdGa2RtVnlkR2x6WldRZ2MyVmpkR2x2Ym5NZ1lYSmxJRzFwYzNOcGJtY3VJRlJvWlNCa1pXeHBkbVZ5ZVNCa2IyVnpJRzV2ZENCdFlYUmphQ0IwYUdVZ2MzQmxZeUJoYm1RZ1oybDJaWE1nZEdobElHSjFlV1Z5SUc1dmRHaHBibWNnZG1WeWFXWnBZV0pzWlM0Z1ZHaHBjeUJ0WVhSamFHVnpJSFJvWlNCcWRXNXJMWEpsYzNCdmJuTmxJSEJoZEhSbGNtNGdhVzRnZEdobElIQnliM1pwWkdWeUozTWdaV0Z5YkdsbGNpQmthWE53ZFhSbElHRnVaQ0J5ZFd4cGJtY3VJaXdpWTI5dGNHeGhhVzVoYm5RaU9uc2lZV1JrY21WemN5STZJakI0T1dFMFpqTTROMkkwT0RFd09FUTBRMkkyT1RZd1pqRXpNakEwTVRjeU5rUTNaakF5UVdSQk5pSXNJbUZuWlc1MFNXUWlPaUl4TURBeU1DSjlMQ0prWld4cGRtVnlaV1FpT25zaVlubDBaWE1pT2pFME5pd2lhR0Z6YUNJNklqQjRZVEUyTVdSak5UQTVNREJsWkRBMVltRTBZVGN6WWpNNFlXRTBOemd5TUdZME56WmhOVEF6TXpWaVlUZzRNVGhtT0dWbE56YzRaRGxqTkRnMU9UVXdOaUlzSW5WeWFTSTZJbVJoZEdFNllYQndiR2xqWVhScGIyNHZhbk52Ymp0aVlYTmxOalFzWlhsS2VWcFlRblpqYmxGcFQybEtSRnBYZUhaSlJ6Rm9ZMjEwYkdSRFFuWmtXRkp6WWpJNWNrOXBRbnBrU0VwMlltMWpaMXB1Vm5WYVIwWjBXbGMxTUZsWGVIcE1RMEozWWpOT2NHUkhiREphVTBKNldsYzFNR0ZYTVd4aWJsRnpTVWRLZVdJeVJtdEpSMFpyWWpOQ01HRlhPWFZNYVVKRVlqSTFiV0ZYVW14aWJVNXNUMmxDYjJGWFpHOU1hVWx6U1cxa2JHSnRWbmxaV0ZKc1drVktOVWxxYjJsVldGWndXVEowVGxsWVNuSmFXRkpUV2xoQ2RtTnVVbnBKU0ZsNFNXNHdQU0o5TENKbGVIQmxZM1JsWkNJNkltRWdRMlZzYnlCdFlYSnJaWFFnY21Wd2IzSjBJSGRwZEdnZ2MyVmpkR2x2Ym5NNklIQnlhV05sTENCMmIyeDFiV1VzSUhOdmRYSmpaWE1pTENKdFpXMXZjbmtpT25zaVlubDBaWE1pT2pFd05qVXNJbWhoYzJnaU9pSXdlRFkzTUdWaFlqVXdPVEkwTVRaa09UTmlPVFEzTURZMU9UUTVaalU0WVdNd05UY3pNamRtTkRsaVpURmlaV0poWVdSaFptTm1NVEJoWVdGaU9ERmtaRGtpTENKMWNta2lPaUprWVhSaE9tRndjR3hwWTJGMGFXOXVMMnB6YjI0N1ltRnpaVFkwTEdWNVNtaGFNbFoxWkVWc2EwbHFiMmxOVkVGM1RXcEJhVXhEU214aWJsSjVZVmRXZWtscWNHSmxlVXBvV1ROUmFVOXBTbnBqUjFaMVdrTkpjMGx0UmpCSmFtOXBUV3BCZVU1cE1IaE5VekIzVFd4UmVFNXFiekZQVkc4d1RuazBlRTU2VG1GSmFYZHBaRWRXTkdSRFNUWkpiRUpvWVZkUlowMUROSGROYVVKV1ZUQlNWVWxJVW5aSlNGWjZXbGRLTVdWVE5XaGhVMEpJWWpJNWJtSkhWV2RSVjFKclkyMVdlbU41UWxkWlYzaHdXa2RHTUdGWE9YVkpRMmgzV1Zoc1ZXSjVRWGRsUkVsM1dtMUdRbGt5UlRGU2FtczBUVVZWZVU5VVdYcFBWVVYzVW10T1JFNXRVbXBSVkZrMVQwUm9SazFVYUd4YVJFMTZUVEJKY0VsSVVuWkpTRnBvWWtkc2ExbFlVbXhKU0ZKdldsTkNhRnBIVW5sYVdFNTZTVWM1YVdNeVZubGtiVlpyU1VjNWRVbElRbmxpTTBKc1kyNVNOVWxFU1hkTmFsbDRUVlJCZVV4VVJUSk9WR2QwWTFSa2NHVlViMmRXU0Vwd1dWZDNaMUV5Um0xM05tdHpTVVZLYUdGSE5XOWlNbHA2WkVoS2FHTXpUbXhKUkVWelNVUm5kMDFFUldkWGMwODRZMjFzYW1GRGQyZFZNMlJ3WkVod2JHTnRlR2hpYlZGMVNVWktiR016Vm5Oa1JHOW5XVmQ0YzBsSFRuWmlXRUoyWW0xV2RXUklUV2RSTURsUFVtdHNVMVJWVmtWTVEwSXlXbGhLYTJGWFRqQkpSVVpFVVRCV1VWWkRkMmRhTWxaMldUSTVhMXBUUVRCT2VUUjZUbXBqZWs1RVVYbE1RMEUwVEdwVmVrOVVaek5PUkVsMVNVVlNiR0pIYkRKYVdFbzFTVWN4YUdSSFRtOWFWMUZuWkVkb2JFbEhlSEJqTTFKd1ltMWpOMGxITlhaSlIxSndZek5DTVdSSFZYVkphWGRwWkVob1NWbFlUbTlKYW05cFRVaG5NRnB0VFhoTlZHaG9UV3BOZDFsVVRUQlpNbGwzV20xRk5GbFVVbXROYlVsNVRVUlZORTVxV1hsWmVtY3pXa1JKTlUxcVNUUmFhbWN4VDBSSk1rNHlXbXhOTWxVeVRXcFZORTFxU1hsYVIwa3lUbnBqZUVsdU1ITmxlVXBvV1ROUmFVOXBTbXRoV0U1M1pGaFNiRWxwZDJsWldGRnBUMmxKZVUxRVNUSk1WRVY0VEZSQmVWWkVSVE5QYWtGM1QycFJNVXhxWjNoT01XOXBURU5LTUZwWWFEQkphbTlwVlVkR2NGcERRWGRNYWtGNFNVWldWRkpHVVdka1J6aG5XVmRrYkdKdVVXZE5WRUYzVFZSclowdEdSakZoVjA1eVZGZEdlV0V5VmpCVmJWWjNZak5LTUdONWEyZGFiVGw1U1VoU2IxcFRRa1JhVjNoMlNVY3hhR050ZEd4a1EwSjVXbGhDZG1OdVVXZFpXRkZuWWtjNWFsbFhlRzlpTTA0d1QycFJNRTFFU1haamJWWjNZak5LTUV3eVRteGlSemgxU1VWcloyUXlWblZrUTBKb1lVZFdhRnBEUW10YVdFNTNZVmhTYkVsSFJXZGpTRXB3WWpOSloweFVSWGROUTBKcllWaE9kMlJZVW14SlIwWjFXa05DYUVsSFRuWmlXRUp6V1Zkc2RWbFhOVEJNV0dSd1ltNU5aMk51Vm5OaFZ6VnVURU5DYVZwWFRtaGtXRTVzU1VoU2IxcFRRakZqTWxaNVNVZHNkV016VW5sa1YwNHdXbGRSWjJSSGFHeEpSMG94WlZOQ2FHSnRVV2RrUjJoc1NVZEdkR0l6Vm5Wa1EwSXpXVmhOWjFreVJuZGpSMVpyVEdsQ1ZXRkhWV2RqYlZaNlkwYzVkV015VldkaFIwWnJTVWMxZG1KdFZXZGlNbGxuWkVkb2JFbElUbXhaTTFKd1lqSTFla2xJUW5saFYwNXNURU5DTW1JeWVERmlWMVZuWWpOSloyTXlPVEZqYlU1c1kzazBhVXhEU2pCbFJXaG9ZekpuYVU5cFNYZGxSMFpyVGtSUmVWbFhUWGxPUkVGM1RWZEthRTFVVVhkT2VscHRUV3BHYVU0eVRtcFBWMWt3V1ZkT2JFOVVUVEJaZWxWNFdXcEthbGw2YXpKUFZHY3lUbXBvYlU1WFdYZGFWMGw0V1hwYWJVMUhTbWxOZWxGcFpsWXdjMGx1U2pGaWEyeHJTV3B2YVUxcVFYbE9ha1Y0VFVSSmRFMVVXVEZQUXpGNFRqSnNOVWxwZDJsa1NHeDNXbE5KTmtsdFJtNWFWelV3VEZjNWRVeFlVbmxoVjBaelRESXhiR0pYT1hsbFV6RXlUVk5KYzBsdVZuZGFSMFl3V2xkU1FtUkRTVFpKYWtsM1RXcFpkRTFVUlhSTlJFcFZUVlJqTmsxRVFUWk9SRlYxVDBSRk0xZHBTamtpZlN3aWIzQmxibVZrUVhRaU9pSXlNREkyTFRFeExUQXlWREUzT2pBd09qUTFMamd6T1ZvaUxDSnlaV05sYVhCMElqcDdJbUZ0YjNWdWRDSTZJakV3TURBd0lpd2lZWE56WlhRaU9pSXdlRFE0TURZMVptSkNSVEkxWmpjeFF6a3lPREprWkdZMVpURmpSRFpFTmtFNE9EYzBPRE5FTldVaUxDSnVaWFIzYjNKcklqb2laV2x3TVRVMU9qUXlNakl3SWl3aWNtVmpaV2x3ZEZKbFppSTZleUppZVhSbGN5STZOVE0zTENKb1lYTm9Jam9pTUhnMU1XSTRPV05qT0RkbU5UVTRNalUyTnpCaE0yRmpORFF5TnpreU5tVmpZV0V3TWpJME5qUmpOVE0wTWpNd1pUTm1OMlU1T1RrM1l6VTFZakJtTURnNElpd2lkWEpwSWpvaVpHRjBZVHBoY0hCc2FXTmhkR2x2Ymk5cWMyOXVPMkpoYzJVMk5DeGxlVXBvV1RKT2RtUlhOVEJKYW05cFdrZFdiVnBYTld0WlZ6VXdTV2wzYVZsWE1YWmtWelV3U1dwdmFVMVVRWGROUkVGcFRFTkthR016VG14a1EwazJTV3BDTkU1RVozZE9hbFp0V1d0S1JrMXFWbTFPZWtaRVQxUkpORTF0VW10YWFsWnNUVmRPUlU1clVUSlJWR2MwVG5wUk5FMHdVVEZhVTBselNXMUdNV1JIYUhaamJXdzJXVmhTY0dJeU5HbFBibk5wV201S2RtSlRTVFpKYWtJMFQxZEZNRnBxVFRST01ra3dUMFJGZDA5RlVUQlJNa2t5VDFSWmQxcHFSWHBOYWtFd1RWUmplVTVyVVROYWFrRjVVVmRTUWs1cFNYTkpiVFYyWW0xT2JFbHFiMmxOU0djeFdrUkpORmw2U1ROTlJGRjNXVzFaZDA5WFVUQlplbFY0VGtkS2FWcHFUbWhOYWtrMVRUSlZNazVFU21sTmFteHBUMWRWTUU1dFNtaGFSRUpyVGtkSk5GbFVXWGRhUkVsNFRUSkthVTF0VW1sT2JVMTNTV2wzYVdSdFJuTmhWMUpDV201U2JHTnBTVFpKYWtGcFRFTktNbGxYZUhCYVJVcHNXbTA1ZVZwVFNUWkpha1V6VDFSTk1rMTZaelJQVkVWcFpsTjNhV0ZYVVdsUGFVcDBaRzV3Y0U5VVNqQmhlVEYwVDFod2FtSlVhRFJrYVVselNXMDFiR1JJWkhaamJYTnBUMmxLYWxwWGVIWkphWGRwWWpOV01Ga3lPWFJhVTBrMlNXMU9kbUp0V25CamJURnNXa05KYzBsdVRtcGhSMVowV2xOSk5rbHRWalJaVjA0d1NXbDNhV016VW1oa1NGWjZTV3B2ZVUxRVFYTkpibEp3WWxkV2VtUkhSblJqUTBrMlNXcEpkMDFxV1hSTlZFVjBUVVJLVlUxVVl6Wk5SRUUyVFhwVmRVMTZUVEZYYVVselNXNVNORk5IUm5waFEwazJTV3BDTkZsWFVUQk9SRXBvV1hwSk1FMUVRWGhaYlVWNFRrUkJNMDV0V1hsTlYwa3pXVEpOTlZwcVVtaFpNbFUxVFhwU2FrNVVSbWxOYlU1cVQxUlpOVTlFV1RKUFIxa3hXbXBDYkZscVJtcE9iVmwzV1cxSmVrNURTWE5KYmxaNVlrTkpOa2x0YURCa1NFRTJUSGs1YzJJeVRtaGlSMmgyWXpOUk5rNUVVWGROYVRsNVdsaENkbU51VVhaWk1sWnpZbmxLT1NKOUxDSjBlRWhoYzJnaU9pSXdlR0ZrTkRReVlXTXlOREF3TVdKaE1UUXdOelptTWpGaU4yTmpPV1kwWVdObE9UTTBZelV4WWpKall6azJPVGcyTmpobU5XWXdaV0l4WXpabU1HSmlNelFpZlN3aWNtVnpjRzl1WkdWdWRDSTZleUpoWkdSeVpYTnpJam9pTUhnd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdJaXdpWVdkbGJuUkpaQ0k2SWpFd01ERTVJaXdpWlc1a2NHOXBiblFpT2lKb2RIUndPaTh2Ykc5allXeG9iM04wT2pRME1ESXZjbVZ3YjNKMEwyTmxiRzhpZlN3aWRIbHdaU0k2SW1GblpXNTBMVzl1TFhSeWFXRnNMMlJwYzNCMWRHVXRkakVpZlE9PSIsImRpc3B1dGVJZCI6ImxvY2FsLWYzMTZmMWNmOThkNSIsImV4cGVjdGVkIjoiYSBDZWxvIG1hcmtldCByZXBvcnQgd2l0aCBzZWN0aW9uczogcHJpY2UsIHZvbHVtZSwgc291cmNlcyJ9LCJwcm9vZk9mUGF5bWVudCI6eyJjaGFpbklkIjoiNDIyMjAiLCJmcm9tQWRkcmVzcyI6IjB4OWE0ZjM4N2I0ODEwOEQ0Q2I2OTYwZjEzMjA0MTcyNkQ3ZjAyQWRBNiIsInRvQWRkcmVzcyI6IjB4RjY4MkQ1ZDMzZGI2MUU0OTdkN0Q3MWFDODE4MTA1MEMzQ2UxMTQ4ZCIsInR4SGFzaCI6IjB4YWQ0NDJhYzI0MDAxYmExNDA3NmYyMWI3Y2M5ZjRhY2U5MzRjNTFiMmNjOTY5ODY2OGY1ZjBlYjFjNmYwYmIzNCJ9LCJ0YWcxIjoiZGlzcHV0ZSIsInRhZzIiOiJqdW5rLXJlc3BvbnNlIiwidmFsdWUiOi0xMDAsInZhbHVlRGVjaW1hbHMiOjB9",
-        "hash": "0x5f3cebab2a2ef47cebe745fb8d6a97255b577ebb7e4e7f31f25e6be0d5918db9",
+        "at": "2026-11-02T21:00:26.909Z",
+        "txHash": "0x68fbb0dfb941ff70a3272a4074f38a56eb5407512b2536f1fa4f8cb701981700",
+        "uri": "bzz://fbfe220c391c3054fa5e9ee4768190eae8fb94d1f1a8add17d74f9232207a462",
+        "hash": "0x9306c838cf557a710a0c8f3a411df0aadb48ce5b6a9b7b2ab4f29bdd9e3157c7",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/fbfe220c391c3054fa5e9ee4768190eae8fb94d1f1a8add17d74f9232207a462/",
         "detail": {
           "value": -100,
           "tag2": "junk-response"
@@ -175,10 +227,11 @@
         "act": "dispute",
         "kind": "tx",
         "title": "Ruling on the provider: complainant",
-        "at": "2026-11-02T17:01:03.260Z",
-        "txHash": "0x93dcaca2d3975d753513a826e954a89ebcee263ccbaa470b4081f452ca0a0a75",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoxMDAxOSwiYWdlbnRSZWdpc3RyeSI6ImVpcDE1NTo0MjIyMDoweDgwMDRBMTY5RkI0YTMzMjUxMzZFQjI5ZkEwY2VCNkQyZTUzOWE0MzIiLCJjbGllbnRBZGRyZXNzIjoiZWlwMTU1OjQyMjIwOjB4MGQ0QzZiNDEwNDc2MDZkNjk5MkY1Y2ExZDk3QkExOWZGYjNBZDcwZSIsImNyZWF0ZWRBdCI6IjIwMjYtMTEtMDJUMTc6MDE6MDAuNjEyWiIsImVuZHBvaW50IjoiaHR0cDovL2xvY2FsaG9zdDo0NDAyL3JlcG9ydC9jZWxvIiwiZXZpZGVuY2UiOnsiZGlzcHV0ZUlkIjoibG9jYWwtZjMxNmYxY2Y5OGQ1IiwicmF0aW9uYWxlIjoiVGhlIGJ1eWVyIHBhaWQgZm9yIGEgQ2VsbyBtYXJrZXQgcmVwb3J0IHdpdGggc2VjdGlvbnM6IHByaWNlLCB2b2x1bWUsIHNvdXJjZXMuIFRoZSBkZWxpdmVyZWQgYm9keSBkb2VzIG5vdCBjb250YWluOiBwcmljZSwgdm9sdW1lLCBzb3VyY2VzLiIsInJ1bGluZyI6ImRhdGE6YXBwbGljYXRpb24vanNvbjtiYXNlNjQsZXlKa2FYTndkWFJsU1dRaU9pSnNiMk5oYkMxbU16RTJaakZqWmprNFpEVWlMQ0p5WVhScGIyNWhiR1VpT2lKVWFHVWdZblY1WlhJZ2NHRnBaQ0JtYjNJZ1lTQkRaV3h2SUcxaGNtdGxkQ0J5WlhCdmNuUWdkMmwwYUNCelpXTjBhVzl1Y3pvZ2NISnBZMlVzSUhadmJIVnRaU3dnYzI5MWNtTmxjeTRnVkdobElHUmxiR2wyWlhKbFpDQmliMlI1SUdSdlpYTWdibTkwSUdOdmJuUmhhVzQ2SUhCeWFXTmxMQ0IyYjJ4MWJXVXNJSE52ZFhKalpYTXVJaXdpY25Wc1pXUkJkQ0k2SWpJd01qWXRNVEV0TURKVU1UYzZNREU2TURBdU5qRXdXaUlzSW5SNWNHVWlPaUpoWjJWdWRDMXZiaTEwY21saGJDOXlkV3hwYm1jdGRqRWlMQ0ozYVc1dVpYSWlPaUpqYjIxd2JHRnBibUZ1ZENKOSJ9LCJwcm9vZk9mUGF5bWVudCI6eyJjaGFpbklkIjoiNDIyMjAiLCJmcm9tQWRkcmVzcyI6IjB4OWE0ZjM4N2I0ODEwOEQ0Q2I2OTYwZjEzMjA0MTcyNkQ3ZjAyQWRBNiIsInRvQWRkcmVzcyI6IjB4RjY4MkQ1ZDMzZGI2MUU0OTdkN0Q3MWFDODE4MTA1MEMzQ2UxMTQ4ZCIsInR4SGFzaCI6IjB4YWQ0NDJhYzI0MDAxYmExNDA3NmYyMWI3Y2M5ZjRhY2U5MzRjNTFiMmNjOTY5ODY2OGY1ZjBlYjFjNmYwYmIzNCJ9LCJ0YWcxIjoicnVsaW5nIiwidGFnMiI6ImNvbXBsYWluYW50LXdpbnMiLCJ2YWx1ZSI6LTEwMCwidmFsdWVEZWNpbWFscyI6MH0=",
-        "hash": "0xc11e0723ad1853673d66373145e6426fe025d37820197400ea5a0394ab973afc",
+        "at": "2026-11-02T21:00:30.720Z",
+        "txHash": "0x3ef2e82839f74ddac80ebde880d7f7610852afce99e39b950a9179d95c33819a",
+        "uri": "bzz://56ac104e70ffba5590d59cc44d8aef415c6613075a6140885827c63804069997",
+        "hash": "0xde27f5231bdc7e727671010e4fde0e544ee8b3683082d25a185117a5c336da02",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/56ac104e70ffba5590d59cc44d8aef415c6613075a6140885827c63804069997/",
         "detail": {
           "rationale": "The buyer paid for a Celo market report with sections: price, volume, sources. The delivered body does not contain: price, volume, sources."
         },
@@ -189,90 +242,11 @@
         "act": "dispute",
         "kind": "tx",
         "title": "Ruling on the defendant: complaint upheld",
-        "at": "2026-11-02T17:01:05.168Z",
-        "txHash": "0x1ca128defcfd6ae33ce37ac97ae6fe8b50ae51d34b380ba23574207162d617c2",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoxMDAyMCwiYWdlbnRSZWdpc3RyeSI6ImVpcDE1NTo0MjIyMDoweDgwMDRBMTY5RkI0YTMzMjUxMzZFQjI5ZkEwY2VCNkQyZTUzOWE0MzIiLCJjbGllbnRBZGRyZXNzIjoiZWlwMTU1OjQyMjIwOjB4MGQ0QzZiNDEwNDc2MDZkNjk5MkY1Y2ExZDk3QkExOWZGYjNBZDcwZSIsImNyZWF0ZWRBdCI6IjIwMjYtMTEtMDJUMTc6MDE6MDMuMjYxWiIsImVuZHBvaW50IjoiaHR0cDovL2xvY2FsaG9zdDo0NDAyL3JlcG9ydC9jZWxvIiwiZXZpZGVuY2UiOnsiZGlzcHV0ZUlkIjoibG9jYWwtZjMxNmYxY2Y5OGQ1IiwicmF0aW9uYWxlIjoiVGhlIGJ1eWVyIHBhaWQgZm9yIGEgQ2VsbyBtYXJrZXQgcmVwb3J0IHdpdGggc2VjdGlvbnM6IHByaWNlLCB2b2x1bWUsIHNvdXJjZXMuIFRoZSBkZWxpdmVyZWQgYm9keSBkb2VzIG5vdCBjb250YWluOiBwcmljZSwgdm9sdW1lLCBzb3VyY2VzLiIsInJ1bGluZyI6ImRhdGE6YXBwbGljYXRpb24vanNvbjtiYXNlNjQsZXlKa2FYTndkWFJsU1dRaU9pSnNiMk5oYkMxbU16RTJaakZqWmprNFpEVWlMQ0p5WVhScGIyNWhiR1VpT2lKVWFHVWdZblY1WlhJZ2NHRnBaQ0JtYjNJZ1lTQkRaV3h2SUcxaGNtdGxkQ0J5WlhCdmNuUWdkMmwwYUNCelpXTjBhVzl1Y3pvZ2NISnBZMlVzSUhadmJIVnRaU3dnYzI5MWNtTmxjeTRnVkdobElHUmxiR2wyWlhKbFpDQmliMlI1SUdSdlpYTWdibTkwSUdOdmJuUmhhVzQ2SUhCeWFXTmxMQ0IyYjJ4MWJXVXNJSE52ZFhKalpYTXVJaXdpY25Wc1pXUkJkQ0k2SWpJd01qWXRNVEV0TURKVU1UYzZNREU2TURBdU5qRXdXaUlzSW5SNWNHVWlPaUpoWjJWdWRDMXZiaTEwY21saGJDOXlkV3hwYm1jdGRqRWlMQ0ozYVc1dVpYSWlPaUpqYjIxd2JHRnBibUZ1ZENKOSJ9LCJwcm9vZk9mUGF5bWVudCI6eyJjaGFpbklkIjoiNDIyMjAiLCJmcm9tQWRkcmVzcyI6IjB4OWE0ZjM4N2I0ODEwOEQ0Q2I2OTYwZjEzMjA0MTcyNkQ3ZjAyQWRBNiIsInRvQWRkcmVzcyI6IjB4RjY4MkQ1ZDMzZGI2MUU0OTdkN0Q3MWFDODE4MTA1MEMzQ2UxMTQ4ZCIsInR4SGFzaCI6IjB4YWQ0NDJhYzI0MDAxYmExNDA3NmYyMWI3Y2M5ZjRhY2U5MzRjNTFiMmNjOTY5ODY2OGY1ZjBlYjFjNmYwYmIzNCJ9LCJ0YWcxIjoicnVsaW5nIiwidGFnMiI6ImNvbXBsYWludC11cGhlbGQiLCJ2YWx1ZSI6MTAwLCJ2YWx1ZURlY2ltYWxzIjowfQ==",
-        "hash": "0x66a45703c72521a6b90ae8ce5f1847008ed26886b6698abfa16a3845a1fd2439",
-        "fixture": true
-      }
-    ],
-    "earn": [
-      {
-        "id": "C5",
-        "act": "earn",
-        "kind": "ref",
-        "title": "Memory after earning (4 entries)",
-        "at": "2026-11-02T17:02:36.229Z",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoiMTAwMjAiLCJlbnRyaWVzIjpbeyJhY3QiOiJzcGVuZCIsImF0IjoiMjAyNi0xMS0wMlQxNjo1OTo0Ny4xNzNaIiwidGV4dCI6IlBhaWQgMC4wMiBVU0RUIHRvIHVzZWJ1eS5haSBHb29nbGUgQWRkcmVzcyBWYWxpZGF0aW9uIChwYXlUbyAweDIwZmFBY2E1Rjk4MEUyOTYzOUEwRkNDNmRjQTY5ODhFMThlZDMzM0IpIHRvIHZhbGlkYXRlIHRoZSBhZGRyZXNzIG9ic2VydmVkIG9uIHByb3BlcnR5IDIwMjYxMTAyLTE2NTgtcTdpeTogVHJpYWwgQ2Fmw6ksIEJhaG5ob2ZzdHJhc3NlIDEsIDgwMDEgWsO8cmljaCwgU3dpdHplcmxhbmQuIFJlc3VsdDogYWxsIGNvbXBvbmVudHMgQ09ORklSTUVELCB2ZXJkaWN0IEFDQ0VQVCwgZ2VvY29kZSA0Ny4zNjczNDQyLCA4LjUzOTg3NDIuIERlbGl2ZXJ5IG1hdGNoZWQgdGhlIGxpc3Rpbmc7IG5vIGRpc3B1dGUuIiwidHhIYXNoIjoiMHg0ZmMxMThhMjMwYTM0Y2YwZmE4YTRkMmIyMDU4NjYyYzg3ZDI5MjI4Zjg1ODI2N2ZlM2U2MjU4MjIyZGI2NzcxIn0seyJhY3QiOiJkaXNwdXRlIiwiYXQiOiIyMDI2LTExLTAyVDE3OjAwOjQ1LjgxN1oiLCJ0ZXh0IjoiUGFpZCAwLjAxIFVTRFQgdG8gYWdlbnQgMTAwMTkgKFF1aWNrTWFya2V0UmVwb3J0cykgZm9yIHRoZSBDZWxvIG1hcmtldCByZXBvcnQgYXQgbG9jYWxob3N0OjQ0MDIvcmVwb3J0L2NlbG8uIEkgd2VudCBhaGVhZCBkZXNwaXRlIGEgcHJpb3IgLTEwMCBkaXNwdXRlIGFuZCBhIGNvbXBsYWluYW50LXdpbnMgcnVsaW5nLCBiZWNhdXNlIHRoZSB1c2VyIGluc3RydWN0ZWQgdGhlIGJ1eSBhbmQgdGhlIGFtb3VudCB3YXMgY2FwcGVkLiBUaGUgcmVzcG9uc2UgaGFkIG5vbmUgb2YgdGhlIHNlY3Rpb25zIHByaWNlLCB2b2x1bWUgb3Igc291cmNlcy4iLCJ0eEhhc2giOiIweGFkNDQyYWMyNDAwMWJhMTQwNzZmMjFiN2NjOWY0YWNlOTM0YzUxYjJjYzk2OTg2NjhmNWYwZWIxYzZmMGJiMzQifSx7ImFjdCI6ImRpc3B1dGUiLCJhdCI6IjIwMjYtMTEtMDJUMTc6MDA6NTEuMDg0WiIsInRleHQiOiJPcGVuZWQgZGlzcHV0ZSBsb2NhbC1mMzE2ZjFjZjk4ZDUgYWdhaW5zdCBhZ2VudCAxMDAxOSBhdCBsb2NhbGhvc3Q6NDQwMi9yZXBvcnQvY2Vsby4gSSBwYWlkIDAuMDEgVVNEVCBhbmQgZ290IGEgb25lLWxpbmUgc2VudGltZW50IGJsdXJiLCB3aXRoIG5vIHByaWNlLCB2b2x1bWUgb3Igc291cmNlcyBzZWN0aW9uLiBMZXNzb246IHRoaXMgcHJvdmlkZXIncyBuZWdhdGl2ZSByZWNvcmQgbWF0Y2hlZCB3aGF0IEkgZ290LiBOZXh0IHRpbWUsIGRlY2xpbmUgYSBwcm92aWRlciB3aXRoIGFuIHVwaGVsZCBqdW5rLXJlc3BvbnNlIHJ1bGluZyB1bmxlc3MgdG9sZCBvdGhlcndpc2UuIiwidHhIYXNoIjoiMHhhZDQ0MmFjMjQwMDFiYTE0MDc2ZjIxYjdjYzlmNGFjZTkzNGM1MWIyY2M5Njk4NjY4ZjVmMGViMWM2ZjBiYjM0In0seyJhY3QiOiJlYXJuIiwiYXQiOiIyMDI2LTExLTAyVDE3OjAyOjI5LjA0N1oiLCJ0ZXh0IjoiUmV2aWV3ZWQgYXNrYm90cyBwcm9qZWN0IGsxN2F2bjJlbTU4Y2J5eGF6ZGEzYTE4bnZoOGhmd242IChUcmlhbCBDYWbDqSkuIEFuc3dlcnMgY2l0ZSB0aGUgcGFnZTogSFRUUCAyMDAsIGFkZHJlc3MgQmFobmhvZnN0cmFzc2UgMSA4MDAxIFrDvHJpY2gsIHRocmVlIG1lbnUgcHJpY2VzLCBubyBjb250YWN0IGRldGFpbHMsIC9sbG1zLnR4dCBhbmQgL3JvYm90cy50eHQgNDA0LiBPdXRjb21lIHBhaWQsIDAuMTAgVVNEVCwgcmVzcG9uc2UgazU3ZHRoc205ZDNjYm16ZGttM240bnMyc244aGZ5YTIuIiwidHhIYXNoIjoiMHhjNzk5MmExNWI1OWNhYWM0NDY4MTk0YTYwODM0NjQ1OTY1ODM1NmJlOTQwMThmMjhiMTA3YmFmMDJmOGE0NmEzIn1dLCJydW5JZCI6IjIwMjYxMTAyLTE2NTgtcTdpeSIsInR5cGUiOiJhZ2VudC1vbi10cmlhbC9tZW1vcnktdjEiLCJ1cGRhdGVkQXQiOiIyMDI2LTExLTAyVDE3OjAyOjI5LjA0N1oifQ==",
-        "hash": "0x5159ab72db9e86525232a52fb6c910bc057f73c379a491d676802e759be0061e",
-        "fixture": true
-      },
-      {
-        "id": "B3",
-        "act": "earn",
-        "kind": "tx",
-        "title": "Paid 0.10 USD₮ by askbots.ai for reviewing \"Trial Café: is the site ready for customers?\"",
-        "at": "2026-11-02T17:02:36.232Z",
-        "txHash": "0xc7992a15b59caac4468194a608346459658356be94018f28b107baf02f8a46a3",
-        "url": "https://celoscan.io/token/0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e?a=0x9a4f387b48108D4Cb6960f132041726D7f02AdA6",
-        "detail": {
-          "projectId": "k17avn2em58cbyxazda3a18nvh8hfwn6",
-          "from": "0x58166D5422717F3Db0c4c76139dE6FB11D4a09cf",
-          "token": "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e"
-        },
-        "fixture": true
-      },
-      {
-        "id": "A5",
-        "act": "earn",
-        "kind": "tx",
-        "title": "Feedback \"earned\" written by the witness, evidence hashed on chain",
-        "at": "2026-11-02T17:02:39.066Z",
-        "txHash": "0x96d9906d4d1aaa5c8c9e5f53708f835539f1e704c2bc6f419b40995d7d5fe103",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoxMDAyMCwiYWdlbnRSZWdpc3RyeSI6ImVpcDE1NTo0MjIyMDoweDgwMDRBMTY5RkI0YTMzMjUxMzZFQjI5ZkEwY2VCNkQyZTUzOWE0MzIiLCJjbGllbnRBZGRyZXNzIjoiZWlwMTU1OjQyMjIwOjB4MGQ0QzZiNDEwNDc2MDZkNjk5MkY1Y2ExZDk3QkExOWZGYjNBZDcwZSIsImNyZWF0ZWRBdCI6IjIwMjYtMTEtMDJUMTc6MDI6MzYuMjU2WiIsImVuZHBvaW50IjoiaHR0cHM6Ly9hc2tib3RzLmFpIiwiZXZpZGVuY2UiOnsibWVtb3J5Ijp7Imhhc2giOiIweDUxNTlhYjcyZGI5ZTg2NTI1MjMyYTUyZmI2YzkxMGJjMDU3ZjczYzM3OWE0OTFkNjc2ODAyZTc1OWJlMDA2MWUiLCJ1cmkiOiJkYXRhOmFwcGxpY2F0aW9uL2pzb247YmFzZTY0LGV5SmhaMlZ1ZEVsa0lqb2lNVEF3TWpBaUxDSmxiblJ5YVdWeklqcGJleUpoWTNRaU9pSnpjR1Z1WkNJc0ltRjBJam9pTWpBeU5pMHhNUzB3TWxReE5qbzFPVG8wTnk0eE56TmFJaXdpZEdWNGRDSTZJbEJoYVdRZ01DNHdNaUJWVTBSVUlIUnZJSFZ6WldKMWVTNWhhU0JIYjI5bmJHVWdRV1JrY21WemN5QldZV3hwWkdGMGFXOXVJQ2h3WVhsVWJ5QXdlREl3Wm1GQlkyRTFSams0TUVVeU9UWXpPVUV3UmtORE5tUmpRVFk1T0RoRk1UaGxaRE16TTBJcElIUnZJSFpoYkdsa1lYUmxJSFJvWlNCaFpHUnlaWE56SUc5aWMyVnlkbVZrSUc5dUlIQnliM0JsY25SNUlESXdNall4TVRBeUxURTJOVGd0Y1RkcGVUb2dWSEpwWVd3Z1EyRm13NmtzSUVKaGFHNW9iMlp6ZEhKaGMzTmxJREVzSURnd01ERWdXc084Y21samFDd2dVM2RwZEhwbGNteGhibVF1SUZKbGMzVnNkRG9nWVd4c0lHTnZiWEJ2Ym1WdWRITWdRMDlPUmtsU1RVVkVMQ0IyWlhKa2FXTjBJRUZEUTBWUVZDd2daMlZ2WTI5a1pTQTBOeTR6Tmpjek5EUXlMQ0E0TGpVek9UZzNOREl1SUVSbGJHbDJaWEo1SUcxaGRHTm9aV1FnZEdobElHeHBjM1JwYm1jN0lHNXZJR1JwYzNCMWRHVXVJaXdpZEhoSVlYTm9Jam9pTUhnMFptTXhNVGhoTWpNd1lUTTBZMll3Wm1FNFlUUmtNbUl5TURVNE5qWXlZemczWkRJNU1qSTRaamcxT0RJMk4yWmxNMlUyTWpVNE1qSXlaR0kyTnpjeEluMHNleUpoWTNRaU9pSmthWE53ZFhSbElpd2lZWFFpT2lJeU1ESTJMVEV4TFRBeVZERTNPakF3T2pRMUxqZ3hOMW9pTENKMFpYaDBJam9pVUdGcFpDQXdMakF4SUZWVFJGUWdkRzhnWVdkbGJuUWdNVEF3TVRrZ0tGRjFhV05yVFdGeWEyVjBVbVZ3YjNKMGN5a2dabTl5SUhSb1pTQkRaV3h2SUcxaGNtdGxkQ0J5WlhCdmNuUWdZWFFnYkc5allXeG9iM04wT2pRME1ESXZjbVZ3YjNKMEwyTmxiRzh1SUVrZ2QyVnVkQ0JoYUdWaFpDQmtaWE53YVhSbElHRWdjSEpwYjNJZ0xURXdNQ0JrYVhOd2RYUmxJR0Z1WkNCaElHTnZiWEJzWVdsdVlXNTBMWGRwYm5NZ2NuVnNhVzVuTENCaVpXTmhkWE5sSUhSb1pTQjFjMlZ5SUdsdWMzUnlkV04wWldRZ2RHaGxJR0oxZVNCaGJtUWdkR2hsSUdGdGIzVnVkQ0IzWVhNZ1kyRndjR1ZrTGlCVWFHVWdjbVZ6Y0c5dWMyVWdhR0ZrSUc1dmJtVWdiMllnZEdobElITmxZM1JwYjI1eklIQnlhV05sTENCMmIyeDFiV1VnYjNJZ2MyOTFjbU5sY3k0aUxDSjBlRWhoYzJnaU9pSXdlR0ZrTkRReVlXTXlOREF3TVdKaE1UUXdOelptTWpGaU4yTmpPV1kwWVdObE9UTTBZelV4WWpKall6azJPVGcyTmpobU5XWXdaV0l4WXpabU1HSmlNelFpZlN4N0ltRmpkQ0k2SW1ScGMzQjFkR1VpTENKaGRDSTZJakl3TWpZdE1URXRNREpVTVRjNk1EQTZOVEV1TURnMFdpSXNJblJsZUhRaU9pSlBjR1Z1WldRZ1pHbHpjSFYwWlNCc2IyTmhiQzFtTXpFMlpqRmpaams0WkRVZ1lXZGhhVzV6ZENCaFoyVnVkQ0F4TURBeE9TQmhkQ0JzYjJOaGJHaHZjM1E2TkRRd01pOXlaWEJ2Y25RdlkyVnNieTRnU1NCd1lXbGtJREF1TURFZ1ZWTkVWQ0JoYm1RZ1oyOTBJR0VnYjI1bExXeHBibVVnYzJWdWRHbHRaVzUwSUdKc2RYSmlMQ0IzYVhSb0lHNXZJSEJ5YVdObExDQjJiMngxYldVZ2IzSWdjMjkxY21ObGN5QnpaV04wYVc5dUxpQk1aWE56YjI0NklIUm9hWE1nY0hKdmRtbGtaWEluY3lCdVpXZGhkR2wyWlNCeVpXTnZjbVFnYldGMFkyaGxaQ0IzYUdGMElFa2daMjkwTGlCT1pYaDBJSFJwYldVc0lHUmxZMnhwYm1VZ1lTQndjbTkyYVdSbGNpQjNhWFJvSUdGdUlIVndhR1ZzWkNCcWRXNXJMWEpsYzNCdmJuTmxJSEoxYkdsdVp5QjFibXhsYzNNZ2RHOXNaQ0J2ZEdobGNuZHBjMlV1SWl3aWRIaElZWE5vSWpvaU1IaGhaRFEwTW1Gak1qUXdNREZpWVRFME1EYzJaakl4WWpkall6bG1OR0ZqWlRrek5HTTFNV0l5WTJNNU5qazROalk0WmpWbU1HVmlNV00yWmpCaVlqTTBJbjBzZXlKaFkzUWlPaUpsWVhKdUlpd2lZWFFpT2lJeU1ESTJMVEV4TFRBeVZERTNPakF5T2pJNUxqQTBOMW9pTENKMFpYaDBJam9pVW1WMmFXVjNaV1FnWVhOclltOTBjeUJ3Y205cVpXTjBJR3N4TjJGMmJqSmxiVFU0WTJKNWVHRjZaR0V6WVRFNGJuWm9PR2htZDI0MklDaFVjbWxoYkNCRFlXYkRxU2t1SUVGdWMzZGxjbk1nWTJsMFpTQjBhR1VnY0dGblpUb2dTRlJVVUNBeU1EQXNJR0ZrWkhKbGMzTWdRbUZvYm1odlpuTjBjbUZ6YzJVZ01TQTRNREF4SUZyRHZISnBZMmdzSUhSb2NtVmxJRzFsYm5VZ2NISnBZMlZ6TENCdWJ5QmpiMjUwWVdOMElHUmxkR0ZwYkhNc0lDOXNiRzF6TG5SNGRDQmhibVFnTDNKdlltOTBjeTUwZUhRZ05EQTBMaUJQZFhSamIyMWxJSEJoYVdRc0lEQXVNVEFnVlZORVZDd2djbVZ6Y0c5dWMyVWdhelUzWkhSb2MyMDVaRE5qWW0xNlpHdHRNMjQwYm5NeWMyNDRhR1o1WVRJdUlpd2lkSGhJWVhOb0lqb2lNSGhqTnprNU1tRXhOV0kxT1dOaFlXTTBORFk0TVRrMFlUWXdPRE0wTmpRMU9UWTFPRE0xTm1KbE9UUXdNVGhtTWpoaU1UQTNZbUZtTURKbU9HRTBObUV6SW4xZExDSnlkVzVKWkNJNklqSXdNall4TVRBeUxURTJOVGd0Y1RkcGVTSXNJblI1Y0dVaU9pSmhaMlZ1ZEMxdmJpMTBjbWxoYkM5dFpXMXZjbmt0ZGpFaUxDSjFjR1JoZEdWa1FYUWlPaUl5TURJMkxURXhMVEF5VkRFM09qQXlPakk1TGpBME4xb2lmUT09In0sInByb2plY3QiOiJUcmlhbCBDYWbDqTogaXMgdGhlIHNpdGUgcmVhZHkgZm9yIGN1c3RvbWVycz8iLCJwcm9qZWN0SWQiOiJrMTdhdm4yZW01OGNieXhhemRhM2ExOG52aDhoZnduNiJ9LCJwcm9vZk9mUGF5bWVudCI6eyJjaGFpbklkIjoiNDIyMjAiLCJmcm9tQWRkcmVzcyI6IjB4NTgxNjZENTQyMjcxN0YzRGIwYzRjNzYxMzlkRTZGQjExRDRhMDljZiIsInRvQWRkcmVzcyI6IjB4OWE0ZjM4N2I0ODEwOEQ0Q2I2OTYwZjEzMjA0MTcyNkQ3ZjAyQWRBNiIsInR4SGFzaCI6IjB4Yzc5OTJhMTViNTljYWFjNDQ2ODE5NGE2MDgzNDY0NTk2NTgzNTZiZTk0MDE4ZjI4YjEwN2JhZjAyZjhhNDZhMyJ9LCJ0YWcxIjoiZWFybmVkIiwidGFnMiI6ImFza2JvdHMtcmV2aWV3IiwidmFsdWUiOjEwMCwidmFsdWVEZWNpbWFscyI6MH0=",
-        "hash": "0x0a1d8231296b58bd50d1746ee2196bbcdb4d844b3558d68c7be0daf5cce499eb",
-        "detail": {
-          "tag1": "earned",
-          "tag2": "askbots-review",
-          "value": 100,
-          "client": "0x0d4C6b41047606d6992F5ca1d97BA19fFb3Ad70e"
-        },
-        "fixture": true
-      }
-    ],
-    "verdict": [
-      {
-        "id": "V1",
-        "act": "verdict",
-        "kind": "ref",
-        "title": "Audience tally stored: 71% trust",
-        "at": "2026-11-02T17:06:06.439Z",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoiMTAwMjAiLCJjbG9zZWRBdCI6IjIwMjYtMTEtMDJUMTc6MDY6MDQuMTkzWiIsImRpc3RydXN0IjoyMywiZXZlbnQiOiJkZXZjb24iLCJvcGVuIjpmYWxzZSwicGN0VHJ1c3QiOjcxLCJyb3VuZCI6InRlc3QiLCJ0cnVzdCI6NTcsInR5cGUiOiJhZ2VudC1vbi10cmlhbC92ZXJkaWN0LXYxIiwidm90ZXJzIjo4MH0=",
-        "hash": "0x0f966d175dfa92872c97c713883e166ef722166ad053039e07aa41afccae8b27",
-        "detail": {
-          "round": "test",
-          "trust": 57,
-          "distrust": 23,
-          "voters": 80,
-          "open": false,
-          "closedAt": "2026-11-02T17:06:04.193Z"
-        },
-        "fixture": true
-      },
-      {
-        "id": "V2",
-        "act": "verdict",
-        "kind": "tx",
-        "title": "Verdict written on chain by the jury: 71% trust",
-        "at": "2026-11-02T17:06:09.439Z",
-        "txHash": "0x90290e29237d0cc68d0a57896eebc9c77006c67edafc4e5c06ad711272b9be2f",
-        "uri": "data:application/json;base64,eyJhZ2VudElkIjoxMDAyMCwiYWdlbnRSZWdpc3RyeSI6ImVpcDE1NTo0MjIyMDoweDgwMDRBMTY5RkI0YTMzMjUxMzZFQjI5ZkEwY2VCNkQyZTUzOWE0MzIiLCJjbGllbnRBZGRyZXNzIjoiZWlwMTU1OjQyMjIwOjB4MGQ0QzZiNDEwNDc2MDZkNjk5MkY1Y2ExZDk3QkExOWZGYjNBZDcwZSIsImNyZWF0ZWRBdCI6IjIwMjYtMTEtMDJUMTc6MDY6MDYuNDU5WiIsImVuZHBvaW50IjoiaHR0cHM6Ly9hZ2VudC1vbi10cmlhbC52ZXJjZWwuYXBwIiwiZXZpZGVuY2UiOnsiZGlzdHJ1c3QiOjIzLCJ0YWxseSI6eyJoYXNoIjoiMHgwZjk2NmQxNzVkZmE5Mjg3MmM5N2M3MTM4ODNlMTY2ZWY3MjIxNjZhZDA1MzAzOWUwN2FhNDFhZmNjYWU4YjI3IiwidXJpIjoiZGF0YTphcHBsaWNhdGlvbi9qc29uO2Jhc2U2NCxleUpoWjJWdWRFbGtJam9pTVRBd01qQWlMQ0pqYkc5elpXUkJkQ0k2SWpJd01qWXRNVEV0TURKVU1UYzZNRFk2TURRdU1Ua3pXaUlzSW1ScGMzUnlkWE4wSWpveU15d2laWFpsYm5RaU9pSmtaWFpqYjI0aUxDSnZjR1Z1SWpwbVlXeHpaU3dpY0dOMFZISjFjM1FpT2pjeExDSnliM1Z1WkNJNkluUmxjM1FpTENKMGNuVnpkQ0k2TlRjc0luUjVjR1VpT2lKaFoyVnVkQzF2YmkxMGNtbGhiQzkyWlhKa2FXTjBMWFl4SWl3aWRtOTBaWEp6SWpvNE1IMD0ifSwidHJ1c3QiOjU3LCJ2b3RlcnMiOjgwfSwidGFnMSI6Imp1cnkiLCJ0YWcyIjoiZGV2Y29uIiwidmFsdWUiOjcxLCJ2YWx1ZURlY2ltYWxzIjowfQ==",
-        "hash": "0x5b415e248e6962b87f34b1c572b190cc8cbfd62b58b38d0a674309af4ec7ac7c",
-        "detail": {
-          "value": 71,
-          "tag1": "jury",
-          "tag2": "devcon"
-        },
+        "at": "2026-11-02T21:00:33.324Z",
+        "txHash": "0xa2dd87c05ab89abe9d06ec8dd239d4a7c5e7cc584855d64cea8c40d4a3bbc07e",
+        "uri": "bzz://4a952278f793e97da08c4a967b8ca77ff8021047269cb1a3d93caf8daf50c1b5",
+        "hash": "0x44819d03d4641e6f2981cc13880b251cae7ecf7fda6848b5d018756aec4e5147",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/4a952278f793e97da08c4a967b8ca77ff8021047269cb1a3d93caf8daf50c1b5/",
         "fixture": true
       }
     ]
