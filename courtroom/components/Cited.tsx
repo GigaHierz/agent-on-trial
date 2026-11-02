@@ -15,7 +15,7 @@ export function Cited({ text, round }: { text: string; round: string }) {
             key={i}
             href={`/exhibit/${m[1]}?round=${encodeURIComponent(round)}`}
             target="_blank"
-            className="mx-0.5 rounded bg-neutral-800 px-1.5 font-mono text-sky-300 no-underline hover:bg-neutral-700"
+            className="mx-0.5 rounded-md bg-mint/15 px-1.5 text-mint no-underline hover:bg-mint/25"
           >
             {m[1]}
           </Link>
