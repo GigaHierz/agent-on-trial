@@ -27,4 +27,4 @@ export const BUILT_WITH: { name: string; href: string }[] = [
 
 export const REPO_URL = 'https://github.com/GigaHierz/agent-on-trial';
 
-export const EVENT = { date: '5 November', time: '1:20 PM IST', venue: 'Agentic Hub, Devcon', city: 'Jio World Convention Centre, Mumbai' };
+export const EVENT = { date: '4 November', time: '4:15 PM IST', venue: 'Jasmine Stage 4, Devcon', city: 'Jio World Convention Centre, Mumbai' };

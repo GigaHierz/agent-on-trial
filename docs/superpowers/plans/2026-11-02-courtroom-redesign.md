@@ -15,7 +15,7 @@
 - Only files under `courtroom/` change. No edits to `courtroom/app/api/**`, `courtroom/lib/redis.ts`, `store.ts`, `chain.ts`, `host*.ts`, `middleware.ts`.
 - Palette: background `#0b0f0d`, mint `#a8e6c3`, red stays `rose`, white headings, body 70 percent white, captions 45 percent white.
 - Font: JetBrains Mono everywhere, system mono fallback.
-- Headline copy: "An Agent on Trial"; subtitle "Can We Trust the Machines? A Live Trial"; date pill "5 NOVEMBER · 1:20 PM IST · AGENTIC HUB, DEVCON".
+- Headline copy: "An Agent on Trial"; subtitle "Can We Trust the Machines? A Live Trial"; date pill "4 NOVEMBER · 4:15 PM IST · JASMINE STAGE 4, DEVCON".
 - Speakers exactly as the spec table (names, roles, companies, X links).
 - `/projector` keeps `h-screen w-screen` with no scrolling at 1920x1080; `/property` gets no nav or footer.
 - Host cookie gate stays.
