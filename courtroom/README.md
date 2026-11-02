@@ -15,7 +15,7 @@ No private keys live in this app. It reads Celo, it never signs.
 | `/projector` | public | 1920x1080 evidence board: Identity, Payments, Memory, Dispute, verdict |
 | `/vote` | public | Trust / Don't trust, one vote per device |
 | `/exhibit/[id]` | public | One exhibit as JSON, with a Verify button |
-| `/property/[runId]` | public | The page the agent reviews (Trial Café) |
+| `/property/[runId]` | public | The page the agent reviews (Trial Weather, an x402 API for agents) |
 | `/cross` | host | Ask the defendant, prosecutor or defense; answers cite exhibits |
 | `/bench` | host | Round, vote open/close/reset, manual tally, closing statements |
 

@@ -98,8 +98,28 @@ function TxLine({ line, gateway }: { line: LogLine; gateway: string }) {
   );
 }
 
+/** The short, human part of an error: the reason if the chain gave one, else the first sentence. */
+function errorSummary(text: string): string {
+  const reason = /reverted with the following reason:\s*\|?\s*([^|]+?)\s*\|/i.exec(text)?.[1];
+  if (reason) return `The contract refused: ${reason.trim()}.`;
+  if (/exceeds the balance of the account|insufficient funds/i.test(text)) return 'Not enough CELO in the wallet to pay for gas.';
+  const first = text.split(/(?<=[.!?])\s|\s\|\s/)[0] ?? text;
+  return first.length > 140 ? `${first.slice(0, 140)}…` : first;
+}
+
 function SystemLine({ line }: { line: LogLine }) {
-  const tone = line.kind === 'error' ? 'text-rose-300' : line.kind === 'warn' ? 'text-amber-200' : line.kind === 'approve' ? 'text-violet-200' : 'text-fg-3';
+  if (line.kind === 'error') {
+    return (
+      <details className="mx-auto max-w-[80%] rounded-xl border border-rose-400/50 bg-rose-500/10 text-sm text-rose-200">
+        <summary className="cursor-pointer list-none px-3 py-2 marker:hidden">
+          <span className="eyebrow mr-2 text-[10px] text-rose-300">error</span>
+          {errorSummary(line.text)}
+        </summary>
+        <p className="border-t border-rose-400/30 px-3 py-2 text-xs break-all text-rose-200/80">{line.text}</p>
+      </details>
+    );
+  }
+  const tone = line.kind === 'warn' ? 'text-amber-200' : line.kind === 'approve' ? 'text-violet-200' : 'text-fg-3';
   return <p className={`text-center text-xs ${tone}`}>{line.text}</p>;
 }
 

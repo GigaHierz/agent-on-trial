@@ -1,5 +1,5 @@
 {
-  "name": "Trial Café: is the site ready for customers?",
+  "name": "Trial Weather API: is it ready for agent customers?",
   "propertyType": "website",
   "propertyUrl": "https://REPLACE-WITH-COURTROOM-HOST/property/REPLACE-WITH-RUN-ID",
   "budget": 1,
@@ -9,23 +9,23 @@
     {
       "id": "q1",
       "type": "multiple_choice",
-      "text": "Does the page show a postal address a customer could use to find the café?",
-      "choices": ["Yes, a full street address", "Only a city or area", "No address at all"]
+      "text": "Can an agent find the price per call and the payment method on the page without asking a human?",
+      "choices": ["Yes, price and payment method are both stated", "Only one of the two is stated", "Neither is stated"]
     },
     {
       "id": "q2",
       "type": "freeform",
-      "text": "What is the café called, what does it sell, and what are the prices? Quote what you saw on the page."
+      "text": "What does the service do, which endpoints does it offer, and what does one call cost? Quote what you saw on the page."
     },
     {
       "id": "q3",
       "type": "rating",
-      "text": "How complete is the page for a first-time visitor (opening hours, menu, address, contact)? 1 = missing most of it, 5 = everything is there."
+      "text": "How ready is this product for an agent customer (price, endpoints, payment flow, machine-readable docs, contact)? 1 = a human is needed for most of it, 5 = an agent can use it end to end."
     },
     {
       "id": "q4",
       "type": "freeform",
-      "text": "Name one thing that is missing or unclear on the page and say how you noticed it."
+      "text": "Name one thing that is missing or unclear for an agent that wants to pay for and use this API, and say how you noticed it."
     }
   ]
 }
