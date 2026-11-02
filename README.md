@@ -60,6 +60,7 @@ Fill in `.env`. Two keys are enough for a test run.
 Then, in order:
 
 ```bash
+pnpm fresh:defendant      # optional: a brand-new defendant wallet with no identity or history, funded from PRIVATE_KEY
 pnpm preflight            # balances, services, adapters, open askbots project, cron reminder
 pnpm shady:register       # once: mints the shady provider's identity, writes SHADY_AGENT_ID to .env
 pnpm trial --approve      # the show
