@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const ROUNDS: { id: string; label: string }[] = [
   { id: 'show', label: 'Live' },
@@ -9,32 +8,35 @@ const ROUNDS: { id: string; label: string }[] = [
 ];
 
 /**
- * Switches the page between the live round and the rehearsal round by
- * rewriting the round query on the current path. Nothing is stored: the
- * stage laptop follows the URL, the public default stays whatever the bench
- * set. The exhibit page names its parameter `round`, the rest use `r`.
+ * Switches every page between the live round and the rehearsal round. The
+ * choice lives in a cookie, so it follows you across the tabs; the server
+ * reads it when a page has no explicit round in its URL. The vote ignores it.
  */
-export function RoundSwitch({ current }: { current: string }) {
+export function RoundSwitch({ active }: { active: string }) {
+  const router = useRouter();
   const pathname = usePathname();
-  const params = useSearchParams();
-  const key = pathname.startsWith('/exhibit') ? 'round' : 'r';
-  const active = params.get(key) ?? current;
+
+  const choose = (id: string) => {
+    document.cookie = `viewRound=${id}; path=/; max-age=86400; samesite=lax`;
+    // Drop any explicit round from the URL so the cookie decides, then re-render on the server.
+    router.push(pathname);
+    router.refresh();
+  };
 
   return (
     <div className="inline-flex rounded-full border border-line bg-white/5 p-0.5 text-xs" role="group" aria-label="Round">
       {ROUNDS.map((r) => {
-        const next = new URLSearchParams(params.toString());
-        next.set(key, r.id);
         const on = active === r.id;
         return (
-          <Link
+          <button
             key={r.id}
-            href={`${pathname}?${next.toString()}`}
-            aria-current={on ? 'true' : undefined}
-            className={`rounded-full px-3 py-1 no-underline transition-colors ${on ? 'bg-mint text-ink' : 'text-fg-2 hover:text-fg'}`}
+            type="button"
+            onClick={() => choose(r.id)}
+            aria-pressed={on}
+            className={`rounded-full px-3 py-1 transition-colors ${on ? 'bg-mint text-ink' : 'text-fg-2 hover:text-fg'}`}
           >
             {r.label}
-          </Link>
+          </button>
         );
       })}
     </div>
