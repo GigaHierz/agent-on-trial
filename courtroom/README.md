@@ -25,8 +25,8 @@ Host pages take the secret from the `host` cookie. Visit `/bench?key=<HOST_SECRE
 
 | Variable | Required | Default | Notes |
 | --- | --- | --- | --- |
-| `UPSTASH_REDIS_REST_URL` | yes | | Upstash Redis via the Vercel Marketplace |
-| `UPSTASH_REDIS_REST_TOKEN` | yes | | |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | yes | | Injected by "Upstash for Redis" from the Vercel Marketplace |
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | alternative | | A database made on upstash.com; either pair works |
 | `HOST_SECRET` | yes | | Header `x-host-secret` (terminal) or cookie `host` (browser) |
 | `ANTHROPIC_API_KEY` | for `/cross` | | |
 | `ANTHROPIC_MODEL` | no | `claude-opus-5-5` | |
