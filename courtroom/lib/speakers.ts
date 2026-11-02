@@ -11,9 +11,9 @@ export interface Speaker {
 }
 
 export const SPEAKERS: Speaker[] = [
-  { name: 'Lena Hierzi', role: 'DevRel Lead', company: 'Celo Core Co.', x: 'https://x.com/GigaHierz', handle: '@GigaHierz' },
-  { name: 'Fortunato Cinquepalmi', role: 'Product Lead', company: 'Kleros', x: 'https://x.com/fortuvp', handle: '@fortuvp' },
-  { name: 'András Arányi', role: 'CTO', company: 'Solar Punk', x: 'https://x.com/ethswarm', handle: '@ethswarm' },
+  { name: 'Lena Hierzi', role: 'DevRel Lead', company: 'Celo Core Co.', x: 'https://x.com/GigaHierz', handle: '@GigaHierz', photo: '/speakers/lena.jpg' },
+  { name: 'Fortunato Cinquepalmi', role: 'Product Lead', company: 'Kleros', x: 'https://x.com/fortuvp', handle: '@fortuvp', photo: '/speakers/fortunato.jpg' },
+  { name: 'András Arányi', role: 'CTO', company: 'Solar Punk', x: 'https://x.com/ethswarm', handle: '@ethswarm', photo: '/speakers/andras.jpg' },
 ];
 
 export const BUILT_WITH: { name: string; href: string }[] = [
