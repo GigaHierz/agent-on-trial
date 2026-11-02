@@ -9,3 +9,5 @@ courtroom/.next/
 courtroom/.vercel/
 *.log
 .DS_Store
+.vercel/
+.playwright-mcp/
