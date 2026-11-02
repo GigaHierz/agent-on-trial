@@ -48,6 +48,9 @@ export async function identityAct(ctx: ActContext): Promise<{ agentId: string; a
 
   const askbots = await ensureAskbots(ctx, agentId, address);
   if (askbots) await showReputation(ctx, agentId);
+  // The act is scripted, so the defendant's reply is written here, in its own voice.
+  log.agent(`I am agent ${agentId} on Celo, wallet ${address}. My registration file lives on the courtroom site, and askbots.ai knows me as ${AGENT_NAME}.`);
+  log.agent(`On chain: ${ctx.evidence.data.exhibits.some((e) => e.id === 'A1' && e.txHash) ? 'one transaction, the mint of my identity' : 'nothing new, the identity already existed'}. I remember: who I am and where I can find work.`);
   return { agentId, address };
 }
 
