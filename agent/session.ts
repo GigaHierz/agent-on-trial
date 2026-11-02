@@ -79,7 +79,7 @@ async function main() {
         continue;
       }
       if (line.startsWith('/ask ')) {
-        log.host(line.slice(5));
+        log.prompt(line.slice(5));
         await crossExamine({ role: 'defendant', question: line.slice(5), evidence, memory });
         continue;
       }
@@ -105,7 +105,7 @@ async function main() {
         continue;
       }
       // Free text: talk to the agent with every tool it has.
-      log.host(line);
+      log.prompt(line);
       const tools = await allTools(ctx, await askbotsFromCreds());
       await runTurn({ ctx, tools, messages, userText: line });
     } catch (err) {

@@ -117,6 +117,8 @@ function emit(kind: LogLine['kind'], text: string, data?: Record<string, unknown
 
 export const log = {
   host: (text: string) => emit('host', text),
+  /** A prompt the host typed. Narration uses `host`; the chat view shows only prompts as the host's turns. */
+  prompt: (text: string) => emit('host', text, { prompt: true }),
   agent: (text: string) => emit('agent', text),
   toolCall: (name: string, args: unknown) => emit('tool_call', `${name}(${short(JSON.stringify(redact(args)))})`, { name, args }),
   toolResult: (name: string, result: unknown) => emit('tool_result', `${name}: ${short(typeof result === 'string' ? result : JSON.stringify(redact(result)))}`, { name }),
