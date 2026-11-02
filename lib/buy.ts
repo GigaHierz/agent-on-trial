@@ -5,8 +5,10 @@ import { env, roleKey } from './env.js';
 
 /**
  * The `buy` CLI (npm @celo/buy) is the defendant's wallet for x402. State
- * lives under BUY_HOME inside the repo, with the file keystore so nothing
- * prompts the macOS keychain on stage.
+ * lives under BUY_HOME inside the repo. Since @celo/buy 0.8 the plaintext
+ * file keystore refuses mainnet accounts, so the default is the OS keychain
+ * (`system`); the first access on a new machine asks once, answer "Always
+ * Allow". Override with BUY_KEYSTORE_BACKEND=file for a testnet rehearsal.
  */
 export const ACCOUNT = 'defendant';
 
@@ -19,7 +21,7 @@ export function buyEnv(extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   return {
     ...process.env,
     BUY_HOME: resolve(env.buyHome),
-    BUY_KEYSTORE_BACKEND: 'file',
+    BUY_KEYSTORE_BACKEND: process.env.BUY_KEYSTORE_BACKEND ?? 'system',
     ...extra,
   };
 }
