@@ -64,12 +64,13 @@ function Line({ line, gateway }: { line: LogLine; gateway: string }) {
   );
 }
 
-export function LiveClient({ round, gateway }: { round: string; gateway: string }) {
+export function LiveClient({ round, voteRound, gateway }: { round: string; voteRound?: string; gateway: string }) {
   const [lines, setLines] = useState<LogLine[]>([]);
   const [error, setError] = useState<string | null>(null);
   const nextRef = useRef(0);
   const boxRef = useRef<HTMLDivElement>(null);
-  const { data: tally } = usePoll<VoteTally>(`/api/vote/tally?round=${encodeURIComponent(round)}`, POLL_MS);
+  // The tally is always the live vote, whatever round the log shows.
+  const { data: tally } = usePoll<VoteTally>(`/api/vote/tally?round=${encodeURIComponent(voteRound ?? round)}`, POLL_MS);
 
   useEffect(() => {
     let alive = true;

@@ -1,6 +1,5 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { VoteTally } from '@trial/shared';
 import { TallyBar } from './TallyBar';
@@ -10,21 +9,21 @@ import { Pill } from './ui/Pill';
 type Choice = 'trust' | 'distrust';
 
 export function VoteClient() {
-  const params = useSearchParams();
-  const fromQuery = params.get('r');
-  const [round, setRound] = useState<string | null>(fromQuery);
+  // The vote is always the live round set on the bench. A round in the URL
+  // (old QR codes, the test-data switch) is ignored on purpose: no rehearsal
+  // tally ever mixes with the room's votes.
+  const [round, setRound] = useState<string | null>(null);
   const [tally, setTally] = useState<VoteTally | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (fromQuery) return;
     fetch('/api/round', { cache: 'no-store' })
       .then((r) => r.json() as Promise<{ round?: string; error?: string }>)
       .then((b) => (b.round ? setRound(b.round) : setMessage(b.error ?? 'No round.')))
       .catch(() => setMessage('Could not load the round.'));
-  }, [fromQuery]);
+  }, []);
 
   async function vote(choice: Choice) {
     if (!round || busy) return;

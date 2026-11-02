@@ -5,18 +5,16 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Pill } from '@/components/ui/Pill';
 import { baseUrl } from '@/lib/env';
-import { DEFAULT_ROUND } from '@/lib/keys';
 import { qrSvg } from '@/lib/qr';
 import { getRedis } from '@/lib/redis';
 import { EVENT, SPEAKERS } from '@/lib/speakers';
-import { currentRound } from '@/lib/store';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const redis = getRedis();
-  const round = redis ? await currentRound().catch(() => DEFAULT_ROUND) : DEFAULT_ROUND;
-  const votePath = `/vote?r=${encodeURIComponent(round)}`;
+  // The vote and its QR are always live: the vote page reads the bench's current round itself.
+  const votePath = '/vote';
   const voteUrl = `${baseUrl()}${votePath}`;
   const svg = await qrSvg(voteUrl);
 

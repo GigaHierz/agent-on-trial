@@ -65,10 +65,11 @@ function ExhibitRow({ ex, gateway, onOpenSwarm }: { ex: Exhibit; gateway: string
   );
 }
 
-export function ProjectorClient({ round, gateway, qrSvg }: { round: string; gateway: string; qrSvg: string }) {
+export function ProjectorClient({ round, voteRound, gateway, qrSvg }: { round: string; voteRound?: string; gateway: string; qrSvg: string }) {
   const q = encodeURIComponent(round);
   const { data: evidence, error } = usePoll<Evidence | null>(`/api/evidence?round=${q}`, POLL_MS);
-  const { data: tally } = usePoll<VoteTally>(`/api/vote/tally?round=${q}`, POLL_MS);
+  // The tally is always the live vote, whatever round the exhibits show.
+  const { data: tally } = usePoll<VoteTally>(`/api/vote/tally?round=${encodeURIComponent(voteRound ?? round)}`, POLL_MS);
   const agentId = evidence?.agentId ?? null;
   const { data: chain } = usePoll<AgentSummary>(agentId ? `/api/chain/agent/${agentId}` : null, CHAIN_POLL_MS);
   const groups = groupExhibits(evidence);
