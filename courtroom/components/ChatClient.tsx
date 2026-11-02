@@ -104,13 +104,27 @@ function SystemLine({ line }: { line: LogLine }) {
 
 type Item = { kind: 'host' | 'agent' | 'tx' | 'system'; line: LogLine } | { kind: 'tool'; call: LogLine; result?: LogLine };
 
-/** Pair each tool call with the result that follows it; everything else stays a line. */
+/**
+ * Pair each tool call with the result that follows it, merge consecutive
+ * agent lines into one bubble, and show only typed prompts as host bubbles
+ * (the terminal marks those with data.prompt; other host lines are narration).
+ */
 function toItems(lines: LogLine[]): Item[] {
   const items: Item[] = [];
   for (const line of lines) {
     switch (line.kind) {
       case 'host':
-      case 'agent':
+        items.push(line.data?.prompt ? { kind: 'host', line } : { kind: 'system', line });
+        break;
+      case 'agent': {
+        const last = items[items.length - 1];
+        if (last && last.kind === 'agent') {
+          last.line = { ...last.line, text: `${last.line.text}\n${line.text}` };
+        } else {
+          items.push({ kind: 'agent', line });
+        }
+        break;
+      }
       case 'tx':
         items.push({ kind: line.kind, line });
         break;
@@ -175,7 +189,8 @@ export function ChatClient({ round, voteRound, gateway }: { round: string; voteR
 
   // Setup chatter (info, warnings, approvals) is hidden unless the viewer asks for it.
   const [details, setDetails] = useState(false);
-  const items = toItems(details ? lines : lines.filter((l) => l.kind !== 'info' && l.kind !== 'warn' && l.kind !== 'approve'));
+  const quiet = (l: LogLine) => l.kind !== 'info' && l.kind !== 'warn' && l.kind !== 'approve' && (l.kind !== 'host' || Boolean(l.data?.prompt));
+  const items = toItems(details ? lines : lines.filter(quiet));
 
   return (
     <main className="mx-auto flex h-full max-w-4xl flex-col gap-4 px-4 py-4 sm:px-6 sm:py-6">
