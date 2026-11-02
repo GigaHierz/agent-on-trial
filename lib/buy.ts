@@ -1,6 +1,8 @@
 import { spawn } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { DEMO_TOKEN } from '@trial/shared';
+import { formatUnits } from 'viem';
 import { env, roleKey } from './env.js';
 
 /**
@@ -55,12 +57,30 @@ export interface Receipt {
   outcome?: string;
 }
 
+/**
+ * @celo/buy-keystore 0.8 publishes receipts as versioned files,
+ * `receipts.<n>.json`, newest version highest; older releases wrote a single
+ * `receipts.json`. Read whichever is there.
+ */
 export function readReceipts(): Receipt[] {
-  const path = join(resolve(env.buyHome), 'receipts.json');
+  const home = resolve(env.buyHome);
+  if (!existsSync(home)) return [];
+  const versioned = readdirSync(home)
+    .map((n) => /^receipts\.(\d+)\.json$/.exec(n))
+    .filter((m): m is RegExpExecArray => m !== null)
+    .sort((a, b) => Number(b[1]) - Number(a[1]));
+  const path = versioned.length ? join(home, versioned[0][0]) : join(home, 'receipts.json');
   if (!existsSync(path)) return [];
   const parsed = JSON.parse(readFileSync(path, 'utf8'));
   const list: Receipt[] = Array.isArray(parsed) ? parsed : (parsed.receipts ?? []);
   return list;
+}
+
+/** Human figures for a receipt: amount is stored in atomic units and asset as an address. */
+export function describeReceipt(r: Receipt): { amount: string; asset: string } {
+  const atomic = /^\d+$/.test(r.amount);
+  const symbol = r.asset.toLowerCase() === DEMO_TOKEN.address.toLowerCase() ? DEMO_TOKEN.display : r.asset.startsWith('0x') ? `${r.asset.slice(0, 6)}…` : r.asset;
+  return { amount: atomic ? formatUnits(BigInt(r.amount), 6) : r.amount, asset: symbol };
 }
 
 /** Receipts newer than `since`, newest first. */

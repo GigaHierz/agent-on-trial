@@ -3,6 +3,7 @@ import { lastArtifact, type ActContext } from '../agent/context.js';
 import { crossExamine } from '../agent/cross.js';
 import { runAct } from '../agent/loop.js';
 import { getDispute } from '../adapters/dispute/index.js';
+import { describeReceipt } from '../lib/buy.js';
 import { env } from '../lib/env.js';
 import { replayFixture } from '../lib/evidence.js';
 import { writeFeedback } from '../lib/feedback.js';
@@ -39,7 +40,7 @@ export async function disputeAct(ctx: ActContext) {
         letter: 'B',
         act: 'dispute',
         kind: 'tx',
-        title: `Paid ${receipt.amount} ${receipt.asset} through x402 to the shady provider`,
+        title: `Paid ${describeReceipt(receipt).amount} ${describeReceipt(receipt).asset} through x402 to the shady provider`,
         txHash: receipt.txHash,
         detail: { url: receipt.url, payTo: receipt.raw.payTo ?? gate.payTo },
       });
