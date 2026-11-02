@@ -9,14 +9,26 @@ export class RedisMissing extends Error {
   }
 }
 
+/**
+ * Upstash REST credentials. The Vercel Marketplace install ("Upstash for Redis")
+ * injects KV_REST_API_URL / KV_REST_API_TOKEN; a database made on upstash.com
+ * ships UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN. Either pair works.
+ */
+function credentials(): { url: string; token: string } | null {
+  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  return url && token ? { url, token } : null;
+}
+
 export function redisConfigured(): boolean {
-  return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+  return credentials() !== null;
 }
 
 /** Null when the Upstash env is missing. Pages use this to render a notice. */
 export function getRedis(): Redis | null {
-  if (!redisConfigured()) return null;
-  if (!client) client = Redis.fromEnv();
+  const creds = credentials();
+  if (!creds) return null;
+  if (!client) client = new Redis(creds);
   return client;
 }
 
