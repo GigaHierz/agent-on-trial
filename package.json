@@ -26,7 +26,8 @@
     "check:buy": "tsx checks/buy-mcp.ts",
     "vote:simulate": "tsx checks/vote-simulate.ts",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit && pnpm --filter courtroom typecheck"
+    "typecheck": "tsc --noEmit && pnpm --filter courtroom typecheck",
+    "fresh:defendant": "tsx checks/fresh-defendant.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",

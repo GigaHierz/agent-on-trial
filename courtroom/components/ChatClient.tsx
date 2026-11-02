@@ -27,7 +27,8 @@ function toolName(line: LogLine): string {
 }
 
 function toolArgs(line: LogLine): string {
-  return compact(line.data?.args ?? line.data?.input);
+  const s = compact(line.data?.args ?? line.data?.input);
+  return s === '{}' ? '' : s;
 }
 
 /** The host's turn: right side, mint outline. */
@@ -132,7 +133,11 @@ function toItems(lines: LogLine[]): Item[] {
         items.push({ kind: 'tool', call: line });
         break;
       case 'tool_result': {
-        const open = [...items].reverse().find((it) => it.kind === 'tool' && !it.result) as Extract<Item, { kind: 'tool' }> | undefined;
+        // Several calls can run in parallel, so match the result to the
+        // oldest unanswered call with the same tool name, else any open call.
+        const openCalls = items.filter((it): it is Extract<Item, { kind: 'tool' }> => it.kind === 'tool' && !it.result);
+        const name = line.data?.name;
+        const open = openCalls.find((it) => it.call.data?.name === name) ?? openCalls[0];
         if (open) open.result = line;
         else items.push({ kind: 'system', line });
         break;
