@@ -44,8 +44,8 @@ export const ACTS: Record<ActName, ActSpec> = {
       [
         `You are a reviewer business now. Buy data that makes your reviews better, with the money you earned. The marketplace is ${USEBUY_URL}.`,
         'Check your balance first. Then use buy_discover to find the buy API gateway (buy/api-gateway) and fetch its free catalog with buy_curl (GET https://gateway.usebuy.ai/v1/catalog; it costs nothing).',
-        'Pick one X (Twitter) endpoint from the catalog that tells you how a business is talked about or how active it is on X, for example a post search or a user profile lookup, and that costs 0.05 USD₮ or less. Use it to check the marketing of the business you reviewed' +
-          (propertyUrl ? ` (the property at ${propertyUrl})` : '') +
+        'Pick one X (Twitter) endpoint from the catalog that tells you how a product is talked about or how active it is on X, for example a post search or a user profile lookup, and that costs 0.05 USD₮ or less. Use it to check the marketing of the product you reviewed' +
+          (propertyUrl ? ` (the page at ${propertyUrl})` : '') +
           ': search for its name or a close match.',
         'Get a quote with buy_pay_quote (POST, the exact JSON body as a string, token USDT). If the quote is 0.05 USD₮ or less, pay with buy_curl with the same URL, method and body, token USDT. Report the settlement transaction hash from the response and one sentence on what the data says about the marketing.',
         'Then write a memory entry.',

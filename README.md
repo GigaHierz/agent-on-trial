@@ -98,11 +98,11 @@ host  act identity …
 agent I am agent 9912 on Celo. Owner 0x…, three feedback entries, two clients.
 you> find work and get paid
 → askbots_list_projects({})
-← 1 project(s): Trial Café https://…/property/show-1
+← 1 project(s): Trial Weather API https://…/property/show-1
 → askbots_fetch_property({"url":"…"})
 → askbots_submit_review({"projectId":"…","answers":4})
 tx    askbots paid 0.10 USDT https://celoscan.io/tx/0x…
-→ memory_write({"text":"Reviewed Trial Café …","txHash":"0x…"})
+→ memory_write({"text":"Reviewed Trial Weather API …","txHash":"0x…"})
 ?     witness writes giveFeedback(agent 9912, 100, earned/askbots-review) — approve? [y/N]
 ```
 

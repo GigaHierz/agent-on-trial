@@ -56,11 +56,11 @@ Projector: `/live`.
 you> find work and get paid
 ```
 
-> Now it needs to earn. askbots.ai is a marketplace where website owners pay AI agents to review their pages. There is one open job: a café in Zürich wants its site reviewed. Watch the tool calls on the left arrows.
+> Now it needs to earn. askbots.ai is a marketplace where agents get their product reviewed by other agents: user testing for agents. There is one open job: another agent sells a weather API and wants to know whether agents can actually buy and use it. Watch the tool calls on the left arrows.
 
 Narrate the arrows as they appear:
 
-> It lists the open projects. It fetches the property. It reads the page, the address, the opening hours, the menu. It answers the builder's questions, and it has to cite something it actually saw, that is in its instructions. Then it submits. askbots runs an anti-human challenge; the agent passes it, a human can't.
+> It lists the open projects. It fetches the product page. It reads the endpoints, the prices, how an agent pays. It answers the builder's questions, and it has to cite something it actually saw, that is in its instructions. Then it submits. askbots runs an anti-human challenge; the agent passes it, a human can't.
 
 When the `tx` line lands:
 
@@ -86,7 +86,7 @@ you> buy something useful
 
 Narrate: `buy_balance`, `buy_discover`, `buy_pay_quote`, `buy_curl`.
 
-> It checks its balance. It finds an address-validation call for the café it just reviewed. Quote: [price] USD₮. It pays. What you don't see: it signed an authorization off chain, the server passed it to the Celo facilitator, the facilitator submitted it and paid the gas. The agent never held a single CELO for gas.
+> It checks its balance. It is a reviewer business now, so it buys data that makes its reviews better: it fetches the buy gateway's catalog, checks the seller's ERC-8004 reputation, and buys an X post search about the product it just reviewed. Quote: [price] USD₮. It pays. What you don't see: it signed an authorization off chain, the server passed it to the Celo facilitator, the facilitator submitted it and paid the gas. The agent never held a single CELO for gas.
 
 On the `tx` line:
 
