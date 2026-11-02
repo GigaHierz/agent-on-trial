@@ -3,7 +3,13 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { privateKeyToAccount } from 'viem/accounts';
 import type { Address, Hex } from 'viem';
 
-const KEY_RE = /^0x[0-9a-fA-F]{64}$/;
+const KEY_RE = /^(0x)?[0-9a-fA-F]{64}$/;
+
+/** Accept a key with or without the 0x prefix; viem wants the prefix. */
+function normalizeKey(v: string | undefined): Hex | undefined {
+  if (!v || !KEY_RE.test(v)) return undefined;
+  return (v.startsWith('0x') ? v : `0x${v}`) as Hex;
+}
 
 export type Role = 'agent' | 'counterparty' | 'witness' | 'arbitrator' | 'jury' | 'builder' | 'shady';
 
@@ -14,7 +20,7 @@ export type Role = 'agent' | 'counterparty' | 'witness' | 'arbitrator' | 'jury' 
  *   witness, arbitrator, jury, builder, shady <- their own var <- counterparty
  */
 export function roleKey(role: Role, env: NodeJS.ProcessEnv = process.env): Hex {
-  const pick = (...names: string[]) => names.map((n) => env[n]).find((v) => v && KEY_RE.test(v)) as Hex | undefined;
+  const pick = (...names: string[]) => names.map((n) => normalizeKey(env[n])).find(Boolean);
   const counterparty = pick('COUNTERPARTY_PRIVATE_KEY', 'PRIVATE_KEY_2');
   const table: Record<Role, Hex | undefined> = {
     agent: pick('AGENT_PRIVATE_KEY', 'PRIVATE_KEY'),
