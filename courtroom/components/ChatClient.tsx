@@ -187,7 +187,12 @@ export function ChatClient({ round, voteRound, gateway }: { round: string; voteR
         </div>
       </header>
       <div ref={boxRef} className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto rounded-2xl border border-line bg-ink-2/40 px-4 py-4 sm:px-5">
-        {items.length === 0 && !error && <p className="py-4 text-center text-fg-3">Waiting for the agent.</p>}
+        {items.length === 0 && !error && (
+          <div className="py-10 text-center text-fg-3">
+            <p>Waiting for the agent.</p>
+            <p className="mt-2 text-xs">The host talks to the defendant from the stage terminal. The conversation appears here as it happens.</p>
+          </div>
+        )}
         {items.map((it, i) => {
           switch (it.kind) {
             case 'host':
