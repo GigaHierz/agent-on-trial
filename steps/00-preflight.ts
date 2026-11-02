@@ -10,6 +10,9 @@ import { env, hasRole, roleAddress, type Role } from '../lib/env.js';
 import { flushLog, log } from '../lib/log.js';
 import { publish } from '../lib/publish.js';
 
+// Setup, not show: keep these lines out of the public courtroom log.
+process.env.TRIAL_PUBLISH ??= '0';
+
 /**
  * pnpm preflight
  *

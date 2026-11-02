@@ -111,7 +111,7 @@ export function LiveClient({ round, voteRound, gateway }: { round: string; voteR
   }, [lines.length]);
 
   return (
-    <main className="mx-auto flex h-[calc(100vh-57px)] max-w-4xl flex-col gap-4 px-4 py-4 sm:px-6 sm:py-6">
+    <main className="mx-auto flex h-full max-w-4xl flex-col gap-4 px-4 py-4 sm:px-6 sm:py-6">
       <header className="rounded-2xl border border-line bg-white/[0.03] p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-xl font-bold sm:text-2xl">Live transcript</h1>

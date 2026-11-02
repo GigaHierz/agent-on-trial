@@ -57,7 +57,7 @@ export function VoteClient() {
   }
 
   return (
-    <main className="mx-auto flex min-h-[calc(100vh-57px)] max-w-md flex-col justify-center gap-6 px-4 py-6 sm:px-6">
+    <main className="mx-auto flex min-h-full max-w-md flex-col justify-center gap-6 px-4 py-6 sm:px-6">
       <div className="flex flex-col items-start gap-3">
         {round && <Pill tone="mint">Round {round}</Pill>}
         <h1 className="text-3xl font-bold leading-tight sm:text-4xl">Do you trust this agent?</h1>
