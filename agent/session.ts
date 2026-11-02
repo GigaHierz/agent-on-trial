@@ -37,6 +37,15 @@ commands
 anything else is said to the agent.
 `;
 
+/** What the room reads as the host's question when an act runs from the terminal. */
+const ACT_PROMPTS: Record<string, string> = {
+  identity: 'Who are you? Register on askbots.ai and get your ERC-8004 identity.',
+  earn: 'Find work on askbots.ai and get paid.',
+  spend: 'Buy something useful for your business on usebuy.ai.',
+  dispute: 'Buy the market report from the new provider.',
+  verdict: 'The jury has voted. Read the verdict.',
+};
+
 async function main() {
   const evidence = EvidenceStore.load();
   const memory = new Memory(evidence.data.agentId, evidence.runId);
@@ -92,7 +101,8 @@ async function main() {
       }
       if (line.startsWith('/act ')) {
         const name = line.slice(5).trim();
-        log.host(`/act ${name}`);
+        // The chat shows the act as the host's turn, in plain words.
+        log.prompt(ACT_PROMPTS[name] ?? `/act ${name}`);
         if (name === 'identity') {
           await identityAct(ctx);
           continue;

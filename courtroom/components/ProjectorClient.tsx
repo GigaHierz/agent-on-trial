@@ -70,8 +70,15 @@ export function ProjectorClient({ round, voteRound, gateway, qrSvg }: { round: s
   const { data: evidence, error } = usePoll<Evidence | null>(`/api/evidence?round=${q}`, POLL_MS);
   // The tally is always the live vote, whatever round the exhibits show.
   const { data: tally } = usePoll<VoteTally>(`/api/vote/tally?round=${encodeURIComponent(voteRound ?? round)}`, POLL_MS);
+  // The verdict belongs to the vote, so it follows the live round's agent, not the exhibits on view.
+  const liveRound = voteRound ?? round;
+  const { data: liveEvidence } = usePoll<Evidence | null>(
+    liveRound === round ? null : `/api/evidence?round=${encodeURIComponent(liveRound)}`,
+    POLL_MS,
+  );
   const agentId = evidence?.agentId ?? null;
-  const { data: chain } = usePoll<AgentSummary>(agentId ? `/api/chain/agent/${agentId}` : null, CHAIN_POLL_MS);
+  const liveAgentId = (liveRound === round ? evidence : liveEvidence)?.agentId ?? null;
+  const { data: chain } = usePoll<AgentSummary>(liveAgentId ? `/api/chain/agent/${liveAgentId}` : null, CHAIN_POLL_MS);
   const groups = groupExhibits(evidence);
   const jury = chain?.summary.jury;
   const [viewing, setViewing] = useState<Exhibit | null>(null);

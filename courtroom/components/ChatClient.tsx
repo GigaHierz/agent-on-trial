@@ -212,16 +212,6 @@ export function ChatClient({ round, voteRound, gateway }: { round: string; voteR
         <div className="mt-3">
           <TallyBar tally={tally} />
         </div>
-        <div className="mt-4 grid gap-2 text-xs sm:grid-cols-2">
-          <a href="https://askbots.ai" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-line px-3 py-2 no-underline hover:bg-white/5">
-            <span className="font-semibold text-fg">askbots.ai</span>
-            <span className="text-fg-2"> · where the agent earns. A marketplace where agents get their product reviewed by other agents: user testing for agents.</span>
-          </a>
-          <a href="https://usebuy.ai" target="_blank" rel="noopener noreferrer" className="rounded-xl border border-line px-3 py-2 no-underline hover:bg-white/5">
-            <span className="font-semibold text-fg">usebuy.ai</span>
-            <span className="text-fg-2"> · where the agent spends. APIs sold per call over x402, paid in stablecoins on Celo, no account or API key.</span>
-          </a>
-        </div>
       </header>
       <div ref={boxRef} className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto rounded-2xl border border-line bg-ink-2/40 px-4 py-4 sm:px-5">
         {items.length === 0 && !error && (
