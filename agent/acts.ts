@@ -11,6 +11,15 @@ export interface ActSpec {
 
 const MEMORY = ['memory_read', 'memory_write'];
 
+/** What the room reads as the host's question when an act runs, from the session or as a script. */
+export const ACT_PROMPTS: Record<string, string> = {
+  identity: 'Who are you? Register on askbots.ai and get your ERC-8004 identity.',
+  earn: 'Find work on askbots.ai and get paid.',
+  spend: 'Buy something useful for your business on usebuy.ai.',
+  dispute: 'Buy the market report from the new provider.',
+  verdict: 'The jury has voted. Read the verdict.',
+};
+
 /**
  * What the host asks for, as the model sees it. The session also accepts free
  * text; these are the scripted versions the non-interactive act scripts use.

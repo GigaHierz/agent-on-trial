@@ -14,6 +14,7 @@ import { disputeAct } from '../steps/04-dispute.js';
 import { verdictAct } from '../steps/05-verdict.js';
 import type { ActContext } from './context.js';
 import { crossExamine, type Role } from './cross.js';
+import { ACT_PROMPTS } from './acts.js';
 import { allTools, runTurn } from './loop.js';
 import { disconnectBuy } from './tools/buy-mcp.js';
 import { Memory } from './tools/memory.js';
@@ -36,15 +37,6 @@ commands
   /help  /quit
 anything else is said to the agent.
 `;
-
-/** What the room reads as the host's question when an act runs from the terminal. */
-const ACT_PROMPTS: Record<string, string> = {
-  identity: 'Who are you? Register on askbots.ai and get your ERC-8004 identity.',
-  earn: 'Find work on askbots.ai and get paid.',
-  spend: 'Buy something useful for your business on usebuy.ai.',
-  dispute: 'Buy the market report from the new provider.',
-  verdict: 'The jury has voted. Read the verdict.',
-};
 
 async function main() {
   const evidence = EvidenceStore.load();
