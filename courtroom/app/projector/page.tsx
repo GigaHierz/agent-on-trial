@@ -23,12 +23,15 @@ export default async function ProjectorPage({ searchParams }: { searchParams: Pr
       </>
     );
   }
-  const round = r && RoundId.safeParse(r).success ? r : await currentRound().catch(() => DEFAULT_ROUND);
-  const svg = await qrSvg(`${baseUrl()}/vote?r=${encodeURIComponent(round)}`);
+  // Exhibits follow the round in the URL (the nav switch); the vote, the QR
+  // and the tally always follow the live round set on the bench.
+  const live = await currentRound().catch(() => DEFAULT_ROUND);
+  const round = r && RoundId.safeParse(r).success ? r : live;
+  const svg = await qrSvg(`${baseUrl()}/vote`);
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <Nav />
-      <ProjectorClient round={round} gateway={gatewayUrl()} qrSvg={svg} />
+      <ProjectorClient round={round} voteRound={live} gateway={gatewayUrl()} qrSvg={svg} />
     </div>
   );
 }

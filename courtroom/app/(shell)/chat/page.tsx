@@ -17,6 +17,7 @@ export default async function ChatPage({ searchParams }: { searchParams: Promise
       </main>
     );
   }
-  const round = r && RoundId.safeParse(r).success ? r : await currentRound().catch(() => DEFAULT_ROUND);
-  return <ChatClient round={round} gateway={gatewayUrl()} />;
+  const live = await currentRound().catch(() => DEFAULT_ROUND);
+  const round = r && RoundId.safeParse(r).success ? r : live;
+  return <ChatClient round={round} voteRound={live} gateway={gatewayUrl()} />;
 }
