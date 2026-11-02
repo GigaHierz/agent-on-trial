@@ -1,9 +1,11 @@
 'use client';
 
 import type { Evidence, Exhibit, VoteTally } from '@trial/shared';
+import { useCallback, useState } from 'react';
 import type { AgentSummary } from '@/lib/chain';
-import { COLUMN_TITLES, exhibitHref } from '@/lib/links';
+import { COLUMN_TITLES, exhibitHref, swarmTarget } from '@/lib/links';
 import { usePoll } from '@/lib/use-poll';
+import { SwarmModal } from './SwarmModal';
 import { TallyBar } from './TallyBar';
 
 const POLL_MS = 2000;
@@ -26,8 +28,11 @@ function Badge({ children, tone }: { children: string; tone: 'muted' | 'data' })
   return <span className={`rounded border px-2 py-0.5 text-sm uppercase tracking-wide ${cls}`}>{children}</span>;
 }
 
-function ExhibitRow({ ex, gateway }: { ex: Exhibit; gateway: string }) {
+function ExhibitRow({ ex, gateway, onOpenSwarm }: { ex: Exhibit; gateway: string; onOpenSwarm: (ex: Exhibit) => void }) {
   const link = exhibitHref(ex, gateway);
+  const swarm = swarmTarget(ex, gateway);
+  // A tx exhibit keeps its celoscan link; its evidence file on Swarm gets its own button.
+  const linkIsSwarm = !!swarm && link?.href === swarm.url;
   const isData = ex.uri?.startsWith('data:') && !ex.gatewayUrl;
   const isVerdict = ex.id.startsWith('V');
   return (
@@ -41,10 +46,15 @@ function ExhibitRow({ ex, gateway }: { ex: Exhibit; gateway: string }) {
           {ex.title}
         </p>
         <div className="mt-1 flex flex-wrap items-center gap-2">
-          {link && (
+          {link && !linkIsSwarm && (
             <a href={link.href} target="_blank" rel="noreferrer" className="text-base text-sky-300 underline">
               {link.label}
             </a>
+          )}
+          {swarm && (
+            <button type="button" onClick={() => onOpenSwarm(ex)} className="text-base text-violet-300 underline hover:text-violet-200">
+              swarm
+            </button>
           )}
           {isData && <Badge tone="data">data</Badge>}
           {ex.fixture && <Badge tone="muted">recorded</Badge>}
@@ -62,6 +72,9 @@ export function ProjectorClient({ round, gateway, qrSvg }: { round: string; gate
   const { data: chain } = usePoll<AgentSummary>(agentId ? `/api/chain/agent/${agentId}` : null, CHAIN_POLL_MS);
   const groups = groupExhibits(evidence);
   const jury = chain?.summary.jury;
+  const [viewing, setViewing] = useState<Exhibit | null>(null);
+  const viewingTarget = viewing ? swarmTarget(viewing, gateway) : null;
+  const closeViewer = useCallback(() => setViewing(null), []);
 
   return (
     <div className="grid h-screen w-screen grid-rows-[auto_1fr_auto] overflow-hidden px-10 py-6">
@@ -75,14 +88,14 @@ export function ProjectorClient({ round, gateway, qrSvg }: { round: string; gate
 
       <section className="grid min-h-0 grid-cols-4 gap-8">
         {COLUMNS.map((col) => (
-          <div key={col} className="min-h-0 overflow-hidden">
-            <h2 className="mb-2 border-b-2 border-neutral-600 pb-2 text-2xl font-semibold">
+          <div key={col} className="flex min-h-0 flex-col">
+            <h2 className="mb-2 shrink-0 border-b-2 border-neutral-600 pb-2 text-2xl font-semibold">
               <span className="mr-3 font-mono text-neutral-400">{col}</span>
               {COLUMN_TITLES[col]}
             </h2>
-            <ul>
+            <ul className="min-h-0 flex-1 overflow-y-auto pr-2">
               {groups[col]?.map((ex) => (
-                <ExhibitRow key={ex.id} ex={ex} gateway={gateway} />
+                <ExhibitRow key={ex.id} ex={ex} gateway={gateway} onOpenSwarm={setViewing} />
               ))}
             </ul>
             {(groups[col]?.length ?? 0) === 0 && <p className="py-2 text-lg text-neutral-600">Nothing yet.</p>}
@@ -110,6 +123,8 @@ export function ProjectorClient({ round, gateway, qrSvg }: { round: string; gate
           )}
         </div>
       </footer>
+
+      {viewing && viewingTarget && <SwarmModal exhibit={viewing} target={viewingTarget} onClose={closeViewer} />}
     </div>
   );
 }

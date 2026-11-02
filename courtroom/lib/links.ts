@@ -17,6 +17,15 @@ export function exhibitHref(ex: Exhibit, gateway: string): { href: string; label
   return null;
 }
 
+/** The Swarm reference behind an exhibit and its gateway URL, when it has one. */
+export function swarmTarget(ex: Exhibit, gateway: string): { ref: string; url: string } | null {
+  const fromUri = ex.uri?.startsWith('bzz://') ? ex.uri.slice('bzz://'.length) : null;
+  const fromGateway = ex.gatewayUrl?.match(/\/bzz\/([0-9a-fA-F]{64})/)?.[1] ?? null;
+  const ref = fromUri ?? fromGateway;
+  if (!ref) return null;
+  return { ref, url: ex.gatewayUrl ?? bzzUrl(ref, gateway) };
+}
+
 export const COLUMN_TITLES: Record<string, string> = {
   A: 'Identity',
   B: 'Payments',
