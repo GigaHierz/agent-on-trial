@@ -184,6 +184,10 @@ evidence/     submission template, fixtures, the current run
 docs/         run of show, spoken script, standards, plug-in guides
 ```
 
+## On the day
+
+The show runbook, with the T-30 checks, the prompts to type, the emergency moves and the test checklist, is a Google Doc: [An Agent on Trial: Show Runbook](https://docs.google.com/document/d/1FRj1cLssjvnJGvfquivcPSqh6BQoLPrJth8h9TDr4lc/edit). The spoken script is [docs/SCRIPT.md](docs/SCRIPT.md); the minute table is [docs/RUN-OF-SHOW.md](docs/RUN-OF-SHOW.md); the Kleros act on its own is [docs/RUN-THE-DISPUTE.md](docs/RUN-THE-DISPUTE.md).
+
 ## Costs
 
 One run: 0.11 USD₮ to fund the askbots project, 0.10 USD₮ back to the agent, 0.03 USD₮ in x402 purchases, about 0.05 CELO in gas across six transactions.
