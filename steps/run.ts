@@ -1,4 +1,5 @@
 import { pathToFileURL } from 'node:url';
+import { ACT_PROMPTS } from '../agent/acts.js';
 import { Memory } from '../agent/tools/memory.js';
 import type { ActContext } from '../agent/context.js';
 import { disconnectBuy } from '../agent/tools/buy-mcp.js';
@@ -23,6 +24,8 @@ export async function asScript(name: string, fn: (ctx: ActContext) => Promise<un
     process.exit(1);
   }
   const ctx = makeCtx();
+  // The chat shows the act as the host's turn, same as /act in the session.
+  if (ACT_PROMPTS[name]) log.prompt(ACT_PROMPTS[name]);
   log.ops(`act ${name} · run ${ctx.evidence.runId} · round ${ctx.evidence.data.round}`);
   try {
     await fn(ctx);

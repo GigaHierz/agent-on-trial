@@ -44,21 +44,21 @@ export function DisputeLiveCard({ round }: { round: string }) {
                 : 'No dispute yet tonight. It starts when the agent buys the report.';
 
   return (
-    <section aria-live="polite" className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6">
-      <p className="font-mono text-sm uppercase tracking-wide text-neutral-500">
+    <section aria-live="polite" className="rounded-2xl border border-line bg-white/[0.03] p-6">
+      <p className="eyebrow text-fg-3">
         {recorded ? 'Recorded dispute' : rehearsal ? 'Rehearsal' : 'Tonight’s dispute'} · round {round}
       </p>
       <p className="mt-2 text-2xl leading-snug">{opened ? `Dispute ${id} opened` : 'Waiting for the case'}</p>
       <ol className="mt-4 grid grid-cols-3 gap-2 text-sm">
         {['Filed', 'Jurors vote', 'Ruled'].map((label, i) => (
-          <li key={label} className={`step rounded-md border px-3 py-2 ${step > i ? 'is-done border-emerald-600/60 text-emerald-300' : 'border-neutral-700 text-neutral-500'} ${step === i + 1 && i === 1 && !ruled.length && !noFeedback ? 'is-live' : ''}`}>
+          <li key={label} className={`step rounded-md border px-3 py-2 ${step > i ? 'is-done border-mint/60 text-mint' : 'border-line text-fg-3'} ${step === i + 1 && i === 1 && !ruled.length && !noFeedback ? 'is-live' : ''}`}>
             {label}
           </li>
         ))}
       </ol>
-      <p className="mt-4 text-lg text-neutral-300">{status}</p>
+      <p className="mt-4 text-lg text-fg-2">{status}</p>
       {ruled.length > 0 && (
-        <ul className="mt-3 space-y-1 font-mono text-base text-neutral-400">
+        <ul className="mt-3 space-y-1 font-mono text-base text-fg-2">
           {ruled.map((e) => (
             <li key={e.id}>
               {e.id} {e.title.replace(DRY, '')}
@@ -67,7 +67,7 @@ export function DisputeLiveCard({ round }: { round: string }) {
         </ul>
       )}
       {caseUrl && (
-        <a href={caseUrl} target="_blank" rel="noreferrer" className="mt-4 inline-block text-lg text-sky-300 underline">
+        <a href={caseUrl} target="_blank" rel="noreferrer" className="mt-4 inline-block text-lg text-mint underline">
           Open the case in Kleros Court
         </a>
       )}

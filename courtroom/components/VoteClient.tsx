@@ -1,28 +1,29 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { VoteTally } from '@trial/shared';
 import { TallyBar } from './TallyBar';
+import { Button } from './ui/Button';
+import { Pill } from './ui/Pill';
 
 type Choice = 'trust' | 'distrust';
 
 export function VoteClient() {
-  const params = useSearchParams();
-  const fromQuery = params.get('r');
-  const [round, setRound] = useState<string | null>(fromQuery);
+  // The vote is always the live round set on the bench. A round in the URL
+  // (old QR codes, the test-data switch) is ignored on purpose: no rehearsal
+  // tally ever mixes with the room's votes.
+  const [round, setRound] = useState<string | null>(null);
   const [tally, setTally] = useState<VoteTally | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (fromQuery) return;
     fetch('/api/round', { cache: 'no-store' })
       .then((r) => r.json() as Promise<{ round?: string; error?: string }>)
       .then((b) => (b.round ? setRound(b.round) : setMessage(b.error ?? 'No round.')))
       .catch(() => setMessage('Could not load the round.'));
-  }, [fromQuery]);
+  }, []);
 
   async function vote(choice: Choice) {
     if (!round || busy) return;
@@ -56,37 +57,25 @@ export function VoteClient() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-8 px-6 py-10">
-      <div>
-        <h1 className="text-4xl font-bold leading-tight">Do you trust this agent?</h1>
-        <p className="mt-2 text-neutral-400">
-          One vote per device. The result is written on chain as ERC-8004 feedback.
-          {round && <span className="font-mono"> Round {round}.</span>}
-        </p>
+    <main className="mx-auto flex min-h-full max-w-md flex-col justify-center gap-6 px-4 py-6 sm:px-6">
+      <div className="flex flex-col items-start gap-3">
+        {round && <Pill tone="mint">Round {round}</Pill>}
+        <h1 className="text-3xl font-bold leading-tight sm:text-4xl">Do you trust this agent?</h1>
+        <p className="text-sm text-fg-2 sm:text-base">One vote per device. The result is written on chain as ERC-8004 feedback.</p>
       </div>
 
       {!done && (
-        <div className="grid gap-4">
-          <button
-            type="button"
-            disabled={!round || busy}
-            onClick={() => vote('trust')}
-            className="rounded-2xl bg-emerald-500 py-8 text-4xl font-bold text-neutral-950 active:scale-[0.98] disabled:opacity-50"
-          >
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Button variant="primary" size="xl" disabled={!round || busy} onClick={() => vote('trust')}>
             Trust
-          </button>
-          <button
-            type="button"
-            disabled={!round || busy}
-            onClick={() => vote('distrust')}
-            className="rounded-2xl bg-rose-500 py-8 text-4xl font-bold text-neutral-950 active:scale-[0.98] disabled:opacity-50"
-          >
+          </Button>
+          <Button variant="danger" size="xl" disabled={!round || busy} onClick={() => vote('distrust')}>
             Don&apos;t trust
-          </button>
+          </Button>
         </div>
       )}
 
-      {message && <p className="text-2xl">{message}</p>}
+      {message && <p className="text-xl text-fg">{message}</p>}
       {tally && <TallyBar tally={tally} />}
     </main>
   );

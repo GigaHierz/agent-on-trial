@@ -1,21 +1,33 @@
 import { spawn } from 'node:child_process';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { join, resolve } from 'node:path';
-import { TOKENS } from '@trial/shared';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { dirname, join, resolve } from 'node:path';
+import { DEMO_TOKEN, TOKENS } from '@trial/shared';
 import { erc20Abi, formatUnits, isAddress, isAddressEqual, parseEventLogs, type Address, type Hex } from 'viem';
 import { publicClient } from './clients.js';
 import { env, roleKey } from './env.js';
 
 /**
  * The `buy` CLI (npm @celo/buy) is the defendant's wallet for x402. State
- * lives under BUY_HOME inside the repo, with the file keystore so nothing
- * prompts the macOS keychain on stage.
+ * lives under BUY_HOME inside the repo. Since @celo/buy 0.8 the plaintext
+ * file keystore refuses mainnet accounts, so the default is the OS keychain
+ * (`system`); the first access on a new machine asks once, answer "Always
+ * Allow". Override with BUY_KEYSTORE_BACKEND=file for a testnet rehearsal.
  */
 export const ACCOUNT = 'defendant';
 
-export function buyBin(): string {
-  const local = resolve('node_modules/.bin/buy');
-  return existsSync(local) ? local : 'buy';
+/**
+ * How to start the buy CLI. The installed package's JS entry runs under this
+ * node, which works on Windows too, where node_modules/.bin/buy is a shell
+ * script that spawn cannot start. Falls back to `buy` on PATH.
+ */
+export function buyCommand(): { command: string; args: string[] } {
+  try {
+    const pkg = createRequire(import.meta.url).resolve('@celo/buy/package.json');
+    return { command: process.execPath, args: [join(dirname(pkg), 'dist', 'main.js')] };
+  } catch {
+    return { command: 'buy', args: [] };
+  }
 }
 
 export function buyEnv(extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
@@ -30,7 +42,8 @@ export function buyEnv(extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
 
 export function runBuy(args: string[], opts: { env?: NodeJS.ProcessEnv; input?: string } = {}): Promise<{ code: number; stdout: string; stderr: string }> {
   return new Promise((res, rej) => {
-    const child = spawn(buyBin(), args, { env: buyEnv(opts.env), stdio: ['pipe', 'pipe', 'pipe'] });
+    const buy = buyCommand();
+    const child = spawn(buy.command, [...buy.args, ...args], { env: buyEnv(opts.env), stdio: ['pipe', 'pipe', 'pipe'] });
     let stdout = '';
     let stderr = '';
     child.stdout.on('data', (d) => (stdout += d));
@@ -111,6 +124,13 @@ export async function settlementPayee(txHash: Hex, payer: Address, asset?: strin
   return transfers.find((t) => isAddressEqual(t.args.from, payer) && (!asset || !isAddress(asset) || isAddressEqual(t.address, asset)) && (exact === undefined || t.args.value === exact))?.args.to;
 }
 
+/** Human figures for a receipt: amount is stored in atomic units and asset as an address. */
+export function describeReceipt(r: Receipt): { amount: string; asset: string } {
+  const atomic = /^\d+$/.test(r.amount);
+  const symbol = r.asset.toLowerCase() === DEMO_TOKEN.address.toLowerCase() ? DEMO_TOKEN.display : r.asset.startsWith('0x') ? `${r.asset.slice(0, 6)}…` : r.asset;
+  return { amount: atomic ? formatUnits(BigInt(r.amount), DEMO_TOKEN.decimals) : r.amount, asset: symbol };
+}
+
 /** Receipts newer than `since`, newest first. */
 export function receiptsSince(since: number): Receipt[] {
   return readReceipts()
@@ -145,5 +165,6 @@ export async function buyWhoami(): Promise<string> {
 
 /** Args for `buy mcp serve` so the agent loop can spawn it over stdio. */
 export function mcpServeCommand(): { command: string; args: string[]; env: NodeJS.ProcessEnv } {
-  return { command: buyBin(), args: ['mcp', 'serve', '--account', ACCOUNT], env: buyEnv() };
+  const buy = buyCommand();
+  return { command: buy.command, args: [...buy.args, 'mcp', 'serve', '--account', ACCOUNT], env: buyEnv() };
 }

@@ -8,7 +8,7 @@ import { getStorage } from '../../adapters/storage/index.js';
 import { approve } from '../../lib/approve.js';
 import { paidAmount, settlementPayee } from '../../lib/buy.js';
 import { env, hasRole, roleAddress } from '../../lib/env.js';
-import { log } from '../../lib/log.js';
+import { log, showUri } from '../../lib/log.js';
 import { SHADY_REPORT_URL } from '../../shady-provider/gate.js';
 import { shadyChallenge } from './dry-run-buy.js';
 import { lastArtifact, type ActContext } from '../context.js';
@@ -133,7 +133,7 @@ export function disputeTools(ctx: ActContext) {
         deliveredHash: delivered.hash,
         claim: input.claim,
       });
-      log.toolResult('open_dispute', `${result.disputeId} evidence ${result.uri.slice(0, 40)}…`);
+      log.toolResult('open_dispute', `${result.disputeId} evidence ${showUri(result.uri)}`);
       const status = result.detail?.simulated ? 'simulated: nothing was filed and no dispute exists' : 'open';
       return JSON.stringify({ disputeId: result.disputeId, evidenceUri: result.uri, url: result.url, status });
     },

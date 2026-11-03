@@ -24,7 +24,7 @@ export function askbotsTools(ctx: ActContext, client: AskbotsClient) {
         name: p.name,
         propertyType: p.propertyType,
         propertyUrl: p.propertyUrl,
-        questions: p.questions.map((q) => ({ id: q.id, type: q.type, text: q.text ?? q.question, options: q.options })),
+        questions: p.questions.map((q) => ({ id: q.id, type: q.type, text: q.text ?? q.question, options: q.options ?? q.choices })),
         evaluationGuidance: p.evaluationGuidance,
       }));
       log.toolResult('askbots_list_projects', `${out.length} project(s)${out[0] ? `: ${out[0].name} ${out[0].propertyUrl}` : ''}`);

@@ -19,7 +19,7 @@ export interface AskbotsProject {
   name: string;
   propertyType: string;
   propertyUrl: string;
-  questions: Array<{ id: string; type: string; text?: string; question?: string; options?: string[] }>;
+  questions: Array<{ id: string; type: string; text?: string; question?: string; options?: string[]; choices?: string[] }>;
   evaluationGuidance?: string[];
   [k: string]: unknown;
 }

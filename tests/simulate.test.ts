@@ -43,10 +43,11 @@ const sim = vi.hoisted(() => ({
 vi.mock('../lib/log.js', () => {
   const rec = (kind: string) => (...a: unknown[]) => void sim.lines.push(`${kind.padEnd(6)} ${a.map((x) => (typeof x === 'string' ? x : JSON.stringify(x))).join(' ')}`);
   return {
-    log: { host: rec('host'), agent: rec('agent'), toolCall: rec('call'), toolResult: rec('result'), tx: rec('tx'), info: rec('info'), warn: rec('warn'), error: rec('error'), approve: rec('ok?'), ops: rec('info'), opsWarn: rec('warn') },
+    log: { host: rec('host'), agent: rec('agent'), toolCall: rec('call'), toolResult: rec('result'), tx: rec('tx'), info: rec('info'), warn: rec('warn'), error: rec('error'), approve: rec('ok?'), ops: rec('info'), opsWarn: rec('warn'), prompt: rec('host') },
     setMirror: () => {},
     flushLog: async () => {},
     redact: (x: unknown) => x,
+    showUri: (uri: string, gatewayUrl?: string) => gatewayUrl ?? uri,
     setLogRound: () => {},
   };
 });

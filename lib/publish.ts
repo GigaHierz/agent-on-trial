@@ -6,6 +6,8 @@ import { env } from './env.js';
  * here is best effort: a dead courtroom must never stop the show.
  */
 function enabled(): boolean {
+  // TRIAL_PUBLISH=0 keeps setup scripts (preflight, shady:register) out of the public log.
+  if (process.env.TRIAL_PUBLISH === '0') return false;
   // A dry run never reaches a deployed courtroom: posting evidence there would replace the show's board and agent id.
   if (env.dryRun && !/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(env.courtroomUrl)) return false;
   return Boolean(env.courtroomUrl && env.hostSecret);

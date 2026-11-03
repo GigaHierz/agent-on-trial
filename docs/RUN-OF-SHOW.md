@@ -12,7 +12,7 @@ Acts run only as `/act <name>`: free text goes to the agent as a conversation an
 - [ ] Courtroom deployed. `/bench` opened once with the secret so the host cookie is set on the stage laptop and phone.
 - [ ] `pnpm rehearse --record` green on the final build. `evidence/fixtures.json` committed.
 - [ ] The defendant has at least ten judged reviews on askbots. `pnpm askbots:cron` run; `pnpm act:identity` shows the `askbots` tag in the reputation summary.
-- [ ] `buy whoami` runs without a keychain prompt. buy 0.8 signs on mainnet only from the OS keychain (`BUY_KEYSTORE_BACKEND=system`, the default); preflight imports the agent key there once.
+- [ ] `buy whoami` runs without a keychain prompt. The key sits in the macOS keychain (the file backend refuses mainnet since @celo/buy 0.8); on first access click "Always Allow" so the stage run never prompts.
 - [ ] Phone hotspot tested as the laptop's network.
 
 ## T-30 min

@@ -5,7 +5,7 @@ import { approveModeOn, setApproveMode, setPrompter } from '../lib/approve.js';
 import { AskbotsClient, loadCreds } from '../lib/askbots.js';
 import { env } from '../lib/env.js';
 import { EvidenceStore } from '../lib/evidence.js';
-import { flushLog, log } from '../lib/log.js';
+import { flushLog, log, showUri } from '../lib/log.js';
 import { publish } from '../lib/publish.js';
 import { identityAct } from '../steps/01-identity.js';
 import { earnAct } from '../steps/02-earn.js';
@@ -15,6 +15,7 @@ import { rulingAct } from '../steps/04-ruling.js';
 import { verdictAct } from '../steps/05-verdict.js';
 import type { ActContext } from './context.js';
 import { crossExamine, type Role } from './cross.js';
+import { ACT_PROMPTS } from './acts.js';
 import { allTools, runTurn } from './loop.js';
 import { disconnectBuy } from './tools/buy-mcp.js';
 import { Memory } from './tools/memory.js';
@@ -76,7 +77,7 @@ async function main() {
       }
       if (line === '/exhibits') {
         for (const e of evidence.data.exhibits) {
-          console.log(`  ${e.id.padEnd(3)} ${e.title}${e.txHash ? `  ${celoscanTx(e.txHash)}` : ''}${e.uri ? `  ${e.uri.slice(0, 48)}…` : ''}${e.fixture ? '  (recorded)' : ''}`);
+          console.log(`  ${e.id.padEnd(3)} ${e.title}${e.txHash ? `  ${celoscanTx(e.txHash)}` : ''}${e.uri ? `  ${showUri(e.uri, e.gatewayUrl)}` : ''}${e.fixture ? '  (recorded)' : ''}`);
         }
         continue;
       }
@@ -87,7 +88,7 @@ async function main() {
         continue;
       }
       if (line.startsWith('/ask ')) {
-        log.host(line.slice(5));
+        log.prompt(line.slice(5));
         await crossExamine({ role: 'defendant', question: line.slice(5), evidence, memory });
         continue;
       }
@@ -100,7 +101,8 @@ async function main() {
       }
       if (line.startsWith('/act ')) {
         const name = line.slice(5).trim();
-        log.host(`/act ${name}`);
+        // The chat shows the act as the host's turn, in plain words.
+        log.prompt(ACT_PROMPTS[name] ?? `/act ${name}`);
         if (env.dryRun && name !== 'dispute' && name !== 'ruling') {
           log.warn(`dry run: only /act dispute and /act ruling are rehearsed; /act ${name} would move money or sign on Celo`);
           continue;
@@ -118,7 +120,7 @@ async function main() {
         continue;
       }
       // Free text: talk to the agent with every tool it has.
-      log.host(line);
+      log.prompt(line);
       const tools = await allTools(ctx, await askbotsFromCreds());
       await runTurn({ ctx, tools, messages, userText: line });
     } catch (err) {

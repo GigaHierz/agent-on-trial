@@ -1,3 +1,254 @@
 {
-  "acts": {}
+  "recordedAt": "2026-11-02T21:26:27.632Z",
+  "agentId": "10023",
+  "agentAddress": "0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9",
+  "shadyAgentId": "10019",
+  "acts": {
+    "identity": [
+      {
+        "id": "A1",
+        "act": "identity",
+        "kind": "tx",
+        "title": "ERC-8004 identity minted: agent 10023",
+        "at": "2026-11-02T21:22:16.850Z",
+        "txHash": "0xb83ebb3242e781fc9f4381fb4d1d024d70de047c43a453ad028948944fce75b0",
+        "url": "https://celoscan.io/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+        "detail": {
+          "agentId": "10023",
+          "owner": "0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9",
+          "agentURI": "https://agent-on-trial.xyz/agent/registration.json",
+          "erc8021": {
+            "codes": [
+              "celo_34c708dd4a42"
+            ],
+            "schemaId": 0
+          }
+        },
+        "fixture": true
+      },
+      {
+        "id": "A2",
+        "act": "identity",
+        "kind": "http",
+        "title": "askbots.ai bot profile created and linked to agent 10023",
+        "at": "2026-11-02T21:22:18.888Z",
+        "url": "https://askbots.ai/leaderboard",
+        "detail": {
+          "profileId": "jx7e235t7gv7z370e801t59dsh8hfvmn",
+          "celoAddress": "0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9",
+          "linkMessage": "AskBots: link ERC-8004 agent 10023 on chain 42220 to AskBots account kn7fz4mrpgm99fwtjzzqxgb2318hf51s (wallet 0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9)"
+        },
+        "fixture": true
+      },
+      {
+        "id": "A3",
+        "act": "identity",
+        "kind": "read",
+        "title": "Reputation before the trial: none",
+        "at": "2026-11-02T21:22:19.390Z",
+        "detail": {
+          "clients": 0,
+          "summaries": [],
+          "recent": []
+        },
+        "fixture": true
+      }
+    ],
+    "earn": [
+      {
+        "id": "C1",
+        "act": "earn",
+        "kind": "ref",
+        "title": "Memory after earning (1 entries)",
+        "at": "2026-11-02T21:23:04.206Z",
+        "uri": "bzz://e7e58f87f9c24642520764d40dbef80f2302edb8a540b25bf85ec8b560365fe4",
+        "hash": "0x83f2b3aeaf45c44875fb708adc9c48ab68e377989a318061db813b13d9dca8d9",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/e7e58f87f9c24642520764d40dbef80f2302edb8a540b25bf85ec8b560365fe4/",
+        "fixture": true
+      },
+      {
+        "id": "B1",
+        "act": "earn",
+        "kind": "tx",
+        "title": "Paid 0.10 USD₮ by askbots.ai for reviewing \"Trial Weather API (3 Nov rehearsal 3): is it ready for agent customers?\"",
+        "at": "2026-11-02T21:23:04.208Z",
+        "txHash": "0xdd2eda77247ae100eb26a54d01bf7c9d40bc866b1ef29797077721a52f063458",
+        "url": "https://celoscan.io/token/0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e?a=0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9",
+        "detail": {
+          "projectId": "k178af7nsrdh0bkd5tabsn6jjd8hekz5",
+          "from": "0x58166D5422717F3Db0c4c76139dE6FB11D4a09cf",
+          "token": "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e"
+        },
+        "fixture": true
+      },
+      {
+        "id": "A4",
+        "act": "earn",
+        "kind": "tx",
+        "title": "Feedback \"earned\" written by the witness, evidence hashed on chain",
+        "at": "2026-11-02T21:23:07.406Z",
+        "txHash": "0x3208c0b4cf9ce76cd2d6dac819ce6500ed60122dfe90c4763af9bf7818f21fda",
+        "uri": "bzz://853a5e398b14d95195f5ad7873045208cd253f736a959e5a3edbad7a0f551ef2",
+        "hash": "0x80ba5218dc3ed8ca30ddeee9864c1b2b4dcdd48ddafc9b7fe09f77749f024d6d",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/853a5e398b14d95195f5ad7873045208cd253f736a959e5a3edbad7a0f551ef2/",
+        "detail": {
+          "tag1": "earned",
+          "tag2": "askbots-review",
+          "value": 100,
+          "client": "0x0d4C6b41047606d6992F5ca1d97BA19fFb3Ad70e"
+        },
+        "fixture": true
+      }
+    ],
+    "spend": [
+      {
+        "id": "C2",
+        "act": "spend",
+        "kind": "ref",
+        "title": "Memory after spending (2 entries)",
+        "at": "2026-11-02T21:24:20.295Z",
+        "uri": "bzz://81028660f806dfad0d0122ac16f4e75b6749e037cc4e8b7b798ab948a4eb0170",
+        "hash": "0xd8f95aa0ad1736ee499c5f1646987d6371dbf34f1aa9838d46730d8ea5a51e4f",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/81028660f806dfad0d0122ac16f4e75b6749e037cc4e8b7b798ab948a4eb0170/",
+        "fixture": true
+      },
+      {
+        "id": "B2",
+        "act": "spend",
+        "kind": "tx",
+        "title": "Paid 0.005 USD₮ through x402 for /v1/social/x/posts/search",
+        "at": "2026-11-02T21:24:21.024Z",
+        "txHash": "0xe66626a4bea02c9fc77f7d42ee660e3ef98e5f198b1c7b447ad6d2cf066d4a37",
+        "detail": {
+          "url": "https://gateway.usebuy.ai/v1/social/x/posts/search",
+          "network": "celo",
+          "settledBy": "api.x402.celo.org"
+        },
+        "fixture": true
+      },
+      {
+        "id": "C3",
+        "act": "spend",
+        "kind": "ref",
+        "title": "x402 receipt stored",
+        "at": "2026-11-02T21:24:21.026Z",
+        "uri": "bzz://7107bd4d295a13ac7b7b8a6ace44308b0b34d525c50302bfc03f9ec304ee96ed",
+        "hash": "0xd8636d4112fe8d43d5ecbc4e055526fd77a41564440739a9de2fc4eeee5a368b",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/7107bd4d295a13ac7b7b8a6ace44308b0b34d525c50302bfc03f9ec304ee96ed/",
+        "fixture": true
+      },
+      {
+        "id": "A5",
+        "act": "spend",
+        "kind": "tx",
+        "title": "Feedback \"paid\" written by the witness, receipt hashed on chain",
+        "at": "2026-11-02T21:24:24.462Z",
+        "txHash": "0x6b404d9d35c0c6ce06e8ce8104929ed8178071b543bb0ec881a738a80c4c726b",
+        "uri": "bzz://bc45fe50b10debab4b179960001c1a0876d65b73ca1c88d7e2bcf0a79e233400",
+        "hash": "0x81543d4d52e299487155936cee39ec12d1bf0203c088235b93076b2d7aff37d6",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/bc45fe50b10debab4b179960001c1a0876d65b73ca1c88d7e2bcf0a79e233400/",
+        "detail": {
+          "tag1": "paid",
+          "tag2": "x402-exact",
+          "value": 100,
+          "client": "0x0d4C6b41047606d6992F5ca1d97BA19fFb3Ad70e"
+        },
+        "fixture": true
+      }
+    ],
+    "dispute": [
+      {
+        "id": "B3",
+        "act": "dispute",
+        "kind": "tx",
+        "title": "Paid 0.01 USD₮ through x402 to the shady provider",
+        "at": "2026-11-02T21:25:17.219Z",
+        "txHash": "0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94",
+        "detail": {
+          "url": "http://localhost:4402/report/celo",
+          "payTo": "0xF682D5d33db61E497d7D71aC8181050C3Ce1148d"
+        },
+        "fixture": true
+      },
+      {
+        "id": "C4",
+        "act": "dispute",
+        "kind": "ref",
+        "title": "What the provider delivered, stored verbatim",
+        "at": "2026-11-02T21:25:17.223Z",
+        "uri": "bzz://05bde3b67a0a8e715648b9790b491206e0c30642b44f985b3fd46ed926c1037a",
+        "hash": "0xa161dc50900ed05ba4a73b38aa47820f476a50335ba8818f8ee778d9c4859506",
+        "fixture": true
+      },
+      {
+        "id": "D1",
+        "act": "dispute",
+        "kind": "ref",
+        "title": "Dispute local-cb8be769e506 opened (local adapter)",
+        "at": "2026-11-02T21:25:17.226Z",
+        "uri": "bzz://201df5ff6515b9f998a7a4a05dc3ff440a4728a180f0f700de57a5371a45f042",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/201df5ff6515b9f998a7a4a05dc3ff440a4728a180f0f700de57a5371a45f042/",
+        "detail": {
+          "expected": "a Celo market report with sections: price, volume, sources",
+          "claim": "I paid 0.01 USDT on Celo (tx 0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94) to http://localhost:4402/report/celo. The 402 challenge described it as \"Celo market report with sections price, volume, sources\". The provider returned HTTP 200 with a JSON body that holds one \"report\" string of generic sentiment (\"strong fundamentals, positive sentiment, broad adoption. Confidence: high.\") and a \"generatedBy\" field. It has no price section and no price figure. It has no volume section and no volume figure. It has no sources section and cites nothing. None of the three advertised sections was delivered, so the response does not match the spec. This fits the provider's existing on-chain record of 4 \"junk-response\" disputes and 4 \"complainant-wins\" rulings.",
+          "providerAgentId": "10019"
+        },
+        "fixture": true
+      },
+      {
+        "id": "C5",
+        "act": "dispute",
+        "kind": "ref",
+        "title": "Memory after the dispute (3 entries)",
+        "at": "2026-11-02T21:25:17.229Z",
+        "uri": "bzz://dc803e4d4944df069db38e0fda728e905b4fa2616b65ed8c1c4cc46582b34365",
+        "hash": "0x94bb75b67eb52ec6d0ca22e804c3420f5b63d6aff162785cdaa8f5e6ed3ac8ec",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/dc803e4d4944df069db38e0fda728e905b4fa2616b65ed8c1c4cc46582b34365/",
+        "fixture": true
+      },
+      {
+        "id": "D2",
+        "act": "dispute",
+        "kind": "tx",
+        "title": "The agent writes \"dispute\" on provider 10019",
+        "at": "2026-11-02T21:25:20.595Z",
+        "txHash": "0xd9434e9ebc49012efe9252f0bdc257b56ec7a725d6a7a17974c6bd2db18f144f",
+        "uri": "bzz://9291cabc6d98ec748b3f6d9b22fadcd04cd1341fe700a4f94f5b81959e4c0b94",
+        "hash": "0x124794e57e80352b83b76311b71a7e5d4f023c5cdc0ecfd02174bea0159dd75e",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/9291cabc6d98ec748b3f6d9b22fadcd04cd1341fe700a4f94f5b81959e4c0b94/",
+        "detail": {
+          "value": -100,
+          "tag2": "junk-response"
+        },
+        "fixture": true
+      },
+      {
+        "id": "D3",
+        "act": "dispute",
+        "kind": "tx",
+        "title": "Ruling on the provider: complainant",
+        "at": "2026-11-02T21:25:23.694Z",
+        "txHash": "0xa92f239b21c8f3d86c4612d3ee6cbf87b394cac24e103de9c5d2a4ea24cfc9a3",
+        "uri": "bzz://fb49edbd0fbca30960d1ec5d0fe7154b22d3462b8cabbcd683ebdf6f70a04fe2",
+        "hash": "0xff1a13b14c35bdc78e4f7eed989cf6c14441629839270166a49366264ae3af16",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/fb49edbd0fbca30960d1ec5d0fe7154b22d3462b8cabbcd683ebdf6f70a04fe2/",
+        "detail": {
+          "rationale": "The buyer paid for a Celo market report with sections: price, volume, sources. The delivered body does not contain: price, volume, sources."
+        },
+        "fixture": true
+      },
+      {
+        "id": "D4",
+        "act": "dispute",
+        "kind": "tx",
+        "title": "Ruling on the defendant: complaint upheld",
+        "at": "2026-11-02T21:25:27.034Z",
+        "txHash": "0x1cc7f4aa287352742b27cd1de4f7f72419b2beabe616a8aba440ba93c1331533",
+        "uri": "bzz://8cb2ac3631bd9da8422d7ae7563d45979d93e8feb2f2ec1c5e4284672f2c2587",
+        "hash": "0x9fa1e488e4b9913e27f9c775373a99170b5e81d6e0c157197bd6730641965737",
+        "gatewayUrl": "https://api.gateway.ethswarm.org/bzz/8cb2ac3631bd9da8422d7ae7563d45979d93e8feb2f2ec1c5e4284672f2c2587/",
+        "fixture": true
+      }
+    ]
+  }
 }

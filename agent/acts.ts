@@ -11,6 +11,15 @@ export interface ActSpec {
 
 const MEMORY = ['memory_read', 'memory_write'];
 
+/** What the room reads as the host's question when an act runs, from the session or as a script. */
+export const ACT_PROMPTS: Record<string, string> = {
+  identity: 'Who are you? Register on askbots.ai and get your ERC-8004 identity.',
+  earn: 'Find work on askbots.ai and get paid.',
+  spend: 'Buy something useful for your business on usebuy.ai.',
+  dispute: 'Buy the market report from the new provider.',
+  verdict: 'The jury has voted. Read the verdict.',
+};
+
 /**
  * What the host asks for, as the model sees it. The session also accepts free
  * text; these are the scripted versions the non-interactive act scripts use.
@@ -33,11 +42,12 @@ export const ACTS: Record<ActName, ActSpec> = {
     tools: ['buy_whoami', 'buy_balance', 'buy_discover', 'buy_pay_quote', 'buy_curl', 'check_reputation', ...MEMORY],
     task: ({ propertyUrl }) =>
       [
-        `Buy one useful thing with the money you earned. The marketplace is ${USEBUY_URL}.`,
-        'Check your balance first. Then use buy_discover to find a cheap API call that costs 0.05 USD₮ or less; prefer address validation or a directions lookup for the property you reviewed' +
-          (propertyUrl ? ` (${propertyUrl}; the address on that page is what you validate)` : '') +
-          '.',
-        'Get a quote with buy_pay_quote, token USDT. If the quote is 0.05 USD₮ or less, pay with buy_curl, token USDT. Report the settlement transaction hash from the response.',
+        `You are a reviewer business now. Buy data that makes your reviews better, with the money you earned. The marketplace is ${USEBUY_URL}.`,
+        'Check your balance first. Then use buy_discover to find the buy API gateway (buy/api-gateway) and fetch its free catalog with buy_curl (GET https://gateway.usebuy.ai/v1/catalog; it costs nothing).',
+        'Pick one X (Twitter) endpoint from the catalog that tells you how a product is talked about or how active it is on X, for example a post search or a user profile lookup, and that costs 0.05 USD₮ or less. Use it to check the marketing of the product you reviewed' +
+          (propertyUrl ? ` (the page at ${propertyUrl})` : '') +
+          ': search for its name or a close match.',
+        'Get a quote with buy_pay_quote (POST, the exact JSON body as a string, token USDT). If the quote is 0.05 USD₮ or less, pay with buy_curl with the same URL, method and body, token USDT. Report the settlement transaction hash from the response and one sentence on what the data says about the marketing.',
         'Then write a memory entry.',
       ].join('\n'),
   },

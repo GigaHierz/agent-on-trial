@@ -15,7 +15,7 @@ No private keys live in this app. It reads Celo, it never signs.
 | `/projector` | public | 1920x1080 evidence board: Identity, Payments, Memory, Dispute, verdict |
 | `/vote` | public | Trust / Don't trust, one vote per device |
 | `/exhibit/[id]` | public | One exhibit as JSON, with a Verify button |
-| `/property/[runId]` | public | The page the agent reviews (Trial Café) |
+| `/property/[runId]` | public | The page the agent reviews (Trial Weather, an x402 API for agents) |
 | `/cross` | host | Ask the defendant, prosecutor or defense; answers cite exhibits |
 | `/bench` | host | Round, vote open/close/reset, manual tally, closing statements |
 
@@ -25,8 +25,8 @@ Host pages take the secret from the `host` cookie. Visit `/bench?key=<HOST_SECRE
 
 | Variable | Required | Default | Notes |
 | --- | --- | --- | --- |
-| `UPSTASH_REDIS_REST_URL` | yes | | Upstash Redis via the Vercel Marketplace |
-| `UPSTASH_REDIS_REST_TOKEN` | yes | | |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | yes | | Injected by "Upstash for Redis" from the Vercel Marketplace |
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | alternative | | A database made on upstash.com; either pair works |
 | `HOST_SECRET` | yes | | Header `x-host-secret` (terminal) or cookie `host` (browser) |
 | `ANTHROPIC_API_KEY` | for `/cross` | | |
 | `ANTHROPIC_MODEL` | no | `claude-opus-5-5` | |

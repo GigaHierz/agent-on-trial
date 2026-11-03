@@ -19,6 +19,16 @@ const C = {
   reset: '\x1b[0m',
 };
 
+/**
+ * A stored reference for display: the gateway link when there is one, a
+ * bzz:// reference in full, and only data: URIs (whole files inline) cut short.
+ */
+export function showUri(uri: string, gatewayUrl?: string): string {
+  if (gatewayUrl) return gatewayUrl;
+  if (uri.startsWith('data:')) return `${uri.slice(0, 48)}…`;
+  return uri;
+}
+
 const SECRET_KEY = /(private|secret|api[_-]?key|authorization|token|password|mnemonic)/i;
 /** A payment token's symbol ("token": "USDT" in a buy call) is not a secret; any other "token" value is. */
 const TOKEN_SYMBOL = /^[A-Z][A-Z0-9₮]{1,9}$/;
@@ -116,6 +126,8 @@ function emit(kind: LogLine['kind'], text: string, data?: Record<string, unknown
 
 export const log = {
   host: (text: string) => emit('host', text),
+  /** A prompt the host typed. Narration uses `host`; the chat view shows only prompts as the host's turns. */
+  prompt: (text: string) => emit('host', text, { prompt: true }),
   agent: (text: string) => emit('agent', text),
   toolCall: (name: string, args: unknown) => emit('tool_call', `${name}(${short(JSON.stringify(redact(args)))})`, { name, args }),
   toolResult: (name: string, result: unknown) => emit('tool_result', `${name}: ${short(typeof result === 'string' ? result : JSON.stringify(redact(result)))}`, { name }),

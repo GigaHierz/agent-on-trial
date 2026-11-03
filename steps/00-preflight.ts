@@ -10,6 +10,9 @@ import { env, hasRole, roleAddress, type Role } from '../lib/env.js';
 import { flushLog, log, setMirror } from '../lib/log.js';
 import { publish } from '../lib/publish.js';
 
+// Setup, not show: keep these lines out of the public courtroom log.
+process.env.TRIAL_PUBLISH ??= '0';
+
 /**
  * pnpm preflight
  *
@@ -61,6 +64,11 @@ async function main() {
       const b = await balances(role);
       add(`${role} ${b.address}`, b.celo >= 0.05, `${b.celo.toFixed(3)} CELO (need ≥ 0.05 for its feedback transactions)`);
     }
+    add(
+      'shady key differs from the arbitrator',
+      getAddress(roleAddress('shady')) !== getAddress(roleAddress('arbitrator')),
+      'set SHADY_PRIVATE_KEY: the arbitrator cannot write a ruling on a provider it owns (self-feedback is refused)',
+    );
   }
   add('builder code', true, builderCode(), false);
 

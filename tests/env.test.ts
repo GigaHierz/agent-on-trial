@@ -23,6 +23,13 @@ describe('role keys', () => {
     expect(roleAddress('witness', env)).toMatch(/^0x/);
   });
 
+  it('accepts keys without the 0x prefix and adds it', () => {
+    const env = { PRIVATE_KEY: '11'.repeat(32), PRIVATE_KEY_2: '22'.repeat(32) };
+    expect(roleKey('agent', env)).toBe(K1);
+    expect(roleKey('counterparty', env)).toBe(K2);
+    expect(roleAddress('agent', env)).toBe(roleAddress('agent', { PRIVATE_KEY: K1 }));
+  });
+
   it('reports a missing role instead of guessing', () => {
     expect(hasRole('agent', {})).toBe(false);
     expect(() => roleKey('agent', {})).toThrow(/AGENT_PRIVATE_KEY/);

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { hashBytes } from '@trial/shared';
 import { getStorage, NotImplemented } from '../adapters/storage/index.js';
 

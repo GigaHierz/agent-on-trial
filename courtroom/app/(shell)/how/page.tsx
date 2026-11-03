@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { DisputeLiveCard } from '@/components/DisputeLiveCard';
 import { AppealDiagram, CallDiagram, DrawDiagram, VoteDiagram } from '@/components/HowDiagrams';
 import { Reveal } from '@/components/Reveal';
+import { Button } from '@/components/ui/Button';
 import { DEFAULT_ROUND, RoundId } from '@/lib/keys';
 import { getRedis } from '@/lib/redis';
 import { currentRound } from '@/lib/store';
@@ -10,7 +10,7 @@ import { currentRound } from '@/lib/store';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'How a dispute works · Can We Trust the Machines?',
+  title: 'How a dispute works · An Agent on Trial',
   description: 'How an agent files a dispute with Kleros, how independent jurors vote on it, and how the ruling becomes ERC-8004 reputation.',
 };
 
@@ -40,7 +40,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <section className="space-y-3">
       <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
-      <div className="space-y-3 text-xl leading-relaxed text-neutral-300">{children}</div>
+      <div className="space-y-3 text-xl leading-relaxed text-fg-2">{children}</div>
     </section>
   );
 }
@@ -51,7 +51,7 @@ function Numbered({ items, label }: { items: string[]; label: string }) {
       <ol className="space-y-4">
         {items.map((s, i) => (
           <li key={i} className="flex gap-4" data-beat style={{ '--i': i * 3 } as React.CSSProperties}>
-            <span className="shrink-0 font-mono text-2xl font-bold text-neutral-500">{i + 1}</span>
+            <span className="shrink-0 font-mono text-2xl font-bold text-fg-3">{i + 1}</span>
             <span>{s}</span>
           </li>
         ))}
@@ -65,12 +65,12 @@ export default async function HowPage({ searchParams }: { searchParams: Promise<
   const round = r && RoundId.safeParse(r).success ? r : getRedis() ? await currentRound().catch(() => DEFAULT_ROUND) : DEFAULT_ROUND;
 
   return (
-    <main className="mx-auto max-w-3xl space-y-14 px-6 py-12">
+    <main className="mx-auto max-w-3xl space-y-14 px-4 py-12 sm:px-6 sm:py-16">
       <noscript>
         <style>{'[data-reveal] [data-beat]{opacity:1!important;transform:none!important}[data-reveal] [data-beat=unseal]{opacity:0!important}'}</style>
       </noscript>
       <header className="space-y-4">
-        <p className="font-mono text-sm uppercase tracking-wide text-neutral-500">Agent on Trial</p>
+        <p className="eyebrow text-fg-3">An Agent on Trial</p>
         <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">How a dispute works</h1>
       </header>
 
@@ -107,7 +107,7 @@ export default async function HowPage({ searchParams }: { searchParams: Promise<
           answer everyone can expect. Votes are sealed first and revealed later, so nobody copies anybody.
         </p>
         <p>Vote with the final ruling and share the fees. Vote against it, or skip the vote, and lose part of the stake.</p>
-        <p className="font-semibold text-neutral-100">Jurors have every incentive to stay in profit, and voting honestly is how they do it.</p>
+        <p className="font-semibold text-fg">Jurors have every incentive to stay in profit, and voting honestly is how they do it.</p>
         <VoteDiagram />
       </Section>
 
@@ -127,10 +127,10 @@ export default async function HowPage({ searchParams }: { searchParams: Promise<
         <Numbered items={OPEN} label="Open questions about turning rulings into reviews" />
       </Section>
 
-      <nav className="flex flex-wrap items-center gap-6 border-t border-neutral-800 pt-8 text-xl">
-        <Link href={`/projector?r=${encodeURIComponent(round)}`} className="rounded-lg bg-neutral-100 px-5 py-3 font-semibold text-neutral-950">
+      <nav className="flex flex-wrap items-center gap-6 border-t border-line pt-8">
+        <Button href={`/projector?r=${encodeURIComponent(round)}`} variant="primary" size="md" className="px-7 py-3 text-lg">
           Open tonight’s dispute
-        </Link>
+        </Button>
       </nav>
     </main>
   );

@@ -18,10 +18,10 @@ export function CallDiagram() {
       <div className="space-y-2 font-mono text-base">
         {calls.map((c, i) => (
           <div key={c.call} className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <span className="text-neutral-200" data-beat style={beat(i * 4)}>
+            <span className="text-fg" data-beat style={beat(i * 4)}>
               {c.call}
             </span>
-            <span className="text-emerald-300" data-beat style={beat(i * 4 + 2)}>
+            <span className="text-mint" data-beat style={beat(i * 4 + 2)}>
               → {c.out}
             </span>
           </div>
@@ -54,7 +54,7 @@ export function DrawDiagram() {
           );
         })}
       </div>
-      <p className="mt-3 font-mono text-sm text-neutral-500" data-beat style={beat(24)}>
+      <p className="mt-3 font-mono text-sm text-fg-3" data-beat style={beat(24)}>
         size = stake · three drawn
       </p>
     </Reveal>
@@ -76,16 +76,16 @@ export function VoteDiagram() {
             <span className="vote-face is-sealed" data-beat="unseal" style={beat(6 + i * 2)}>
               ● ● ●
             </span>
-            <span className={`vote-face is-open ${v.coherent ? 'text-emerald-300' : 'text-neutral-300'}`} data-beat="open" style={beat(6 + i * 2)}>
+            <span className={`vote-face is-open ${v.coherent ? 'text-mint' : 'text-fg-2'}`} data-beat="open" style={beat(6 + i * 2)}>
               {v.answer}
             </span>
-            <span className={`chip ${v.coherent ? 'text-emerald-300' : 'text-rose-300'}`} data-beat style={beat(14 + i)}>
+            <span className={`chip ${v.coherent ? 'text-mint' : 'text-rose-300'}`} data-beat style={beat(14 + i)}>
               {v.coherent ? '+ fees' : '− stake'}
             </span>
           </div>
         ))}
       </div>
-      <p className="mt-3 font-mono text-sm text-neutral-500" data-beat style={beat(4)}>
+      <p className="mt-3 font-mono text-sm text-fg-3" data-beat style={beat(4)}>
         sealed first
       </p>
     </Reveal>
@@ -107,12 +107,12 @@ export function AppealDiagram() {
             {Array.from({ length: r.dots }, (_, i) => (
               <span key={i} className={`dot ${r.human ? 'is-human' : ''} ${i < r.wrong ? 'is-wrong' : ''}`} data-beat="pop" style={beat(ri * 6 + i * 0.3)} />
             ))}
-            <span className="ml-2 font-mono text-sm text-neutral-500" data-beat style={beat(ri * 6 + 2)}>
+            <span className="ml-2 font-mono text-sm text-fg-3" data-beat style={beat(ri * 6 + 2)}>
               {r.label}
             </span>
           </div>
         ))}
-        <p className="pt-1 font-mono text-base text-neutral-200" data-beat style={beat(20)}>
+        <p className="pt-1 font-mono text-base text-fg" data-beat style={beat(20)}>
           7 of 7 agree. Would you overturn them?
         </p>
       </div>

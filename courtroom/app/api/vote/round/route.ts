@@ -48,9 +48,9 @@ export async function POST(req: NextRequest) {
         await setCurrentRound(round);
         break;
       case 'clear':
-        // Rehearsal rounds before the show: a clean live log, board and vote.
+        // Wipe a round for rehearsals: only: 'log' empties the live log; otherwise evidence, log, closing statements and the vote all go.
         if (body.only === 'log') await r.del(K.log(round));
-        else await r.del(K.log(round), K.evidence(round), K.tally(round), K.voters(round), K.voteOpen(round), K.voteClosedAt(round), K.statements(round));
+        else await r.del(K.evidence(round), K.log(round), K.statements(round), K.tally(round), K.voters(round), K.voteOpen(round), K.voteClosedAt(round));
         break;
     }
     return NextResponse.json(await getTally(round));

@@ -14,7 +14,7 @@ import { approve } from './approve.js';
 import { publicClient, waitOk, walletFor } from './clients.js';
 import { RUN_DIR, env, roleAddress, type Role } from './env.js';
 import { withAsyncFileLock } from './filelock.js';
-import { log } from './log.js';
+import { log, showUri } from './log.js';
 
 export interface FeedbackWrite {
   /** Which key signs. Must not own or operate the agent. */
@@ -64,7 +64,7 @@ export async function writeFeedback(w: FeedbackWrite): Promise<FeedbackResult | 
   });
   const json = canonicalJson(file);
   const ref = await getStorage().put(json, { contentType: 'application/json', name: `feedback-${w.tag1}.json` });
-  log.ops(`feedback file stored ${ref.uri.slice(0, 40)}… hash ${ref.hash}`);
+  log.ops(`feedback file stored ${showUri(ref.uri, ref.gatewayUrl)} hash ${ref.hash}`);
 
   const what = `${w.role} writes giveFeedback(agent ${w.agentId}, ${w.value}, ${w.tag1}${w.tag2 ? `/${w.tag2}` : ''})`;
   if (!(await approve(what))) return null;

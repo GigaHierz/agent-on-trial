@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { getStorage, NotImplemented } from '../../adapters/storage/index.js';
 import type { StoredRef } from '../../adapters/storage/types.js';
 import { RUN_DIR } from '../../lib/env.js';
-import { log } from '../../lib/log.js';
+import { log, showUri } from '../../lib/log.js';
 import type { ActContext } from '../context.js';
 
 export interface MemoryEntry {
@@ -90,7 +90,7 @@ export function memoryTools(ctx: ActContext, act?: string) {
       log.toolCall('memory_write', { text, txHash });
       const ref = await ctx.memory.write({ text, txHash, act });
       ctx.artifacts.push({ kind: 'memory', uri: ref.uri, hash: ref.hash, gatewayUrl: ref.gatewayUrl, entries: ctx.memory.entries.length });
-      log.toolResult('memory_write', `stored ${ref.uri.slice(0, 40)}… hash ${ref.hash}`);
+      log.toolResult('memory_write', `stored ${showUri(ref.uri, ref.gatewayUrl)} hash ${ref.hash}`);
       return JSON.stringify({ stored: ref.uri, hash: ref.hash, gatewayUrl: ref.gatewayUrl, entries: ctx.memory.entries.length });
     },
   });

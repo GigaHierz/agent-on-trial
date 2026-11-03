@@ -16,7 +16,7 @@ One terminal: `pnpm trial --approve`. The host talks to the agent. These are the
 | 2 Earn | "find work and get paid" | Lists open askbots projects, reads the property, answers the builder's questions, passes the anti-human challenge. | 0.10 USD₮ payout from the askbots escrow. Witness feedback `earned` with the payout tx as proof. |
 | 3 Spend | "buy something useful" | Checks its balance, finds a cheap API on usebuy.ai, gets a quote, pays through x402 in USD₮. | x402 settlement by `api.x402.celo.org`. Witness feedback `paid`. |
 | 4 Dispute | "buy the market report from agent N" | Checks the provider's reputation (none), pays 0.01 USD₮, gets junk, opens a dispute. | Settlement to the shady provider. Agent feedback `dispute` on the provider. Arbitrator feedback `ruling` on both. |
-| 5 Verdict | `/verdict` after the vote closes | The tally is stored and the jury key writes it as feedback. | Feedback `jury` with value = percent who trust. |
+| 5 Verdict | `/act verdict` after the vote closes | The tally is stored and the jury key writes it as feedback. | Feedback `jury` with value = percent who trust. |
 
 Per run: 0.13 USD₮ moves, six feedback transactions are signed (seven with the mint). Every transaction we sign carries an ERC-8021 builder code.
 
@@ -60,6 +60,7 @@ Fill in `.env`. Two keys are enough for a test run.
 Then, in order:
 
 ```bash
+pnpm fresh:defendant      # optional: a brand-new defendant wallet with no identity or history, funded from PRIVATE_KEY
 pnpm preflight            # balances, services, adapters, open askbots project, cron reminder
 pnpm shady:register       # once: mints the shady provider's identity, writes SHADY_AGENT_ID to .env
 pnpm trial --approve      # the show
@@ -97,11 +98,11 @@ host  act identity …
 agent I am agent 9912 on Celo. Owner 0x…, three feedback entries, two clients.
 you> find work and get paid
 → askbots_list_projects({})
-← 1 project(s): Trial Café https://…/property/show-1
+← 1 project(s): Trial Weather API https://…/property/show-1
 → askbots_fetch_property({"url":"…"})
 → askbots_submit_review({"projectId":"…","answers":4})
 tx    askbots paid 0.10 USDT https://celoscan.io/tx/0x…
-→ memory_write({"text":"Reviewed Trial Café …","txHash":"0x…"})
+→ memory_write({"text":"Reviewed Trial Weather API …","txHash":"0x…"})
 ?     witness writes giveFeedback(agent 9912, 100, earned/askbots-review) — approve? [y/N]
 ```
 
@@ -124,11 +125,21 @@ Deploy with the Vercel root directory set to `courtroom`, add Upstash Redis from
 
 ## Plug in Swarm
 
-The agent's memory, receipts, dispute files and verdict all go through one interface, `adapters/storage/types.ts`. Set `STORAGE=swarm` and the files land on Swarm through the Bee API; `feedbackURI` becomes `bzz://<reference>` and the courtroom links to the gateway. `put` and `get` are implemented; feeds are left open. One file, one check command. See [docs/PLUG-IN-SWARM.md](docs/PLUG-IN-SWARM.md).
+The agent's memory, receipts, dispute files and verdict all go through one interface, `adapters/storage/types.ts`. Set `STORAGE=swarm` and the files land on Swarm through bee-js; `feedbackURI` becomes `bzz://<reference>` and the courtroom links to the gateway. Feeds included: with `SWARM_FEED_PRIVATE_KEY` set, the agent's memory head is one stable `bzz://` feed manifest. One file, one check command. See [docs/PLUG-IN-SWARM.md](docs/PLUG-IN-SWARM.md).
 
 ```bash
-STORAGE=swarm BEE_API_URL=http://localhost:1633 SWARM_POSTAGE_BATCH_ID=… pnpm check:storage
+STORAGE=swarm BEE_API_URL=http://localhost:1633 SWARM_POSTAGE_BATCH_ID=… SWARM_FEED_PRIVATE_KEY=0x… pnpm check:storage
 ```
+
+### Agent memory through Swarm MCP
+
+Any MCP-capable agent can keep its memory on Swarm without a Swarm SDK: it connects to the [Swarm MCP server](https://github.com/ethersphere/swarm-mcp) (npm `swarm-mcp`) over stdio and calls its tools.
+
+- `upload_file` stores a memory snapshot and returns its `bzz://` reference. That reference and the keccak256 of the bytes are what go into `feedbackURI` and `feedbackHash` on chain.
+- `update_feed` points the agent's feed at the newest snapshot, so its memory head is one stable address that never changes between runs.
+- `read_feed` gets the latest snapshot back at the start of a session, so the agent picks up where it left off.
+
+The server talks to a Bee node (`BEE_API_URL`) and signs the feed with its own key (`BEE_FEED_PK`), which is separate from any wallet. Every snapshot stays content-addressed: anyone can fetch it from a gateway, hash it and compare it with the chain.
 
 ## Plug in Kleros
 
@@ -170,7 +181,7 @@ checks/       check:storage, check:dispute, check:kleros, kleros:fake, check:buy
 courtroom/    Next.js app
 shared/       schema and chain constants used by both
 evidence/     submission template, fixtures, the current run
-docs/         run of show, standards, plug-in guides
+docs/         run of show, spoken script, standards, plug-in guides
 ```
 
 ## Costs

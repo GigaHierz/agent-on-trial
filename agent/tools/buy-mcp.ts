@@ -18,12 +18,10 @@ import type { ActContext } from '../context.js';
 const ALLOWED = ['buy_whoami', 'buy_balance', 'buy_discover', 'buy_pay_quote', 'buy_curl', 'buy_verify_status'];
 const PAYING = new Set(['buy_curl']);
 const DEFAULT_TOKEN = 'USDT';
-/**
- * Hard ceiling per paid call. AGENT_MAX_AMOUNT is in USD₮; buy_curl takes it in
- * the token's smallest unit (6 decimals), so 0.05 goes out as "50000". The system
- * prompt says the same; this one the model cannot talk its way past.
- */
-const MAX_AMOUNT = parseUnits(process.env.AGENT_MAX_AMOUNT ?? '0.05', DEMO_TOKEN.decimals).toString();
+/** Hard ceiling per paid call, in USD₮. The system prompt says the same; this one the model cannot talk its way past. */
+const MAX_AMOUNT = process.env.AGENT_MAX_AMOUNT ?? '0.05';
+/** buy_curl.maxAmount is in atomic units of the token, not decimal: "0.05" becomes "50000". */
+const MAX_AMOUNT_ATOMIC = parseUnits(MAX_AMOUNT, DEMO_TOKEN.decimals).toString();
 
 let client: Client | null = null;
 
@@ -34,7 +32,7 @@ export async function connectBuy(): Promise<Client> {
   const c = new Client({ name: 'agent-on-trial', version: '0.1.0' });
   await c.connect(transport);
   client = c;
-  log.ops(`connected to buy MCP (${command.split('/').pop()} ${args.join(' ')})`);
+  log.ops(`connected to buy MCP (buy ${args.slice(args.indexOf('mcp')).join(' ')})`);
   return c;
 }
 
@@ -71,7 +69,7 @@ export async function buyTools(ctx: ActContext) {
         inputSchema: t.inputSchema,
         run: async (input: Record<string, unknown>) => {
           const hasMax = Boolean(t.inputSchema.properties && 'maxAmount' in t.inputSchema.properties);
-          const args: Record<string, unknown> = { ...(hasToken ? { token: DEFAULT_TOKEN } : {}), ...input, ...(hasMax ? { maxAmount: MAX_AMOUNT } : {}) };
+          const args: Record<string, unknown> = { ...(hasToken ? { token: DEFAULT_TOKEN } : {}), ...input, ...(hasMax ? { maxAmount: MAX_AMOUNT_ATOMIC } : {}) };
           log.toolCall(t.name, args);
           if (PAYING.has(t.name)) {
             const target = typeof args.url === 'string' ? args.url : JSON.stringify(args).slice(0, 80);

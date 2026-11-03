@@ -40,15 +40,18 @@ Rules:
 
 ## What is there
 
-`adapters/storage/swarm.ts` already does:
-- `put`: `POST $BEE_API_URL/bzz` with `swarm-postage-batch-id` and `content-type`, returns `bzz://<reference>` and `$SWARM_GATEWAY_URL/bzz/<reference>/`.
-- `get`: `GET $BEE_API_URL/bzz/<reference>/`.
-- `health`: `GET $BEE_API_URL/health`.
+`adapters/storage/swarm.ts` does it all with bee-js (`@ethersphere/bee-js`):
+- `put`: `bee.file.upload` with the postage batch and `content-type`, a `/bzz` manifest. Returns `bzz://<reference>` and `$SWARM_GATEWAY_URL/bzz/<reference>/`. The hash is keccak256 of our bytes, computed locally.
+- `get`: `bee.file.download`.
+- `feedUpdate`: topic from `Topic.fromString(topic)`, signed with `SWARM_FEED_PRIVATE_KEY`; the feed update is the reference of `uri`. Returns the feed manifest as `bzz://` and its gateway URL, which always opens the latest content: the agent's memory head is one stable link per agent.
+- `feedRead`: the latest reference as `bzz://`, or `null` for a feed never written.
+- `health`: `bee.status.getHealth()`; the public gateway answers with a plain `OK`, which is accepted too.
+- No `SWARM_POSTAGE_BATCH_ID`: uploads use the zero batch, which the public gateway accepts. No `SWARM_FEED_PRIVATE_KEY`: feeds throw `NotImplemented` and memory keeps a local pointer.
 
 ## What is open for you
 
-1. **Feeds.** `feedUpdate` and `feedRead` throw `NotImplemented`. The topic is a string like `agent-memory-<agentId>`. With bee-js: derive the topic hash, sign with `SWARM_FEED_PRIVATE_KEY`, update the feed with the reference, return the feed manifest as `bzz://` and a gateway URL. Then the agent's memory head is one stable pointer per agent and the courtroom can show "latest memory" without knowing the run.
-2. **Your MCP server instead of fetch.** `ethersphere/swarm-mcp` exposes `upload_data`, `download_data`, `update_feed`, `read_feed`. If you would rather the agent talk to Swarm the way it talks to `buy`, bridge those tools into `agent/tools/` the way `agent/tools/buy-mcp.ts` bridges the buy tools, and have `memory_write` call them.
+1. **"Latest memory" in the courtroom.** The memory feed (`agent-memory-<agentId>`) has a stable `bzz://` manifest. Show it on `/projector` so the audience can open the agent's current memory without knowing the run.
+2. **Swarm tools in the model's hands.** Storage calls bee-js from code, so the hashes stay right. If you want the audience to see the agent call Swarm, add a read-only tool (say, read its own memory feed) in `agent/tools/` and add its name to the acts in `agent/acts.ts`.
 3. **What the audience sees.** The `/projector` board shows `C` exhibits with their gateway link. Add what makes Swarm legible: the postage batch, the node, the feed, how long the data lives.
 4. **Identity on Swarm.** The registration file is served by the courtroom today. It could be a feed: `agentURI = bzz://<feed manifest>`, updated when the agent id is minted.
 
@@ -59,7 +62,7 @@ STORAGE=swarm
 BEE_API_URL=http://localhost:1633          # or the public gateway
 SWARM_POSTAGE_BATCH_ID=<batch id>          # required to upload on a node you run
 SWARM_GATEWAY_URL=https://api.gateway.ethswarm.org
-SWARM_FEED_PRIVATE_KEY=0x…                 # for feeds
+SWARM_FEED_PRIVATE_KEY=0x…                 # for feeds; any key, it never touches Celo
 ```
 
 ## Verify
