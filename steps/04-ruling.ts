@@ -137,20 +137,26 @@ export function watchRuling(ctx: ActContext, hooks: WatchHooks): RulingWatch | n
   };
   const next = (wait: number) => {
     if (stopped) return;
-    timer = setTimeout(() => void tick(), wait);
+    // A tick never throws out of the timer: an unhandled rejection would end the stage session.
+    timer = setTimeout(() => void tick().catch((err) => log.opsWarn(`ruling watch, dispute ${id}: ${(err as Error).message.split('\n')[0]}`)), wait);
     timer.unref(); // never keeps the session alive after /quit
+  };
+  const onChain = () => {
+    if (!rulingWritten(pending!)) return false;
+    stop();
+    last = 'the ruling is on chain';
+    return true;
   };
 
   async function tick() {
     if (stopped) return;
-    if (rulingWritten(pending!)) {
-      stop();
-      log.ops(`the ruling for dispute ${id} is on chain; the watch stops`);
-      return;
-    }
     let ruling: Ruling | null;
     try {
-      ruling = await adapter.ruling(id, { waitMs: 0, ref: pending!.ref });
+      if (onChain()) {
+        log.ops(`the ruling for dispute ${id} is on chain; the watch stops`);
+        return;
+      }
+      ruling = await adapter.ruling(id, { waitMs: 0, ref: pending!.ref, quiet: true });
       failures = 0;
     } catch (err) {
       failures++;
@@ -167,16 +173,19 @@ export function watchRuling(ctx: ActContext, hooks: WatchHooks): RulingWatch | n
     }
     stop();
     last = `the vote is over (${clock()})`;
+    // By the time the session is free, /act ruling (or pnpm act:ruling) may have written it already.
     if (hooks.approveOn()) {
       hooks.whenIdle(async () => {
+        if (onChain()) return;
         say(`The jurors have voted on dispute ${id}.`);
-        log.ops(`/act ruling reads the ruling and writes the reviews; approve each with y`);
+        log.ops(`/act ruling ${id} reads the ruling and writes the reviews; approve each with y`);
       });
       return;
     }
     hooks.whenIdle(async () => {
-      await rulingAct(ctx, { quiet: true });
-      if (!rulingWritten(pending!)) log.opsWarn(`the ruling for dispute ${id} is not fully on chain yet; /act ruling tries again`);
+      if (onChain()) return;
+      await rulingAct(ctx, { quiet: true, disputeId: id }); // the dispute watched, even if a newer one is pending
+      if (!onChain()) log.opsWarn(`the ruling for dispute ${id} is not fully on chain yet; /act ruling ${id} tries again`);
     });
   }
 

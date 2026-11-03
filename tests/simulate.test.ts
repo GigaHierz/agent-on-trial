@@ -310,7 +310,8 @@ describe('simulation: act 4 with Kleros', () => {
     r.clock.t += 3 * 60 * MIN; // the vote is over
     const told = watchRuling(r.ctx, hooks(true))!;
     await until(() => work !== undefined);
-    await work!();
+    const notice = work!;
+    await notice();
     told.stop();
     expect(sim.lines.some((l) => /The jurors have voted on dispute/.test(l))).toBe(true);
     expect(tags()).toEqual(['agent>9:-100:dispute/junk-response']); // approve mode: /act ruling writes it, with the host's y/N
@@ -322,6 +323,11 @@ describe('simulation: act 4 with Kleros', () => {
     writes.stop();
     expect(tags()).toEqual(['agent>9:-100:dispute/junk-response', 'arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
     expect(watchRuling(r.ctx, hooks(false))).toBeNull(); // nothing pending any more
+    // A notice that waited for a command which wrote the ruling meanwhile stays silent.
+    const said = sim.lines.filter((l) => /The jurors have voted on dispute/.test(l)).length;
+    await notice();
+    expect(sim.lines.filter((l) => /The jurors have voted on dispute/.test(l))).toHaveLength(said);
+    expect(told.status()).toBe('the ruling is on chain');
   });
 
   it('a tie, once the vote is over, is refused: no ruling feedback', async () => {

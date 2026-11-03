@@ -608,7 +608,7 @@ export class KlerosDispute implements DisputeAdapter {
    * majority yet, or (once the vote is over) a tie that finalises as refused.
    * A failed read is retried until waitMs runs out, then thrown.
    */
-  async ruling(disputeId: string, opts: { waitMs?: number; ref?: string } = {}): Promise<Ruling | null> {
+  async ruling(disputeId: string, opts: { waitMs?: number; ref?: string; quiet?: boolean } = {}): Promise<Ruling | null> {
     const f = this.findFiling(disputeId, opts.ref);
     if (f && f.status === 'simulated') return null;
     if (f && f.status !== 'mined') throw new Error(this.unresolved(f));
@@ -626,13 +626,13 @@ export class KlerosDispute implements DisputeAdapter {
         row = await this.service.disputeGet(core, chain);
       } catch (err) {
         failed = err;
-        this.opsWarn(`dispute_get ${core} on ${chain} failed: ${(err as Error).message.split('\n')[0]}`);
+        if (!opts.quiet) this.opsWarn(`dispute_get ${core} on ${chain} failed: ${(err as Error).message.split('\n')[0]}`);
       }
       if (row && this.decided(row)) {
         // Degraded reads are common on the Testnet: a row without its answers cannot confirm the pinned titles yet.
         if (!this.answersMissing(core, chain, row)) return this.toRuling(disputeId, core, chain, row, f);
         failed = new Error(this.missingAnswers(core, chain, row));
-        this.opsWarn((failed as Error).message);
+        if (!opts.quiet) this.opsWarn((failed as Error).message);
       }
       const left = until - this.now();
       if (left <= 0) {

@@ -4,7 +4,7 @@ import { canonicalJson } from '@trial/shared';
 import { z } from 'zod';
 import { getStorage, NotImplemented } from '../../adapters/storage/index.js';
 import type { StoredRef } from '../../adapters/storage/types.js';
-import { RUN_DIR } from '../../lib/env.js';
+import { RUN_DIR, env } from '../../lib/env.js';
 import { log, showUri } from '../../lib/log.js';
 import type { ActContext } from '../context.js';
 
@@ -55,10 +55,13 @@ export class Memory {
     const storage = getStorage();
     const ref = await storage.put(canonicalJson(this.document()), { contentType: 'application/json', name: 'memory.json' });
     this.head = ref;
-    try {
-      await storage.feedUpdate(`agent-memory-${this.agentId ?? 'unregistered'}`, ref.uri);
-    } catch (err) {
-      if (!(err instanceof NotImplemented)) throw err;
+    // A dry run keeps to its own files: the agent's public memory feed stays on the last real entry.
+    if (!env.dryRun) {
+      try {
+        await storage.feedUpdate(`agent-memory-${this.agentId ?? 'unregistered'}`, ref.uri);
+      } catch (err) {
+        if (!(err instanceof NotImplemented)) throw err;
+      }
     }
     mkdirSync(`${RUN_DIR}/${this.runId}`, { recursive: true });
     writeFileSync(this.path, JSON.stringify({ entries: this.entries, head: this.head }, null, 2));

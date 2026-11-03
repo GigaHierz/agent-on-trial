@@ -71,6 +71,7 @@ export interface DisputeAdapter {
   open(evidence: DisputeEvidence): Promise<{ disputeId: string; uri: string; gatewayUrl?: string; url?: string; detail?: Record<string, unknown> }>;
   /** `ref`: the adapter's own id for the filing (open()'s detail.filing), when dispute ids are not unique. */
   status(disputeId: string, opts?: { ref?: string }): Promise<DisputeStatus>;
-  ruling(disputeId: string, opts?: { waitMs?: number; ref?: string }): Promise<Ruling | null>;
+  /** quiet: a background poll that throttles its own warnings; the adapter keeps a failed read to itself. */
+  ruling(disputeId: string, opts?: { waitMs?: number; ref?: string; quiet?: boolean }): Promise<Ruling | null>;
   health(): Promise<{ ok: boolean; detail?: string }>;
 }

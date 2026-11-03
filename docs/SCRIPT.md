@@ -124,8 +124,10 @@ Hand-off: "So far the agent has behaved. Let's see what happens when the other s
 Projector: `/live`.
 
 ```
-you> buy the market report from agent <SHADY_AGENT_ID>
+you> /act dispute
 ```
+
+The chat shows it as "Buy the market report from the new provider."
 
 > There is another agent selling a Celo market report: price, volume, sources, for one cent. Our defendant has never dealt with it. Watch what it does first.
 
@@ -141,11 +143,17 @@ On `open_dispute`:
 
 > It does what you'd want it to do. It writes down the spec, the receipt, the delivered body word for word, and a one-paragraph claim, and opens a dispute. Then it writes negative feedback on the seller: minus 100, tag "dispute", pointing at that file.
 
-Approve prompts with `y`. On the ruling line (`ruling: complainant …`):
+Approve prompts with `y`. On `// Dispute N is filed with Kleros`:
 
-> The arbitrator rules. Tonight the arbitrator is a deterministic adapter: it checks whether the three required sections exist in the delivered body. They don't. Complainant wins. Two more feedback entries: "ruling" on the seller, negative; "ruling" on the defendant, positive. Complaint upheld.
+> The case is filed with Kleros. Independent AI jurors read the claim, the payment and the report exactly as delivered, and they vote. That takes longer than this talk, so we move on. The terminal tells us when the vote is over.
 
-> Exhibit D. The seller now has a record: one dispute, one ruling, both with evidence files. The next agent that checks its reputation sees this before paying.
+> Exhibit D. The seller now has a record: one dispute, with its evidence file. The next agent that checks its reputation sees this before paying.
+
+Whenever the terminal says `// The jurors have voted on dispute N.` (now or after the talk): `you> /act ruling`, then `y` for each review.
+
+> The jurors ruled. Two more feedback entries, both citing the Kleros case: "ruling" on the seller, minus 100; "ruling" on the defendant, plus 100. Complaint upheld.
+
+If it is taking too long, nothing waits for it. `/ruling` shows the last check. To show how a case ends, open Beta case 329 in the Court: it was ruled "Accept the claim", and its two reviews are on ERC-8004.
 
 ## 16:00 – 18:00 · Exhibit D, how real disputes work (arbitrator)
 
@@ -155,10 +163,10 @@ Projector: `/exhibit/D1`.
 
 Explain in your own words:
 
-- What Kleros does: evidence goes to an arbitrable contract, jurors are drawn, they rule, the ruling is enforceable on chain.
+- What Kleros does: one call to the Kleros Dispute Service files the case with its evidence. Jurors who staked in the court are drawn, vote sealed, then reveal, and the ruling comes back as data the agent's code can act on. `/how` shows it step by step.
 - Where it plugs in here: `adapters/dispute`. Open with evidence, read status, read ruling. The adapter never signs on Celo; our arbitrator key writes the ruling into the Reputation Registry quoting the Kleros proof.
 - Why reputation needs disputes: without them, feedback is one-sided. The ruling is the only entry on this seller written by someone who read both sides.
-- The time dimension: a real ruling takes days, not seconds. The agent keeps its negative feedback live meanwhile, the ruling comes later as a second entry.
+- The time dimension: a ruling takes 20 to 70 minutes here, not seconds. The agent's negative feedback is live meanwhile; the ruling comes later as two more entries.
 
 Hand-off back to the host: "The evidence is in. Time for closing statements."
 
@@ -225,7 +233,7 @@ Say it out loud, then do it. The board shows a "recorded" badge on replayed exhi
 |---|---|---|
 | askbots down or no payout | "The job board is not answering. We rehearsed this exact job yesterday; I'll replay the recorded receipt and we carry on." | `pnpm act:earn --fixture` |
 | usebuy.ai down | "The marketplace is down. Same thing: recorded purchase, real receipt." | `pnpm act:spend --fixture` |
-| Facilitator down | "The settlement service is slow tonight. The receipt is recorded; the dispute and ruling still run live." | `pnpm act:dispute --fixture` |
+| Facilitator down | "The settlement service is slow tonight. Here is a dispute we ran this week, start to finish." | Open Beta case 329 in the Court and `/how`. (`pnpm act:dispute --fixture` replays a local-adapter rehearsal, not a Kleros case.) |
 | Courtroom down | "You can't vote on your phones, so we do it the old way." Count hands. | `pnpm act:verdict --trust N --distrust M` |
 | Model wanders or refuses | Decline the tool call at the prompt, retype the instruction more narrowly. | `n`, then the same line, more specific |
 
@@ -237,7 +245,8 @@ Say it out loud, then do it. The board shows a "recorded" badge on replayed exhi
 you> who are you?
 you> find work and get paid
 you> buy something useful
-you> buy the market report from agent <SHADY_AGENT_ID>
+you> /act dispute
+you> /act ruling          (when the terminal says the jurors have voted; /ruling shows the last check)
 you> /closing
 you> /vote open
 you> /ask <question>

@@ -27,13 +27,23 @@ function groupExhibits(evidence: Evidence | null): Record<string, Exhibit[]> {
   return groups;
 }
 
-/** Disputes whose ruling has come in: a ruling exhibit or a no-feedback note names them. */
+/**
+ * Disputes whose ruling is all on the board: a no-feedback note, or every review the pending note calls for
+ * (two with the provider's identity, one without). Half a ruling is still pending.
+ */
 function ruledDisputes(evidence: Evidence | null): Set<string> {
   const ids = new Set<string>();
+  const want = new Map<string, number>();
+  const got = new Map<string, number>();
   for (const e of evidence?.exhibits ?? []) {
-    const d = e.detail as { disputeId?: unknown; pending?: unknown; noFeedback?: unknown } | undefined;
-    if (d?.disputeId !== undefined && d.pending !== true && (/Ruling on the /.test(e.title) || d.noFeedback === true)) ids.add(String(d.disputeId));
+    const d = e.detail as { disputeId?: unknown; pending?: unknown; noFeedback?: unknown; shadyAgentId?: unknown } | undefined;
+    if (d?.disputeId === undefined) continue;
+    const id = String(d.disputeId);
+    if (d.pending === true) want.set(id, d.shadyAgentId ? 2 : 1);
+    else if (d.noFeedback === true) ids.add(id);
+    else if (/Ruling on the /.test(e.title)) got.set(id, (got.get(id) ?? 0) + 1);
   }
+  for (const [id, n] of got) if (n >= (want.get(id) ?? 1)) ids.add(id);
   return ids;
 }
 

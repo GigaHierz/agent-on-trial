@@ -13,8 +13,8 @@ const DRY = /^\[dry run\] /;
 export function DisputeLiveCard({ round }: { round: string }) {
   const { data, error, loaded } = usePoll<Evidence | null>(`/api/evidence?round=${encodeURIComponent(round)}`, 3000);
   const d = (data?.exhibits ?? []).filter((e) => e.act === 'dispute' && e.id.startsWith('D'));
-  const opened = [...d].reverse().find((e) => /Dispute \d+ opened/.test(e.title));
-  const id = opened?.title.match(/Dispute (\d+) opened/)?.[1];
+  const opened = [...d].reverse().find((e) => /Dispute \S+ opened/.test(e.title));
+  const id = opened?.title.match(/Dispute (\S+) opened/)?.[1];
   const mine = (e: Exhibit) => !id || String((e.detail as { disputeId?: unknown } | undefined)?.disputeId ?? id) === id;
   const ruled = d.filter((e) => mine(e) && /^(\[dry run\] )?Ruling on the /.test(e.title));
   const noFeedback = d.find((e) => mine(e) && /No feedback written/.test(e.title));
@@ -23,6 +23,8 @@ export function DisputeLiveCard({ round }: { round: string }) {
   const rehearsal = d.some((e) => DRY.test(e.title));
   const recorded = d.some((e) => e.fixture);
   const caseUrl = [opened, pending, noFeedback, ...ruled].map((e) => e?.url).find((u) => u?.startsWith('https://'));
+  // Two reviews when the provider has an ERC-8004 identity, one without: half a ruling is not on the records yet.
+  const want = (pending?.detail as { shadyAgentId?: unknown } | undefined)?.shadyAgentId ? 2 : 1;
 
   const step = ruled.length || noFeedback ? 3 : opened ? 2 : 0;
   const status = !loaded && !error
@@ -30,9 +32,13 @@ export function DisputeLiveCard({ round }: { round: string }) {
     : error && !loaded
       ? 'Can’t reach the evidence board right now.'
       : ruled.length
-        ? rehearsal
-          ? 'Rehearsal: the stand-in jurors accepted the claim. Nothing was written on chain.'
-          : 'The jurors accepted the claim. The ruling is on the agents’ ERC-8004 records.'
+        ? recorded
+          ? 'Recorded at a rehearsal: the claim was accepted and the ruling written then.'
+          : rehearsal
+            ? 'Rehearsal: the stand-in jurors accepted the claim. Nothing was written on chain.'
+            : ruled.length < want
+              ? `The jurors accepted the claim. ${ruled.length} of ${want} reviews are on ERC-8004 so far.`
+              : 'The jurors accepted the claim. The ruling is on the agents’ ERC-8004 records.'
         : noFeedback
           ? noFeedback.title.replace(DRY, '')
           : pending

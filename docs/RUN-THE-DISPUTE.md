@@ -53,7 +53,7 @@ On stage, the same through the session: `KLEROS_CHAIN=arbitrum-one KLEROS_ALLOW_
 
 Nothing waits for them: the act moves on at once and the watch only reads.
 
-- `/ruling` shows the last check. `/ruling stop` stops waiting; the dispute stays pending. `/ruling watch` watches again.
+- `/ruling` shows the last check. `/ruling stop` stops waiting; the dispute stays pending. `/ruling watch` watches again. `/act ruling <id>` reads one dispute when the run has several.
 - Later, from any terminal: `pnpm act:ruling --wait 10800000` writes the ruling when it comes.
 - To show a finished case meanwhile: Beta case 329, ruled "Accept the claim", with its two reviews on ERC-8004: https://v2.kleros.builders/#/cases/329/overview.
 - Without `--approve` the session writes the ruling itself when it comes.

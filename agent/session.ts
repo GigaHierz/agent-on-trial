@@ -30,7 +30,7 @@ import { Memory } from './tools/memory.js';
 const HELP = `
 commands
   /act identity|earn|spend|dispute|verdict   run one act (same as pnpm act:<name>)
-  /act ruling                                check the dispute's ruling now and write it if the vote is over
+  /act ruling [id]                           check the dispute's ruling now and write it if the vote is over
   /ruling [stop|watch]                       after /act dispute the ruling is watched in the background and
                                              written when it comes: last check, stop waiting, watch again
   /approve on|off                            ask y/N before paying or writing to chain (now: %APPROVE%)
@@ -77,31 +77,38 @@ async function main() {
       log.error((err as Error).message.split('\n')[0]);
     }
   };
-  const whenIdle = (fn: () => Promise<void>) => {
-    if (!atPrompt || aside) {
-      queued = fn;
-      return;
-    }
-    if (process.stdout.isTTY) process.stdout.write('\r\x1b[2K'); // the ruling prints over the empty prompt, not after it
+  const startAside = (fn: () => Promise<void>) => {
+    if (atPrompt && process.stdout.isTTY) process.stdout.write('\r\x1b[2K'); // the ruling prints over the empty prompt, not after it
     aside = runSafely(fn).finally(() => {
       aside = null;
       if (atPrompt) rl.prompt(true); // the prompt again, with whatever the host had typed
     });
   };
+  const whenIdle = (fn: () => Promise<void>) => {
+    if (!atPrompt || aside) queued = fn;
+    else startAside(fn);
+  };
   let watch = null as RulingWatch | null;
   const startWatch = (quiet: boolean) => {
     watch?.stop();
-    watch = watchRuling(ctx, { whenIdle, approveOn: approveModeOn });
+    try {
+      watch = watchRuling(ctx, { whenIdle, approveOn: approveModeOn });
+    } catch (err) {
+      watch = null; // a broken ledger file must not stop the session; /act ruling says what is wrong
+      log.opsWarn(`the ruling watch did not start: ${(err as Error).message.split('\n')[0]}`);
+      return;
+    }
     if (watch) log.ops(`watching dispute ${watch.disputeId} for its ruling, every ${Math.round(env.rulingPollMs / 1000)} s; the show goes on. /ruling for the last check, /ruling stop to stop waiting`);
     else if (!quiet) log.ops('no pending ruling in this run');
   };
   startWatch(true); // a session restarted mid-show picks the pending ruling up again
 
   for (;;) {
-    if (queued) {
+    // Work that waited for the last command runs beside the prompt, so a line typed meanwhile is kept.
+    if (queued && !aside) {
       const fn = queued;
       queued = null;
-      await runSafely(fn);
+      startAside(fn);
     }
     atPrompt = true;
     const line = (await rl.question('you> ')).trim();
@@ -158,7 +165,7 @@ async function main() {
         continue;
       }
       if (line.startsWith('/act ')) {
-        const name = line.slice(5).trim();
+        const [name, arg] = line.slice(5).trim().split(/\s+/);
         // The chat shows the act as the host's turn, in plain words.
         log.prompt(ACT_PROMPTS[name] ?? `/act ${name}`);
         if (env.dryRun && name !== 'dispute' && name !== 'ruling') {
@@ -178,7 +185,7 @@ async function main() {
             startWatch(true); // filed and not ruled yet: the show goes on, the ruling comes when it comes
           }
         }
-        else if (name === 'ruling') await rulingAct(ctx);
+        else if (name === 'ruling') await rulingAct(ctx, { disputeId: arg });
         else if (name === 'verdict') await verdictAct(ctx);
         else log.warn(`unknown act ${name}`);
         continue;

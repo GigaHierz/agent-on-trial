@@ -49,6 +49,7 @@ export function disputeTools(ctx: ActContext) {
             ? `receipt ${input.receiptTxHash} paid ${byHash.url}, not ${input.providerEndpoint}; a Kleros dispute is only filed over the payment it is about`
             : `no settled x402 receipt matches ${input.receiptTxHash} or ${input.providerEndpoint}; a Kleros dispute is only filed over a payment this agent made`;
         ctx.artifacts.push({ kind: 'dispute_failed', adapter: adapter.name, receiptTxHash: input.receiptTxHash, error });
+        log.toolResult('open_dispute', `not opened: ${error}`);
         return `The dispute was not opened: ${error}.`;
       }
       const receipt = matched ?? lastArtifact(ctx, 'x402_receipt');
@@ -83,6 +84,7 @@ export function disputeTools(ctx: ActContext) {
       const providerAgentId = known ?? input.providerAgentId;
       const paid = paidAmount(receipt?.amount ?? '10000', receipt?.asset ?? DEMO_TOKEN.address);
       if (adapter.name === 'kleros' && !(await approve(`file a Kleros dispute over receipt ${receiptTxHash} (pays an arbitration fee)`))) {
+        log.toolResult('open_dispute', 'declined by the host');
         return 'The host declined filing this dispute. Do not retry it.';
       }
       let result: Awaited<ReturnType<typeof adapter.open>>;

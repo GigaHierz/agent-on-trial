@@ -43,7 +43,7 @@ Acts run only as `/act <name>`: free text goes to the agent as a conversation an
 
 - askbots down or no payout: `pnpm act:earn --fixture` in a second terminal, then continue. The board shows "recorded".
 - usebuy.ai down: `pnpm act:spend --fixture`.
-- Facilitator down: `pnpm act:dispute --fixture` replays the recorded act 4 (no live dispute). Show the rehearsal dispute in the Court instead.
+- Facilitator down: show Beta case 329 in the Court (`https://v2.kleros.builders/#/cases/329/overview`, ruled "Accept the claim", both reviews on ERC-8004) and `/how`. `pnpm act:dispute --fixture` replays a local-adapter rehearsal, not a Kleros case.
 - Kleros Dispute Service down or a filing in doubt: the act says "Dispute may exist, unresolved" and never files twice. Show the rehearsal dispute; after the talk, `pnpm check:kleros` lists it and `--resolve` records it.
 - Courtroom down: the terminal is the show. For the verdict, count hands and run `pnpm act:verdict --trust N --distrust M`.
 - Model refuses or wanders: `/approve on` is already on; decline the call, type the instruction again more narrowly.

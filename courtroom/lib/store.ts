@@ -61,8 +61,14 @@ function safeJson(s: string): unknown {
   }
 }
 
-export async function readLog(round: string, after: number): Promise<{ lines: LogLine[]; next: number }> {
-  const raw = await requireRedis().lrange<unknown>(K.log(round), after, -1);
+export async function readLog(round: string, after: number): Promise<{ lines: LogLine[]; next: number; reset?: true }> {
+  const r = requireRedis();
+  const raw = await r.lrange<unknown>(K.log(round), after, -1);
+  // A cleared log is shorter than the reader's cursor: hand it the log from the top, and say so.
+  if (raw.length === 0 && after > 0 && (await r.lrange<unknown>(K.log(round), after - 1, after - 1)).length === 0) {
+    const all = await r.lrange<unknown>(K.log(round), 0, -1);
+    return { lines: all.map(parseLine).filter((l): l is LogLine => l !== null), next: all.length, reset: true };
+  }
   const lines = raw.map(parseLine).filter((l): l is LogLine => l !== null);
   return { lines, next: after + raw.length };
 }
