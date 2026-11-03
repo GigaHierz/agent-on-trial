@@ -1,4 +1,15 @@
 import 'dotenv/config';
+import { setDefaultResultOrder } from 'node:dns';
+import { setDefaultAutoSelectFamily } from 'node:net';
+
+// Venue and hotel networks often advertise IPv6 without routing it; Node's fetch
+// then times out with a bare "fetch failed" while curl works (measured on 3 Nov:
+// curl -6 fails, curl -4 works, fetch needs both settings below). Prefer IPv4 and
+// stop Node from racing the IPv6 address for every outbound call this process makes.
+// Child processes get the same through NODE_OPTIONS (see lib/buy.ts).
+setDefaultResultOrder('ipv4first');
+setDefaultAutoSelectFamily(false);
+export const IPV4_NODE_OPTIONS = '--dns-result-order=ipv4first --no-network-family-autoselection';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { privateKeyToAccount } from 'viem/accounts';
 import { keccak256, toHex, type Address, type Hex } from 'viem';
@@ -108,6 +119,8 @@ export const env = {
   dispute: process.env.DISPUTE ?? 'local',
   /** --fixture: load the recorded exhibits for this act instead of acting. */
   fixture: flag('--fixture'),
+  /** --step: in the session, an empty line runs the next step of the show; a failed step offers the recorded replay. */
+  step: flag('--step'),
   /** --approve: ask y/N before paying or writing to chain. */
   approve: flag('--approve'),
   /** --record: copy evidence/run.json to evidence/fixtures.json at the end of a rehearsal. */

@@ -89,7 +89,10 @@ export async function flushLog() {
 }
 
 /** Every line prints here; only the show's lines go to the courtroom's live log (ops lines stay in the terminal). */
+let errorsSeen = 0;
+
 function emit(kind: LogLine['kind'], text: string, data?: Record<string, unknown>, mirrored = true) {
+  if (kind === 'error') errorsSeen++;
   const line: LogLine = { at: new Date().toISOString(), kind, text, ...(data ? { data: redact(data) as Record<string, unknown> } : {}) };
   const t = line.at.slice(11, 19);
   const prefix = `${C.dim}${t}${C.reset}`;
@@ -125,6 +128,10 @@ function emit(kind: LogLine['kind'], text: string, data?: Record<string, unknown
 }
 
 export const log = {
+  /** How many error lines have been printed so far; a step compares before and after. */
+  errorCount: () => errorsSeen,
+  /** Print and mirror a recorded line again, as it was, with a fresh timestamp. */
+  replay: (line: LogLine) => emit(line.kind, line.text, line.data),
   host: (text: string) => emit('host', text),
   /** A prompt the host typed. Narration uses `host`; the chat view shows only prompts as the host's turns. */
   prompt: (text: string) => emit('host', text, { prompt: true }),
