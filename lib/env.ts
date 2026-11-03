@@ -80,6 +80,11 @@ function arg(name: string): string | undefined {
   return i >= 0 ? process.argv[i + 1] : undefined;
 }
 
+function ms(value: string | undefined, fallback: number): number {
+  const n = Number(value);
+  return value !== undefined && value.trim() !== '' && Number.isFinite(n) && n >= 0 ? n : fallback;
+}
+
 export const env = {
   trialEnv: (process.env.TRIAL_ENV ?? 'test') as 'test' | 'show',
   get round() {
@@ -114,6 +119,14 @@ export const env = {
    * (live, or dry with --dry-run). For testing the dispute path; on stage the model plays the turn.
    */
   scriptedAgent: flag('--scripted-agent') || process.env.SCRIPTED_AGENT === '1',
+  /**
+   * How long act dispute waits for the ruling before it moves on, in ms (RULING_WAIT_MS, default 0). A Kleros
+   * vote takes twenty minutes to over an hour: the session watches for it in the background (/ruling), and
+   * pnpm act:ruling writes it from any terminal.
+   */
+  rulingWaitMs: ms(process.env.RULING_WAIT_MS, 0),
+  /** How often the session's background watch reads the ruling, in ms (RULING_POLL_MS, default 20 s). */
+  rulingPollMs: Math.max(1_000, ms(process.env.RULING_POLL_MS, 20_000)),
 };
 
 /** Where a dry run keeps what a real run keeps under .runs/ and evidence/: never the real run's files. */

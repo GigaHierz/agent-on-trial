@@ -11,7 +11,7 @@ const DRY = /^\[dry run\] /;
  * of its own, only what the D exhibits of the latest dispute say.
  */
 export function DisputeLiveCard({ round }: { round: string }) {
-  const { data, error } = usePoll<Evidence | null>(`/api/evidence?round=${encodeURIComponent(round)}`, 3000);
+  const { data, error, loaded } = usePoll<Evidence | null>(`/api/evidence?round=${encodeURIComponent(round)}`, 3000);
   const d = (data?.exhibits ?? []).filter((e) => e.act === 'dispute' && e.id.startsWith('D'));
   const opened = [...d].reverse().find((e) => /Dispute \d+ opened/.test(e.title));
   const id = opened?.title.match(/Dispute (\d+) opened/)?.[1];
@@ -25,9 +25,9 @@ export function DisputeLiveCard({ round }: { round: string }) {
   const caseUrl = [opened, pending, noFeedback, ...ruled].map((e) => e?.url).find((u) => u?.startsWith('https://'));
 
   const step = ruled.length || noFeedback ? 3 : opened ? 2 : 0;
-  const status = data === null && !error
+  const status = !loaded && !error
     ? 'Loading the evidence board…'
-    : error && !data
+    : error && !loaded
       ? 'Can’t reach the evidence board right now.'
       : ruled.length
         ? rehearsal

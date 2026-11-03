@@ -79,7 +79,7 @@ const { getStorage } = await import('../adapters/storage/index.js');
 const { EvidenceStore } = await import('../lib/evidence.js');
 const { roleAddress } = await import('../lib/env.js');
 const { disputeAct } = await import('../steps/04-dispute.js');
-const { rulingAct } = await import('../steps/04-ruling.js');
+const { rulingAct, watchRuling } = await import('../steps/04-ruling.js');
 const { disputeTools } = await import('../agent/tools/dispute.js');
 
 const realFetch = globalThis.fetch;
@@ -289,6 +289,39 @@ describe('simulation: act 4 with Kleros', () => {
     expect(err).toBeUndefined();
     expect(tags()).toEqual(['agent>9:-100:dispute/junk-response']);
     describeRun('4. Jurors rule 0 (refuse to arbitrate)', r, [err]);
+  });
+
+  it('the session watch: reads while the jurors vote, writes once the vote is over, only says so in approve mode', async () => {
+    const r = await run({ name: 'watched', keys: { shady: KEYS.shady } });
+    expect(r.act).toBeUndefined();
+    const until = async (done: () => boolean) => {
+      for (let i = 0; i < 400 && !done(); i++) await new Promise((res) => setTimeout(res, 5));
+    };
+    let work: (() => Promise<void>) | undefined;
+    const hooks = (approve: boolean) => ({ whenIdle: (fn: () => Promise<void>) => void (work = fn), approveOn: () => approve });
+
+    const voting = watchRuling(r.ctx, hooks(false))!;
+    expect(voting).not.toBeNull();
+    await until(() => voting.status() !== 'not read yet');
+    expect(voting.status()).toMatch(/still voting/);
+    voting.stop();
+    expect(work).toBeUndefined();
+
+    r.clock.t += 3 * 60 * MIN; // the vote is over
+    const told = watchRuling(r.ctx, hooks(true))!;
+    await until(() => work !== undefined);
+    await work!();
+    told.stop();
+    expect(sim.lines.some((l) => /The jurors have voted on dispute/.test(l))).toBe(true);
+    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response']); // approve mode: /act ruling writes it, with the host's y/N
+
+    work = undefined;
+    const writes = watchRuling(r.ctx, hooks(false))!;
+    await until(() => work !== undefined);
+    await work!();
+    writes.stop();
+    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response', 'arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
+    expect(watchRuling(r.ctx, hooks(false))).toBeNull(); // nothing pending any more
   });
 
   it('a tie, once the vote is over, is refused: no ruling feedback', async () => {

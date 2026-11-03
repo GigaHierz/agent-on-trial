@@ -21,7 +21,7 @@ Acts run only as `/act <name>`: free text goes to the agent as a conversation an
 - [ ] `pnpm preflight` once more. "askbots open project" must be ok.
 - [ ] On `/bench`: set the current round to `show`, reset the vote. Set `TRIAL_ENV=show` in `.env`.
 - [ ] Start the terminal: `pnpm trial --approve --run show-<date>` (a fresh run, so the `show` board starts empty). Font size large. Leave it on the help text.
-- [ ] A second terminal for `pnpm act:ruling`, and a browser tab on the Kleros Court (`https://v2-testnet.kleros.builders`).
+- [ ] A browser tab on the Kleros Court (`https://v2.kleros.builders`) and one on case 329, the Beta case already ruled, as the fallback (`https://v2.kleros.builders/#/cases/329/overview`). No second terminal: the session watches the ruling.
 
 ## On stage
 
@@ -32,7 +32,7 @@ Acts run only as `/act <name>`: free text goes to the agent as a conversation an
 | 5-8 | Celo | `you> /act earn` The agent reads the property, answers, passes the challenge, 0.10 USD₮ lands. Approve the witness feedback on screen. | terminal |
 | 8-10 | Celo | `you> /act spend` Quote, x402 payment in USD₮, settlement by the facilitator, receipt stored, feedback. | terminal |
 | 10-13 | Swarm | Where the memory and receipts went. Open an exhibit on `/exhibit/C1`, verify it: fetch, hash, compare with the chain. The feed, the postage batch, why the bytes cannot drift from the hash. | `/exhibit/…` |
-| 13-16 | Celo + Kleros | `you> /act dispute` No reputation, pays anyway, gets junk, files a Kleros dispute, writes its own negative feedback. The ruling is pending: jurors take longer than a talk. See "Act 4, line by line". | terminal + `/projector` |
+| 13-16 | Celo + Kleros | `you> /act dispute` No reputation, pays anyway, gets junk, files a Kleros dispute, writes its own negative feedback. The ruling is pending: jurors take longer than a talk, so the session watches it while the talk goes on. See "Act 4, line by line". | terminal + `/projector` |
 | 16-18 | Kleros | The dispute just filed, in the Kleros Court: parties, evidence, the question to the jurors. Then the one filed in rehearsal, already ruled, and how its ruling becomes ERC-8004 feedback. | Court tab, `/exhibit/D1` |
 | 18-20 | Celo | `you> /closing` Prosecutor and defense, generated from the evidence, every claim cited. Open the vote: `you> /vote open`. | `/projector` with QR |
 | 20-22 | all | `you> /ask <audience question>` one or two cross-examination questions from the room. | terminal |
@@ -63,7 +63,7 @@ What happens after `you> /act dispute`, and what to say while it does. Approve e
 | `agent writes giveFeedback(… -100, dispute/junk-response)` (press `y`), exhibit **D2** | "The agent's own complaint, on chain now: −100 on the provider, with the evidence attached." |
 | `Ruling pending (kleros)`, exhibit **D3** | "The jurors take minutes to hours. The ruling will come back to this terminal." |
 
-At 16-18, open `/how` (linked from the home page footer): it explains why the ruling takes a vote and who votes, one short animation per point, and its live card follows tonight's dispute from filed to ruled. Then the Court tab on the D1 link, then the rehearsal dispute. Say what the ruling does: "If the jurors accept the claim, a relay key writes it into ERC-8004: −100 on the provider, +100 on the buyer, citing the Kleros case. If they reject it or refuse, nothing is written on either side." When the jurors have voted (after the talk is fine): `you> /act ruling` here, or `pnpm act:ruling` in the second terminal. Exhibits **D4** and **D5** (or a "No feedback written" note) appear on the board.
+At 16-18, open `/how` (linked from the home page footer): it explains why the ruling takes a vote and who votes, one short animation per point, and its live card follows tonight's dispute from filed to ruled. Then the Court tab on the D1 link, then the rehearsal dispute. Say what the ruling does: "If the jurors accept the claim, a relay key writes it into ERC-8004: −100 on the provider, +100 on the buyer, citing the Kleros case. If they reject it or refuse, nothing is written on either side." The talk goes on: the session watches the ruling in the background. When the vote is over the terminal says `// The jurors have voted on dispute N.`; then, at any point (after the talk is fine), `you> /act ruling` and `y` for each review. Exhibits **D4** and **D5** (or a "No feedback written" note) appear on the board. Taking too long: `you> /ruling` shows the last check, `/ruling stop` stops waiting (the dispute stays pending; `pnpm act:ruling --wait 10800000` in any terminal writes it later), and case 329 shows the end of a dispute: ruled "Accept the claim", with its two reviews on ERC-8004.
 
 ## Rehearse act 4
 
@@ -75,7 +75,7 @@ The session with `--dry-run --approve`: the same commands as on stage, the real 
 
 1. Start the local courtroom (in-memory store, `courtroom/.env.local`: `COURTROOM_MEMORY=1` and the same `HOST_SECRET` as `.env`): `pnpm --filter courtroom dev`, then open `http://localhost:3000/projector?r=dryrun` and `/live?r=dryrun`. A dry run mirrors only to a localhost courtroom.
 2. `pnpm rehearse:dispute`, then `you> /act dispute`. Approve with `y`.
-3. A minute later, `you> /act ruling`. `DRY_RUN_RULING=2` (or `0`, `tied`) rehearses the other outcomes; `DRY_RUN_PERIOD_MS` sets how fast the stand-in jurors are.
+3. About a minute later the terminal says the jurors have voted: `you> /act ruling`. `DRY_RUN_RULING=2` (or `0`, `tied`) rehearses the other outcomes; `DRY_RUN_PERIOD_MS` sets how fast the stand-in jurors are.
 
 ## After
 

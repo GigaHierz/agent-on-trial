@@ -161,7 +161,7 @@ export async function disputeAct(ctx: ActContext) {
 
       let ruling: Ruling | null = null;
       try {
-        ruling = await getDispute().ruling(dispute.disputeId, { waitMs: 30_000, ref: pending.ref });
+        ruling = await getDispute().ruling(dispute.disputeId, { waitMs: env.rulingWaitMs, ref: pending.ref });
       } catch (err) {
         if (!kleros) throw err;
         log.warn(`reading the ruling of dispute ${dispute.disputeId} failed: ${(err as Error).message.split('\n')[0]}`);

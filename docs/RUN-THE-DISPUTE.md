@@ -47,7 +47,16 @@ KLEROS_CHAIN=arbitrum-one KLEROS_ALLOW_BETA=1 pnpm act:dispute
 pnpm act:ruling --wait 10800000
 ```
 
-On stage, the same through the session: `KLEROS_CHAIN=arbitrum-one KLEROS_ALLOW_BETA=1 pnpm trial --approve --run show-<date>`, then `/act dispute` (press `y` at each prompt), and `pnpm act:ruling --wait 10800000` in a second terminal, left running until the reviews are written.
+On stage, the same through the session: `KLEROS_CHAIN=arbitrum-one KLEROS_ALLOW_BETA=1 pnpm trial --approve --run show-<date>`, then `/act dispute` (press `y` at each prompt). The act ends once the case is filed, and the session watches for the ruling every 20 s while the talk goes on. When the vote is over the terminal says `// The jurors have voted on dispute N.`: type `/act ruling` and press `y` for each review.
+
+## If the jurors take too long
+
+Nothing waits for them: the act moves on at once and the watch only reads.
+
+- `/ruling` shows the last check. `/ruling stop` stops waiting; the dispute stays pending. `/ruling watch` watches again.
+- Later, from any terminal: `pnpm act:ruling --wait 10800000` writes the ruling when it comes.
+- To show a finished case meanwhile: Beta case 329, ruled "Accept the claim", with its two reviews on ERC-8004: https://v2.kleros.builders/#/cases/329/overview.
+- Without `--approve` the session writes the ruling itself when it comes.
 
 ## Dry run
 
@@ -60,6 +69,7 @@ pnpm rehearse:dispute  # then /act dispute, and /act ruling a minute later
 ## Good to know
 
 - `act:ruling` reads the case on the network it was filed on: no prefix needed. Run only one at a time; a second one says so and stops.
+- `RULING_WAIT_MS=60000` makes the act wait a minute for the ruling before it moves on (default 0).
 - The courtroom shows whichever round is current: set it on `/bench`. `/how` explains a dispute to the room.
 - After the live run, remove `KLEROS_API_KEY_BETA` from `.env`.
 - The details, from wiring to wallets: [PLUG-IN-KLEROS.md](PLUG-IN-KLEROS.md).

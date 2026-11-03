@@ -3,9 +3,7 @@ import { DisputeLiveCard } from '@/components/DisputeLiveCard';
 import { AppealDiagram, CallDiagram, DrawDiagram, VoteDiagram } from '@/components/HowDiagrams';
 import { Reveal } from '@/components/Reveal';
 import { Button } from '@/components/ui/Button';
-import { DEFAULT_ROUND, RoundId } from '@/lib/keys';
-import { getRedis } from '@/lib/redis';
-import { currentRound } from '@/lib/store';
+import { resolveRounds } from '@/lib/view-round';
 
 export const dynamic = 'force-dynamic';
 
@@ -61,8 +59,8 @@ function Numbered({ items, label }: { items: string[]; label: string }) {
 }
 
 export default async function HowPage({ searchParams }: { searchParams: Promise<{ r?: string }> }) {
-  const { r } = await searchParams;
-  const round = r && RoundId.safeParse(r).success ? r : getRedis() ? await currentRound().catch(() => DEFAULT_ROUND) : DEFAULT_ROUND;
+  // The live card follows the Live / Test data switch, as the evidence board does.
+  const { round } = await resolveRounds((await searchParams).r);
 
   return (
     <main className="mx-auto max-w-3xl space-y-14 px-4 py-12 sm:px-6 sm:py-16">

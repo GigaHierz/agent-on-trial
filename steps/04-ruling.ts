@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { CHAIN_ID } from '@trial/shared';
 import type { ActContext } from '../agent/context.js';
-import { getDispute, makeDispute, type DisputeAdapter } from '../adapters/dispute/index.js';
+import { getDispute, makeDispute, type DisputeAdapter, type Ruling } from '../adapters/dispute/index.js';
 import { KlerosDispute, isPlaceholderAddress } from '../adapters/dispute/kleros.js';
 import { getStorage } from '../adapters/storage/index.js';
 import { RUN_DIR, env, hasRole, roleAddress } from '../lib/env.js';
@@ -15,16 +15,17 @@ import { asScript, isMain } from './run.js';
  * pnpm act:ruling [--wait <ms>] [--dispute <id>]       (/act ruling in the session)
  *
  * Finishes act 4 when the ruling comes after the act. A Kleros dispute takes
- * twenty minutes to over an hour to finish its vote, and the act
- * waits 30 s. This reads the latest "Ruling pending" exhibit, asks the adapter
- * it was opened with (once, or until --wait runs out) and writes the ruling on
- * both parties from the arbitrator key, exactly as act 4 would have. A half
- * already on chain is never written again (.runs/rulings.json).
+ * twenty minutes to over an hour to finish its vote, and the act does not wait
+ * for it (RULING_WAIT_MS, default 0): the session watches in the background
+ * (watchRuling below). This reads the latest "Ruling pending" exhibit, asks the
+ * adapter it was opened with (once, or until --wait runs out) and writes the
+ * ruling on both parties from the arbitrator key, exactly as act 4 would have.
+ * A half already on chain is never written again (.runs/rulings.json).
  *
  * --dispute <id> with no pending exhibit (the act died after filing) rebuilds
  * the record from the Kleros filing in KLEROS_STATE_FILE.
  */
-export async function rulingAct(ctx: ActContext, opts: { waitMs?: number; disputeId?: string } = {}) {
+export async function rulingAct(ctx: ActContext, opts: { waitMs?: number; disputeId?: string; quiet?: boolean } = {}) {
   if (env.fixture) {
     log.warn('--fixture: the recorded dispute is not ruled live');
     return;
@@ -53,7 +54,7 @@ function holdWatcher(): (() => void) | null {
     } catch {
       const holder = Number(readFileSync(WATCHER, 'utf8').trim());
       if (holder && holder !== process.pid && alive(holder)) {
-        log.warn(`a ruling reader is already running (pid ${holder}); it writes the ruling when it comes. Stop it first to read here`);
+        log.opsWarn(`a ruling reader is already running (pid ${holder}); it writes the ruling when it comes. Stop it first to read here`);
         return null;
       }
       rmSync(WATCHER, { force: true }); // its process is gone
@@ -71,15 +72,15 @@ function alive(pid: number): boolean {
   }
 }
 
-async function readAndRecord(ctx: ActContext, opts: { waitMs?: number; disputeId?: string }) {
+async function readAndRecord(ctx: ActContext, opts: { waitMs?: number; disputeId?: string; quiet?: boolean }) {
   ctx.evidence.reload();
   const pending = findPending(ctx, opts.disputeId) ?? (opts.disputeId ? fromFiling(opts.disputeId) : undefined);
   if (!pending) {
     log.opsWarn(opts.disputeId ? `no pending ruling for dispute ${opts.disputeId} in run ${ctx.evidence.runId}` : `no pending ruling in run ${ctx.evidence.runId}`);
     return;
   }
-  const adapter: DisputeAdapter = pending.adapter === getDispute().name ? getDispute() : makeDispute(pending.adapter, getStorage());
-  say(`Waiting for the jurors' ruling on dispute ${pending.disputeId}${pending.url ? `: ${pending.url}` : ''}`);
+  const adapter = adapterFor(pending);
+  if (!opts.quiet) say(`Waiting for the jurors' ruling on dispute ${pending.disputeId}${pending.url ? `: ${pending.url}` : ''}`);
   const ruling = await adapter.ruling(pending.disputeId, { waitMs: opts.waitMs ?? 0, ref: pending.ref });
   if (!ruling) {
     say(`The jurors are still voting on dispute ${pending.disputeId}.`);
@@ -89,8 +90,102 @@ async function readAndRecord(ctx: ActContext, opts: { waitMs?: number; disputeId
   await recordRuling(ctx, pending, ruling);
 }
 
+function adapterFor(pending: PendingRuling): DisputeAdapter {
+  return pending.adapter === getDispute().name ? getDispute() : makeDispute(pending.adapter, getStorage());
+}
+
+/** What the session hands the watch: it alone knows when the terminal is free. */
+export interface WatchHooks {
+  /** Run fn as soon as no command is running (now, if the host is at the prompt). */
+  whenIdle: (fn: () => Promise<void>) => void;
+  /** --approve: the host's y/N cannot share the prompt with a background write. */
+  approveOn: () => boolean;
+}
+
+export interface RulingWatch {
+  readonly disputeId: string;
+  /** The last read, for /ruling. */
+  status(): string;
+  stop(): void;
+}
+
+/**
+ * The session's background watch on the latest pending ruling: the show goes on
+ * while the jurors vote, and the ruling shows up in the terminal when it comes.
+ * It only reads, every RULING_POLL_MS (slower after failed reads). Once the vote
+ * is over it writes the ruling as /act ruling does, when no command is running;
+ * in approve mode it says the ruling is in and /act ruling writes it, with the
+ * host's y/N. Null when nothing is pending.
+ */
+export function watchRuling(ctx: ActContext, hooks: WatchHooks): RulingWatch | null {
+  if (env.fixture) return null;
+  ctx.evidence.reload();
+  const pending = findPending(ctx, undefined, true);
+  if (!pending) return null;
+  const adapter = adapterFor(pending);
+  const id = pending.disputeId;
+  const every = env.rulingPollMs;
+  let last = 'not read yet';
+  let failures = 0;
+  let stopped = false;
+  let timer: NodeJS.Timeout | undefined;
+  const clock = () => new Date().toISOString().slice(11, 16); // the log's clock (UTC)
+
+  const stop = () => {
+    stopped = true;
+    clearTimeout(timer);
+  };
+  const next = (wait: number) => {
+    if (stopped) return;
+    timer = setTimeout(() => void tick(), wait);
+    timer.unref(); // never keeps the session alive after /quit
+  };
+
+  async function tick() {
+    if (stopped) return;
+    if (rulingWritten(pending!)) {
+      stop();
+      log.ops(`the ruling for dispute ${id} is on chain; the watch stops`);
+      return;
+    }
+    let ruling: Ruling | null;
+    try {
+      ruling = await adapter.ruling(id, { waitMs: 0, ref: pending!.ref });
+      failures = 0;
+    } catch (err) {
+      failures++;
+      last = `read failed at ${clock()}: ${(err as Error).message.split('\n')[0]}`;
+      if (failures === 1 || failures % 10 === 0) log.opsWarn(`ruling watch, dispute ${id}: ${last}; trying again`);
+      next(Math.min(every * 2 ** Math.min(failures, 3), 5 * 60_000));
+      return;
+    }
+    if (stopped) return; // /ruling stop while the read was out
+    if (!ruling) {
+      last = `the jurors are still voting (checked ${clock()})`;
+      next(every);
+      return;
+    }
+    stop();
+    last = `the vote is over (${clock()})`;
+    if (hooks.approveOn()) {
+      hooks.whenIdle(async () => {
+        say(`The jurors have voted on dispute ${id}.`);
+        log.ops(`/act ruling reads the ruling and writes the reviews; approve each with y`);
+      });
+      return;
+    }
+    hooks.whenIdle(async () => {
+      await rulingAct(ctx, { quiet: true });
+      if (!rulingWritten(pending!)) log.opsWarn(`the ruling for dispute ${id} is not fully on chain yet; /act ruling tries again`);
+    });
+  }
+
+  next(0);
+  return { disputeId: id, status: () => last, stop };
+}
+
 /** The latest "Ruling pending" exhibit whose ruling is not fully on chain. */
-function findPending(ctx: ActContext, disputeId?: string): PendingRuling | undefined {
+function findPending(ctx: ActContext, disputeId?: string, quiet = false): PendingRuling | undefined {
   const exhibits = ctx.evidence.data.exhibits;
   for (let i = exhibits.length - 1; i >= 0; i--) {
     const e = exhibits[i];
@@ -99,7 +194,7 @@ function findPending(ctx: ActContext, disputeId?: string): PendingRuling | undef
     if (!d.disputeId || !d.adapter || !d.agentId || !d.proof) continue;
     if (disputeId && d.disputeId !== disputeId) continue;
     if (rulingWritten(d as PendingRuling)) {
-      log.info(`the ruling for dispute ${d.disputeId} is already on chain`);
+      if (!quiet) log.info(`the ruling for dispute ${d.disputeId} is already on chain`);
       if (disputeId) return undefined;
       continue;
     }

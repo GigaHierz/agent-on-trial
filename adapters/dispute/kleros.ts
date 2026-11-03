@@ -337,7 +337,8 @@ export class FilingStore {
 }
 
 export interface KlerosDeps extends ServiceDeps {
-  log?: { info: (text: string) => void; warn: (text: string) => void };
+  /** opsWarn, when given, takes the warnings for the operator only (a failed read that is retried). */
+  log?: { info: (text: string) => void; warn: (text: string) => void; opsWarn?: (text: string) => void };
 }
 
 type Opened = Awaited<ReturnType<DisputeAdapter['open']>>;
@@ -625,13 +626,13 @@ export class KlerosDispute implements DisputeAdapter {
         row = await this.service.disputeGet(core, chain);
       } catch (err) {
         failed = err;
-        this.log.warn(`dispute_get ${core} on ${chain} failed: ${(err as Error).message.split('\n')[0]}`);
+        this.opsWarn(`dispute_get ${core} on ${chain} failed: ${(err as Error).message.split('\n')[0]}`);
       }
       if (row && this.decided(row)) {
         // Degraded reads are common on the Testnet: a row without its answers cannot confirm the pinned titles yet.
         if (!this.answersMissing(core, chain, row)) return this.toRuling(disputeId, core, chain, row, f);
         failed = new Error(this.missingAnswers(core, chain, row));
-        this.log.warn((failed as Error).message);
+        this.opsWarn((failed as Error).message);
       }
       const left = until - this.now();
       if (left <= 0) {
@@ -641,6 +642,12 @@ export class KlerosDispute implements DisputeAdapter {
       }
       await this.sleep(Math.min(this.config.pollMs, left));
     }
+  }
+
+  /** A read that is retried, here or by the next poll, is the operator's business, not the room's. */
+  private opsWarn(text: string) {
+    if (this.log.opsWarn) this.log.opsWarn(text);
+    else this.log.warn(text);
   }
 
   async health() {

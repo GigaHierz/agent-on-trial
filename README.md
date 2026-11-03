@@ -106,7 +106,7 @@ tx    askbots paid 0.10 USDT https://celoscan.io/tx/0x…
 ?     witness writes giveFeedback(agent 9912, 100, earned/askbots-review) — approve? [y/N]
 ```
 
-`/approve on|off` toggles the y/N gate for anything that pays or writes to chain. `/ask <question>` cross-examines the defendant: it answers from its evidence and memory only, every claim cites an exhibit id. `/closing` generates the prosecutor's and the defense's closing statements. `/vote open|close` controls the audience vote. `/exhibits` lists what the run has produced.
+`/approve on|off` toggles the y/N gate for anything that pays or writes to chain. `/ask <question>` cross-examines the defendant: it answers from its evidence and memory only, every claim cites an exhibit id. `/closing` generates the prosecutor's and the defense's closing statements. `/vote open|close` controls the audience vote. `/exhibits` lists what the run has produced. After `/act dispute` the session watches the Kleros ruling in the background and writes it when the vote is over (`/act ruling` with `--approve`); `/ruling` shows the last check and `/ruling stop` stops waiting.
 
 ## The courtroom
 
@@ -143,7 +143,7 @@ The server talks to a Bee node (`BEE_API_URL`) and signs the feed with its own k
 
 ## Plug in Kleros
 
-The dispute goes through `adapters/dispute/types.ts`: open with evidence, read status, read the ruling. Set `DISPUTE=kleros` and `adapters/dispute/kleros.ts` files a real Kleros v2 dispute through the [Kleros Dispute Service](https://docs.kleros.io/ai-tools/dispute-service/overview): no arbitrable contract of ours, one API key per deployment (`KLEROS_API_KEY_TESTNET`, `KLEROS_API_KEY_BETA`; `KLEROS_CHAIN` picks one). It publishes the juror attachment, files with the buyer and the provider as parties, submits the evidence and reads the jurors' ruling back. The adapter never signs on Celo; when the jurors accept the claim, our arbitrator key writes the ruling to the Reputation Registry quoting the Kleros case (provider −100, buyer +100; a rejected claim or a refusal writes nothing). A ruling takes 20 to 70 minutes, so `pnpm act:ruling` writes it after the act. See [docs/PLUG-IN-KLEROS.md](docs/PLUG-IN-KLEROS.md).
+The dispute goes through `adapters/dispute/types.ts`: open with evidence, read status, read the ruling. Set `DISPUTE=kleros` and `adapters/dispute/kleros.ts` files a real Kleros v2 dispute through the [Kleros Dispute Service](https://docs.kleros.io/ai-tools/dispute-service/overview): no arbitrable contract of ours, one API key per deployment (`KLEROS_API_KEY_TESTNET`, `KLEROS_API_KEY_BETA`; `KLEROS_CHAIN` picks one). It publishes the juror attachment, files with the buyer and the provider as parties, submits the evidence and reads the jurors' ruling back. The adapter never signs on Celo; when the jurors accept the claim, our arbitrator key writes the ruling to the Reputation Registry quoting the Kleros case (provider −100, buyer +100; a rejected claim or a refusal writes nothing). A ruling takes 20 to 70 minutes: the act moves on, the session watches for the ruling in the background, and `pnpm act:ruling` writes it from any terminal. See [docs/PLUG-IN-KLEROS.md](docs/PLUG-IN-KLEROS.md).
 
 ```bash
 pnpm check:kleros                                         # read only: what the key's Preset is

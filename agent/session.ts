@@ -11,7 +11,7 @@ import { identityAct } from '../steps/01-identity.js';
 import { earnAct } from '../steps/02-earn.js';
 import { spendAct } from '../steps/03-spend.js';
 import { disputeAct } from '../steps/04-dispute.js';
-import { rulingAct } from '../steps/04-ruling.js';
+import { rulingAct, watchRuling, type RulingWatch } from '../steps/04-ruling.js';
 import { verdictAct } from '../steps/05-verdict.js';
 import type { ActContext } from './context.js';
 import { crossExamine, type Role } from './cross.js';
@@ -30,7 +30,9 @@ import { Memory } from './tools/memory.js';
 const HELP = `
 commands
   /act identity|earn|spend|dispute|verdict   run one act (same as pnpm act:<name>)
-  /act ruling                                write a dispute ruling that arrived after act dispute
+  /act ruling                                check the dispute's ruling now and write it if the vote is over
+  /ruling [stop|watch]                       after /act dispute the ruling is watched in the background and
+                                             written when it comes: last check, stop waiting, watch again
   /approve on|off                            ask y/N before paying or writing to chain (now: %APPROVE%)
   /ask <question>                            cross-examine the defendant from the evidence
   /closing                                   prosecutor and defense closing statements
@@ -53,7 +55,7 @@ async function main() {
   log.ops(`trial session · run ${evidence.runId} · round ${env.round} · agent ${evidence.data.agentId ?? 'not minted yet'} · approve ${approveModeOn() ? 'on' : 'off'}`);
   if (env.dryRun) {
     log.opsWarn(
-      `DRY RUN · run ${evidence.runId} · round ${env.round}: ${process.env.ANTHROPIC_API_KEY ? 'the model is real' : "no ANTHROPIC_API_KEY, so act dispute's turn is scripted"}; the shady seller is scripted (nothing is paid), Kleros is a stand-in in this process (ruling ${process.env.DRY_RUN_RULING || '1'} readable about a minute after filing: /act ruling), and feedback is checked but never signed`,
+      `DRY RUN · run ${evidence.runId} · round ${env.round}: ${process.env.ANTHROPIC_API_KEY ? 'the model is real' : "no ANTHROPIC_API_KEY, so act dispute's turn is scripted"}; the shady seller is scripted (nothing is paid), Kleros is a stand-in in this process (ruling ${process.env.DRY_RUN_RULING || '1'} readable about a minute after filing, then written by the watch: /ruling), and feedback is checked but never signed`,
     );
   }
   if (env.scriptedAgent) log.warn('--scripted-agent: /act dispute is played by a script that calls its tools in order (no model)');
@@ -61,13 +63,69 @@ async function main() {
   if (!askbots) log.warn('no askbots credentials yet; run /act identity first');
   console.log(HELP.replace('%APPROVE%', approveModeOn() ? 'on' : 'off'));
 
+  // The ruling watch writes in the background, but never during a command: what it has to do runs at once
+  // while the host sits at the prompt (aside, which the next command waits for), or else waits for the
+  // command to end (queued).
+  let atPrompt = false;
+  // Set from the watch's timers, so TypeScript must not narrow them to their initial null.
+  let queued = null as (() => Promise<void>) | null;
+  let aside = null as Promise<void> | null;
+  const runSafely = async (fn: () => Promise<void>) => {
+    try {
+      await fn();
+    } catch (err) {
+      log.error((err as Error).message.split('\n')[0]);
+    }
+  };
+  const whenIdle = (fn: () => Promise<void>) => {
+    if (!atPrompt || aside) {
+      queued = fn;
+      return;
+    }
+    if (process.stdout.isTTY) process.stdout.write('\r\x1b[2K'); // the ruling prints over the empty prompt, not after it
+    aside = runSafely(fn).finally(() => {
+      aside = null;
+      if (atPrompt) rl.prompt(true); // the prompt again, with whatever the host had typed
+    });
+  };
+  let watch = null as RulingWatch | null;
+  const startWatch = (quiet: boolean) => {
+    watch?.stop();
+    watch = watchRuling(ctx, { whenIdle, approveOn: approveModeOn });
+    if (watch) log.ops(`watching dispute ${watch.disputeId} for its ruling, every ${Math.round(env.rulingPollMs / 1000)} s; the show goes on. /ruling for the last check, /ruling stop to stop waiting`);
+    else if (!quiet) log.ops('no pending ruling in this run');
+  };
+  startWatch(true); // a session restarted mid-show picks the pending ruling up again
+
   for (;;) {
+    if (queued) {
+      const fn = queued;
+      queued = null;
+      await runSafely(fn);
+    }
+    atPrompt = true;
     const line = (await rl.question('you> ')).trim();
+    atPrompt = false;
     if (!line) continue;
+    if (aside) {
+      log.ops('the ruling is being written; your command runs right after');
+      await aside;
+    }
     try {
       if (line === '/quit' || line === '/exit') break;
       if (line === '/help') {
         console.log(HELP.replace('%APPROVE%', approveModeOn() ? 'on' : 'off'));
+        continue;
+      }
+      if (line === '/ruling' || line.startsWith('/ruling ')) {
+        const what = line.slice(7).trim();
+        if (what === 'watch') startWatch(false);
+        else if (!watch) log.ops('not watching a ruling; /ruling watch watches the latest pending one');
+        else if (what === 'stop') {
+          watch.stop();
+          log.ops(`stopped watching dispute ${watch.disputeId}. It stays pending: /act ruling here, or pnpm act:ruling in any terminal, writes it once the jurors have voted`);
+          watch = null;
+        } else log.ops(`dispute ${watch.disputeId}: ${watch.status()}`);
         continue;
       }
       if (line.startsWith('/approve')) {
@@ -113,7 +171,13 @@ async function main() {
         }
         if (name === 'earn') await earnAct(ctx, await askbotsFromCreds());
         else if (name === 'spend') await spendAct(ctx);
-        else if (name === 'dispute') await disputeAct(ctx);
+        else if (name === 'dispute') {
+          try {
+            await disputeAct(ctx);
+          } finally {
+            startWatch(true); // filed and not ruled yet: the show goes on, the ruling comes when it comes
+          }
+        }
         else if (name === 'ruling') await rulingAct(ctx);
         else if (name === 'verdict') await verdictAct(ctx);
         else log.warn(`unknown act ${name}`);
@@ -128,6 +192,8 @@ async function main() {
     }
   }
 
+  watch?.stop();
+  if (aside) await aside; // a ruling being written finishes before the session ends
   rl.close();
   await disconnectBuy();
   await flushLog();
