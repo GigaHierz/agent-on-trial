@@ -20,8 +20,9 @@ import { asScript, isMain } from './run.js';
 /**
  * Act 4: a purchase goes wrong.
  * The agent buys a "market report" from a provider with no reputation, gets
- * junk, and opens a dispute through the dispute adapter. The agent writes
- * negative feedback on the provider; the arbitrator writes the ruling on both.
+ * junk, and opens a dispute through the dispute adapter. Nothing is written on
+ * ERC-8004 when the dispute is filed: the reviews come with the ruling, from the
+ * arbitrator key, on both parties, and only when the jurors uphold the claim.
  *
  * With the kleros adapter the dispute costs a fee and its ruling takes an hour,
  * so once a dispute exists the act always leaves a "Ruling pending" record that
@@ -103,7 +104,7 @@ export async function disputeAct(ctx: ActContext) {
       ctx.evidence.add({ letter: 'C', act: 'dispute', kind: 'ref', title: `Memory after the dispute (${memory.entries} entries)`, uri: memory.uri, hash: memory.hash, gatewayUrl: memory.gatewayUrl });
     }
 
-    if (dispute && simulated) log.warn('the Kleros filing was a simulation: no "dispute" feedback and no ruling are written');
+    if (dispute && simulated) log.warn('the Kleros filing was a simulation: no ruling is written');
     if (dispute && !simulated) {
       say(`Dispute ${dispute.disputeId} is filed with Kleros. Independent jurors will read the claim, the payment and the report that came back.`);
       // The payment the dispute is about, which is not necessarily the act's last one.
@@ -125,39 +126,6 @@ export async function disputeAct(ctx: ActContext) {
         url: dispute.url,
       };
       const markPending = (title: string) => ctx.evidence.add({ letter: 'D', act: 'dispute', kind: 'note', title, url: dispute.url, detail: { pending: true, ...pending } });
-
-      if (providerId && (paid ?? receipt)?.txHash) {
-        say(`The agent leaves its own review on ERC-8004: −100 on provider ${providerId}, with the evidence attached.`);
-        // Broadcast is enough for the board: a node that times out on the receipt does not unsend the transaction.
-        let broadcast: { txHash: string; ref: StoredRef } | undefined;
-        const disputeExhibit = (txHash: string, ref: StoredRef, unconfirmed?: boolean) =>
-          ctx.evidence.add({ letter: 'D', act: 'dispute', kind: 'tx', title: `The agent writes "dispute" on provider ${providerId}`, txHash, uri: ref.uri, hash: ref.hash, gatewayUrl: ref.gatewayUrl, detail: { value: -100, tag2: 'junk-response', ...(unconfirmed ? { receipt: 'not confirmed when the act ended' } : {}) } });
-        try {
-          const neg = await writeFeedback({
-            role: 'agent',
-            agentId: providerId,
-            value: -100,
-            tag1: TAGS.dispute,
-            tag2: 'junk-response',
-            endpoint: SHADY_REPORT_URL,
-            proofOfPayment: proof,
-            evidence: { disputeId: dispute.disputeId, dispute: dispute.uri, delivered: { uri: dispute.deliveredUri, hash: dispute.deliveredHash }, expected: dispute.expected },
-            onSent: (txHash, ref) => {
-              broadcast = { txHash, ref };
-            },
-          });
-          if (neg) disputeExhibit(neg.txHash, neg.ref);
-        } catch (err) {
-          if (!kleros) throw err;
-          if (broadcast) {
-            log.warn(`the "dispute" feedback on provider ${providerId} was sent (tx ${broadcast.txHash}) but its receipt did not come back: ${errorLine(err)}`);
-            disputeExhibit(broadcast.txHash, broadcast.ref, true);
-          } else {
-            log.error(`the "dispute" feedback on provider ${providerId} failed: ${errorLine(err)}`);
-            actError ??= err; // the act still fails, once the dispute is on record
-          }
-        }
-      }
 
       let ruling: Ruling | null = null;
       try {

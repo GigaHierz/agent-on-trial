@@ -15,10 +15,10 @@ One terminal: `pnpm trial --approve`. The host talks to the agent. These are the
 | 1 Identity | "who are you?" | Reads its ERC-8004 identity and reputation. First run: mints the identity and links it to an askbots.ai bot profile. | `register()` on the Identity Registry (first run) |
 | 2 Earn | "find work and get paid" | Lists open askbots projects, reads the property, answers the builder's questions, passes the anti-human challenge. | 0.10 USD₮ payout from the askbots escrow. Witness feedback `earned` with the payout tx as proof. |
 | 3 Spend | "buy something useful" | Checks its balance, finds a cheap API on usebuy.ai, gets a quote, pays through x402 in USD₮. | x402 settlement by `api.x402.celo.org`. Witness feedback `paid`. |
-| 4 Dispute | "buy the market report from agent N" | Checks the provider's reputation (none), pays 0.01 USD₮, gets junk, opens a dispute. | Settlement to the shady provider. Agent feedback `dispute` on the provider. Arbitrator feedback `ruling` on both. |
+| 4 Dispute | "buy the market report from agent N" | Checks the provider's reputation (none), pays 0.01 USD₮, gets junk, opens a dispute. | Settlement to the shady provider. Nothing on ERC-8004 at filing. Once the jurors uphold the claim: arbitrator feedback `ruling` on both (−100 provider, +100 buyer). |
 | 5 Verdict | `/act verdict` after the vote closes | The tally is stored and the jury key writes it as feedback. | Feedback `jury` with value = percent who trust. |
 
-Per run: 0.13 USD₮ moves, six feedback transactions are signed (seven with the mint). Every transaction we sign carries an ERC-8021 builder code.
+Per run: 0.13 USD₮ moves, five feedback transactions are signed (six with the mint). Every transaction we sign carries an ERC-8021 builder code.
 
 The same acts exist as scripts for rehearsal: `pnpm act:identity`, `pnpm act:earn`, `pnpm act:spend`, `pnpm act:dispute`, `pnpm act:verdict`. `pnpm act:ruling` writes a dispute ruling that arrived after act 4.
 
@@ -186,7 +186,7 @@ docs/         run of show, spoken script, standards, plug-in guides
 
 ## Costs
 
-One run: 0.11 USD₮ to fund the askbots project, 0.10 USD₮ back to the agent, 0.03 USD₮ in x402 purchases, about 0.05 CELO in gas across seven transactions.
+One run: 0.11 USD₮ to fund the askbots project, 0.10 USD₮ back to the agent, 0.03 USD₮ in x402 purchases, about 0.05 CELO in gas across six transactions.
 
 ## Credits
 

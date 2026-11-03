@@ -88,8 +88,8 @@ async function main() {
   }
   add('shady agent id', Boolean(env.shadyAgentId), env.shadyAgentId ?? 'SHADY_AGENT_ID unset: run pnpm shady:register', false);
   if (env.shadyAgentId) {
-    // The registry refuses feedback from an agent's owner. The arbitrator (ruling) and the agent ("dispute") write on the
-    // provider, and with two keys the arbitrator and the shady identity are the same counterparty key.
+    // The registry refuses feedback from an agent's owner: the arbitrator writes the ruling on the provider, and with two
+    // keys the arbitrator and the shady identity are the same counterparty key. The buyer must not own the provider it disputes.
     try {
       const owner = await publicClient.readContract({ address: IDENTITY_REGISTRY, abi: IDENTITY_REGISTRY_ABI, functionName: 'ownerOf', args: [BigInt(env.shadyAgentId)] });
       const clash = (['arbitrator', 'agent'] as Role[]).filter((r) => hasRole(r) && getAddress(roleAddress(r)) === getAddress(owner));
@@ -97,7 +97,7 @@ async function main() {
         `shady agent ${env.shadyAgentId}`,
         !clash.length,
         clash.length
-          ? `owner ${owner} is also the ${clash.join(' and ')} key: its feedback on the provider would revert (self-feedback); ${
+          ? `owner ${owner} is also the ${clash.join(' and ')} key: ${clash.includes('arbitrator') ? 'the ruling on the provider would revert (self-feedback)' : 'the buyer would dispute itself'}; ${
               clash.includes('agent') ? 'register the shady identity from another key (SHADY_PRIVATE_KEY, clear SHADY_AGENT_ID, pnpm shady:register)' : 'give the shady provider a wallet of its own (SHADY_PRIVATE_KEY, clear SHADY_AGENT_ID, pnpm shady:register), or set ARBITRATOR_PRIVATE_KEY to a third funded wallet'
             }`
           : `owner ${owner}`,

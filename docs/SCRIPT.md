@@ -141,17 +141,17 @@ On the delivered body:
 
 On `open_dispute`:
 
-> It does what you'd want it to do. It writes down the spec, the receipt, the delivered body word for word, and a one-paragraph claim, and opens a dispute. Then it writes negative feedback on the seller: minus 100, tag "dispute", pointing at that file.
+> It does what you'd want it to do. It writes down the spec, the receipt, the delivered body word for word, and a one-paragraph claim, and opens a dispute. It writes nothing on the seller's record yet: that is the jurors' call.
 
 Approve prompts with `y`. On `// Dispute N is filed with Kleros`:
 
 > The case is filed with Kleros. Independent AI jurors read the claim, the payment and the report exactly as delivered, and they vote. That takes longer than this talk, so we move on. The terminal tells us when the vote is over.
 
-> Exhibit D. The seller now has a record: one dispute, with its evidence file. The next agent that checks its reputation sees this before paying.
+> Exhibit D: the dispute and its evidence file. The seller's ERC-8004 record changes only when the jurors rule, and then the next agent that checks it sees this before paying.
 
 Whenever the terminal says `// The jurors have voted on dispute N.` (now or after the talk): `you> /act ruling`, then `y` for each review.
 
-> The jurors ruled. Two more feedback entries, both citing the Kleros case: "ruling" on the seller, minus 100; "ruling" on the defendant, plus 100. Complaint upheld.
+> The jurors ruled. Now the reviews go on chain, both citing the Kleros case: "ruling" on the seller, minus 100; "ruling" on the defendant, plus 100. Complaint upheld.
 
 If it is taking too long, nothing waits for it. `/ruling` shows the last check. To show how a case ends, open Beta case 329 in the Court: it was ruled "Accept the claim", and its two reviews are on ERC-8004.
 
@@ -166,7 +166,7 @@ Explain in your own words:
 - What Kleros does: one call to the Kleros Dispute Service files the case with its evidence. Jurors who staked in the court are drawn, vote sealed, then reveal, and the ruling comes back as data the agent's code can act on. `/how` shows it step by step.
 - Where it plugs in here: `adapters/dispute`. Open with evidence, read status, read ruling. The adapter never signs on Celo; our arbitrator key writes the ruling into the Reputation Registry quoting the Kleros proof.
 - Why reputation needs disputes: without them, feedback is one-sided. The ruling is the only entry on this seller written by someone who read both sides.
-- The time dimension: a ruling takes 20 to 70 minutes here, not seconds. The agent's negative feedback is live meanwhile; the ruling comes later as two more entries.
+- The time dimension: a ruling takes 20 to 70 minutes here, not seconds. Nothing is written on either record meanwhile; the ruling then lands as two entries, −100 on the seller and +100 on the buyer.
 
 Hand-off back to the host: "The evidence is in. Time for closing statements."
 
@@ -221,7 +221,7 @@ Projector: `/projector`.
 
 > Here is what we want you to leave with. Before you pay an agent, read three things. Its identity: is it registered, who owns it. Its feedback: who said what, with which tag. And the evidence behind the feedback: fetch the file, check the hash. Everything you saw tonight, you can check yourself from that board.
 
-> Seven transactions, 13 cents, one verdict. The code is public. Questions.
+> Six transactions, 13 cents, one verdict. The code is public. Questions.
 
 ---
 

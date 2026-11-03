@@ -33,7 +33,7 @@ Kleros Testnet (Arbitrum Sepolia), court 8, one AI juror. The Kleros case is a t
 ```bash
 pnpm check:kleros      # ends with: health ok … arbitrum-sepolia-testnet · court 8
 pnpm preflight         # all green
-pnpm act:dispute       # buys the report, files the case, writes the agent's −100 on the provider
+pnpm act:dispute       # buys the report and files the case; nothing is written on ERC-8004 yet
 pnpm act:ruling --wait 7200000   # waits for the vote, then writes −100 on the provider and +100 on the agent
 ```
 

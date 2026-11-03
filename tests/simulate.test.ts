@@ -240,7 +240,7 @@ function describeRun(title: string, r: Awaited<ReturnType<typeof run>>, errors: 
 const tags = () => sim.writes.map((w) => `${w.signer}>${w.agentId}:${w.value}:${w.tag1}/${w.tag2}`);
 
 describe('simulation: act 4 with Kleros', () => {
-  it('Testnet, jurors accept the claim: dispute -100 now, ruling -100/+100 after act:ruling', async () => {
+  it('Testnet, jurors accept the claim: nothing written at filing, ruling -100/+100 after act:ruling', async () => {
     const r = await run({ name: 'upheld', keys: { shady: KEYS.shady } });
     expect(r.act).toBeUndefined();
     const filed = [...r.fake.disputes.values()][0];
@@ -249,15 +249,15 @@ describe('simulation: act 4 with Kleros', () => {
     expect(doc).toMatch(/Paid: 0\.01 USD₮ of token 0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e \(10000 in its smallest unit\)/);
     expect(doc).toMatch(/x402 payment requirements http:\/\/localhost:4402\/report\/celo served unpaid/);
     expect(doc).toMatch(new RegExp(`Paid to: ${getAddress(sim.payTo)}, ERC-8004 agent 9 on Celo`));
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response']);
+    expect(tags()).toEqual([]);
     expect(r.ctx.evidence.data.exhibits.some((e) => e.title.startsWith('Ruling pending'))).toBe(true);
     const err = await ruling(r);
     expect(err).toBeUndefined();
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response', 'arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
+    expect(tags()).toEqual(['arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
     expect(sim.writes.every((w) => w.toAddress === getAddress(sim.payTo))).toBe(true);
     describeRun('1. Testnet, three keys, jurors rule 1 "Accept the claim"', r, [err]);
     expect(await ruling(r)).toBeUndefined(); // again: nothing written twice
-    expect(sim.writes).toHaveLength(3);
+    expect(sim.writes).toHaveLength(2);
   });
 
   it('two keys only: the arbitrator owns the provider, so its ruling there reverts; the buyer half still lands', async () => {
@@ -265,12 +265,12 @@ describe('simulation: act 4 with Kleros', () => {
     expect(roleAddress('arbitrator')).toBe(sim.payTo);
     const err = await ruling(r);
     expect(err?.message).toMatch(/Self-feedback not allowed/);
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response', 'arbitrator>7:100:ruling/complaint-upheld']);
+    expect(tags()).toEqual(['arbitrator>7:100:ruling/complaint-upheld']);
     describeRun('2. Two keys only (arbitrator = shady owner), jurors rule 1', r, [err]);
     // The fix: a third wallet for the arbitrator. The provider half was never signed, so it is written now.
     process.env.ARBITRATOR_PRIVATE_KEY = KEYS.arbitrator;
     expect(await ruling(r)).toBeUndefined();
-    expect(tags().slice(2)).toEqual(['arbitrator>9:-100:ruling/complainant-wins']);
+    expect(tags().slice(1)).toEqual(['arbitrator>9:-100:ruling/complainant-wins']);
     report.push('   After `ARBITRATOR_PRIVATE_KEY` is set to a third wallet, `act:ruling` writes the provider half (-100 complainant-wins) and nothing twice.', '');
   });
 
@@ -278,7 +278,7 @@ describe('simulation: act 4 with Kleros', () => {
     const r = await run({ name: 'rejected', fake: { ruling: 2 } });
     const err = await ruling(r);
     expect(err).toBeUndefined();
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response']);
+    expect(tags()).toEqual([]);
     expect(r.ctx.evidence.data.exhibits.some((e) => e.title === 'Ruling: claim rejected, the delivery matched. No feedback written')).toBe(true);
     describeRun('3. Jurors rule 2 "Reject the claim"', r, [err]);
   });
@@ -287,7 +287,7 @@ describe('simulation: act 4 with Kleros', () => {
     const r = await run({ name: 'refused', fake: { ruling: 0 } });
     const err = await ruling(r);
     expect(err).toBeUndefined();
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response']);
+    expect(tags()).toEqual([]);
     describeRun('4. Jurors rule 0 (refuse to arbitrate)', r, [err]);
   });
 
@@ -314,14 +314,14 @@ describe('simulation: act 4 with Kleros', () => {
     await notice();
     told.stop();
     expect(sim.lines.some((l) => /The jurors have voted on dispute/.test(l))).toBe(true);
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response']); // approve mode: /act ruling writes it, with the host's y/N
+    expect(tags()).toEqual([]); // approve mode: /act ruling writes it, with the host's y/N
 
     work = undefined;
     const writes = watchRuling(r.ctx, hooks(false))!;
     await until(() => work !== undefined);
     await work!();
     writes.stop();
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response', 'arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
+    expect(tags()).toEqual(['arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
     expect(watchRuling(r.ctx, hooks(false))).toBeNull(); // nothing pending any more
     // A notice that waited for a command which wrote the ruling meanwhile stays silent.
     const said = sim.lines.filter((l) => /The jurors have voted on dispute/.test(l)).length;
@@ -334,7 +334,7 @@ describe('simulation: act 4 with Kleros', () => {
     const r = await run({ name: 'tie', fake: { ruling: 'tied' } });
     const err = await ruling(r);
     expect(err).toBeUndefined();
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response']);
+    expect(tags()).toEqual([]);
     describeRun('5. A tied vote (refused once the vote is over)', r, [err]);
   });
 
@@ -342,7 +342,7 @@ describe('simulation: act 4 with Kleros', () => {
     const r = await run({ name: 'stuck', fake: { stallAt: 'Vote' } });
     const err = await ruling(r);
     expect(err).toBeUndefined();
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response', 'arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
+    expect(tags()).toEqual(['arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
     describeRun('5b. The Testnet never moves the period: the dispute sits in Vote past its deadline', r, [err]);
   });
 
@@ -365,18 +365,18 @@ describe('simulation: act 4 with Kleros', () => {
     const r = await run({ name: 'degraded', fake: { degradedRuledReads: 999 } });
     const err = await ruling(r);
     expect(err?.message).toMatch(/KLEROS_CONFIRMED_ANSWERS=arbitrum-sepolia-testnet:300/);
-    expect(tags()).toEqual(['agent>9:-100:dispute/junk-response']);
+    expect(tags()).toEqual([]);
     describeRun('8. The Testnet returns the dispute without its answers', r, [err]);
     sim.kleros = new KlerosDispute(getStorage(), { KLEROS_API_KEY_TESTNET: 'fake', KLEROS_SERVICE_URL: 'http://fake.kleros/mcp', KLEROS_STATE_FILE: '.runs/kleros/degraded.json', KLEROS_RULING_MAP: '1=complainant:Accept the claim,2=respondent:Reject the claim', KLEROS_CONFIRMED_ANSWERS: 'arbitrum-sepolia-testnet:300' }, { fetch: r.fake.fetch, now: () => r.clock.t, sleep: async (ms) => void (r.clock.t += ms), log: { info: () => {}, warn: () => {} } });
     expect(await ruling(r)).toBeUndefined();
-    expect(tags().slice(1)).toEqual(['arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
+    expect(tags()).toEqual(['arbitrator>9:-100:ruling/complainant-wins', 'arbitrator>7:100:ruling/complaint-upheld']);
     report.push('   With `KLEROS_CONFIRMED_ANSWERS=arbitrum-sepolia-testnet:300` (after checking the answers on the Court page), `act:ruling` writes the ruling.', '');
   });
 
   it('a run where act identity did not run still names the payer in every proof', async () => {
     const r = await run({ name: 'no-identity', noIdentity: true });
     expect(await ruling(r)).toBeUndefined();
-    expect(sim.writes).toHaveLength(3);
+    expect(sim.writes).toHaveLength(2);
     expect(sim.proofs.every((p) => p.fromAddress === getAddress(r.agent))).toBe(true);
   });
 
@@ -386,7 +386,7 @@ describe('simulation: act 4 with Kleros', () => {
     expect(r.fake.disputes.size).toBe(1);
     expect(r.fake.calls.filter((c) => c.tool === 'dispute_create').length).toBeGreaterThanOrEqual(1);
     expect(await ruling(r)).toBeUndefined();
-    expect(sim.writes).toHaveLength(3);
+    expect(sim.writes).toHaveLength(2);
     describeRun('9. WRITE_IN_PROGRESS twice and 429 twice on the way', r);
   });
 });

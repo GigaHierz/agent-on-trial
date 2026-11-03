@@ -15,8 +15,8 @@ import { lastArtifact, type ActContext } from '../context.js';
 
 /**
  * open_dispute: the agent's side of the dispute plug-in. The adapter stores
- * the evidence and returns an id. The negative feedback on the provider and
- * the ruling are written by the step after the act, not by the model.
+ * the evidence and returns an id. The reviews on both parties come with the
+ * ruling, written by the step after the act, not by the model.
  */
 export function disputeTools(ctx: ActContext) {
   const open_dispute = betaZodTool({

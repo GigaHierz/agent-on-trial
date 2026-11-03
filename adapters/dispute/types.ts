@@ -57,7 +57,7 @@ export interface Ruling {
  *
  * Rules:
  * - Adapters never sign Celo transactions. The step scripts write the ERC-8004
- *   feedback (dispute, ruling) from what the adapter returns.
+ *   ruling feedback from what ruling() returns.
  * - open() must store the evidence somewhere a juror can read it and return
  *   its uri. The storage adapter is handed in for that.
  * - ruling() returns null while pending.

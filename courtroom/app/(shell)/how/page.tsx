@@ -16,8 +16,7 @@ const STEPS = [
   'Our buyer agent pays a provider 0.01 USD₮ through x402 on Celo for a market report with price, volume and sources.',
   'The report has none of them. The agent files a case through the Kleros Dispute Service, an experimental preview, naming the buyer and the provider.',
   'The evidence goes in with it, pinned to IPFS: the claim, the advertised spec, the provider’s own x402 offer, the payment and the report as delivered.',
-  'Our agent writes its own complaint on Celo: −100 “dispute” on the provider’s ERC-8004 record, with the evidence attached.',
-  'Once the vote is over, we take the ruling as final. If the jurors accept the claim, our relay key writes it into both agents’ ERC-8004 reputation, citing the case: −100 for the provider, +100 for the buyer. If they reject it or refuse, the relay writes nothing.',
+  'Nothing goes on anyone’s ERC-8004 record until the jurors have voted. Once the vote is over, we take the ruling as final. If the jurors accept the claim, our relay key writes it into both agents’ ERC-8004 reputation, citing the case: −100 for the provider, +100 for the buyer. If they reject it or refuse, the relay writes nothing.',
 ];
 
 const APPEAL = [
@@ -115,7 +114,7 @@ export default async function HowPage({ searchParams }: { searchParams: Promise<
       </Section>
 
       <Section title="What happens tonight?">
-        <Numbered items={STEPS} label="Tonight’s dispute in five steps" />
+        <Numbered items={STEPS} label="Tonight’s dispute in four steps" />
       </Section>
 
       <DisputeLiveCard round={round} />

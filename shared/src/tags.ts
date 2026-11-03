@@ -8,7 +8,7 @@ export const TAGS = {
   earned: 'earned',
   /** Witness: the agent paid for a service through x402 and it settled. tag2: x402-exact */
   paid: 'paid',
-  /** A client disputes what a provider delivered. tag2: junk-response */
+  /** A client disputes what a provider delivered. tag2: junk-response. Read, no longer written: act 4 leaves the record to the ruling. */
   dispute: 'dispute',
   /** Arbitrator: an upheld complaint. tag2: complainant-wins (provider, -100) | complaint-upheld (buyer, +100). A rejected claim or a refusal writes nothing. */
   ruling: 'ruling',
