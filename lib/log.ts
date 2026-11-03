@@ -20,6 +20,8 @@ const C = {
 };
 
 const SECRET_KEY = /(private|secret|api[_-]?key|authorization|token|password|mnemonic)/i;
+/** A payment token's symbol ("token": "USDT" in a buy call) is not a secret; any other "token" value is. */
+const TOKEN_SYMBOL = /^[A-Z][A-Z0-9₮]{1,9}$/;
 
 export function redact(value: unknown, depth = 0): unknown {
   if (depth > 6) return '[deep]';
@@ -28,7 +30,7 @@ export function redact(value: unknown, depth = 0): unknown {
     return Object.fromEntries(
       Object.entries(value as Record<string, unknown>).map(([k, v]) => [
         k,
-        SECRET_KEY.test(k) ? '[redacted]' : redact(v, depth + 1),
+        SECRET_KEY.test(k) && !(/^token$/i.test(k) && typeof v === 'string' && TOKEN_SYMBOL.test(v)) ? '[redacted]' : redact(v, depth + 1),
       ]),
     );
   }
@@ -39,6 +41,12 @@ export function redact(value: unknown, depth = 0): unknown {
 let queue: LogLine[] = [];
 let timer: NodeJS.Timeout | null = null;
 let round = env.round;
+let mirror = true;
+
+/** Off for operator tools (preflight): their lines stay in this terminal and never reach the courtroom. */
+export function setMirror(on: boolean) {
+  mirror = on;
+}
 
 export function setLogRound(r: string) {
   round = r;
@@ -70,7 +78,8 @@ export async function flushLog() {
   }
 }
 
-function emit(kind: LogLine['kind'], text: string, data?: Record<string, unknown>) {
+/** Every line prints here; only the show's lines go to the courtroom's live log (ops lines stay in the terminal). */
+function emit(kind: LogLine['kind'], text: string, data?: Record<string, unknown>, mirrored = true) {
   const line: LogLine = { at: new Date().toISOString(), kind, text, ...(data ? { data: redact(data) as Record<string, unknown> } : {}) };
   const t = line.at.slice(11, 19);
   const prefix = `${C.dim}${t}${C.reset}`;
@@ -102,7 +111,7 @@ function emit(kind: LogLine['kind'], text: string, data?: Record<string, unknown
     default:
       console.log(`${prefix} ${C.dim}info${C.reset}  ${text}`);
   }
-  enqueue(line);
+  if (mirrored && mirror) enqueue(line);
 }
 
 export const log = {
@@ -115,6 +124,9 @@ export const log = {
   warn: (text: string, data?: Record<string, unknown>) => emit('warn', text, data),
   error: (text: string, data?: Record<string, unknown>) => emit('error', text, data),
   approve: (text: string) => emit('approve', text),
+  /** For the operator only: printed here, never mirrored to the courtroom. */
+  ops: (text: string) => emit('info', text, undefined, false),
+  opsWarn: (text: string) => emit('warn', text, undefined, false),
 };
 
 function short(s: string | undefined, max = 240): string {

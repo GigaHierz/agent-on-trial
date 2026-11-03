@@ -1,10 +1,10 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { Evidence, Exhibit, Fixtures, type Evidence as EvidenceT, type Exhibit as ExhibitT } from '@trial/shared';
-import { currentRunId, env } from './env.js';
+import { CURRENT_RUN_FILE, currentRunId, env } from './env.js';
 import { log } from './log.js';
 import { publish } from './publish.js';
 
-const RUN_FILE = 'evidence/run.json';
+const RUN_FILE = env.dryRun ? 'evidence/dry-run.json' : 'evidence/run.json';
 const FIXTURES_FILE = 'evidence/fixtures.json';
 
 /**
@@ -37,7 +37,7 @@ export class EvidenceStore {
 
   /** Start over with a fresh run id. */
   static fresh(runId: string): EvidenceStore {
-    writeFileSync('.runs/current', runId);
+    writeFileSync(CURRENT_RUN_FILE, runId);
     const store = new EvidenceStore({
       runId,
       round: env.round,
@@ -54,6 +54,16 @@ export class EvidenceStore {
     return this.data.runId;
   }
 
+  /** Pick up exhibits another process added to this run since it was loaded (pnpm act:ruling next to the session). */
+  reload() {
+    try {
+      const parsed = Evidence.parse(JSON.parse(readFileSync(RUN_FILE, 'utf8')));
+      if (parsed.runId === this.data.runId && parsed.exhibits.length >= this.data.exhibits.length) this.data = parsed;
+    } catch {
+      /* nothing newer on disk */
+    }
+  }
+
   setAgent(agentId: string, address: string) {
     this.data.agentId = agentId;
     this.data.agentAddress = address;
@@ -66,12 +76,15 @@ export class EvidenceStore {
   }
 
   add(partial: Omit<ExhibitT, 'id' | 'at'> & { letter: 'A' | 'B' | 'C' | 'D' | 'V' }): ExhibitT {
+    this.reload(); // a long session must not drop what pnpm act:ruling wrote meanwhile
     const { letter, ...rest } = partial;
+    // A rehearsal says so on every exhibit: nothing on the board is real.
+    if (env.dryRun && !rest.title.startsWith('[dry run]')) rest.title = `[dry run] ${rest.title}`;
     const exhibit = Exhibit.parse({ ...rest, id: this.nextId(letter), at: new Date().toISOString() });
     this.data.exhibits.push(exhibit);
     this.save();
     const where = exhibit.txHash ? `tx ${exhibit.txHash}` : exhibit.uri ? `${exhibit.uri.slice(0, 48)}…` : exhibit.url ?? '';
-    log.info(`exhibit ${exhibit.id} ${exhibit.title}${where ? ` · ${where}` : ''}${exhibit.fixture ? ' · recorded' : ''}`);
+    log.ops(`exhibit ${exhibit.id} ${exhibit.title}${where ? ` · ${where}` : ''}${exhibit.fixture ? ' · recorded' : ''}`);
     return exhibit;
   }
 

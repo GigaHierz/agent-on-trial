@@ -31,6 +31,12 @@ describe('role keys', () => {
 });
 
 describe('log redaction', () => {
+  it('shows a payment token symbol, and hides any other token', () => {
+    expect(redact({ url: 'http://x', token: 'USDT' })).toEqual({ url: 'http://x', token: 'USDT' });
+    expect(redact({ token: 'sk-live-abc123' })).toEqual({ token: '[redacted]' });
+    expect(redact({ accessToken: 'USDT' })).toEqual({ accessToken: '[redacted]' });
+  });
+
   it('hides values under secret-looking keys', () => {
     expect(redact({ apiKey: 'x', Authorization: 'y', url: 'ok', nested: { private_key: 'z' } })).toEqual({
       apiKey: '[redacted]',

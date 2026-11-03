@@ -1,6 +1,9 @@
 import { spawn } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { TOKENS } from '@trial/shared';
+import { erc20Abi, formatUnits, isAddress, isAddressEqual, parseEventLogs, type Address, type Hex } from 'viem';
+import { publicClient } from './clients.js';
 import { env, roleKey } from './env.js';
 
 /**
@@ -19,7 +22,8 @@ export function buyEnv(extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   return {
     ...process.env,
     BUY_HOME: resolve(env.buyHome),
-    BUY_KEYSTORE_BACKEND: 'file',
+    // buy 0.8 signs on mainnet only from the OS keychain ("system"); its plaintext "file" backend is for development.
+    BUY_KEYSTORE_BACKEND: process.env.BUY_KEYSTORE_BACKEND || 'system',
     ...extra,
   };
 }
@@ -53,12 +57,58 @@ export interface Receipt {
   outcome?: string;
 }
 
+/**
+ * buy keeps its receipts as versioned files, receipts.<n>.json, the highest
+ * number being the current list (@celo/buy-keystore 0.8). Older releases wrote
+ * receipts.json, read when no versioned file exists.
+ */
 export function readReceipts(): Receipt[] {
-  const path = join(resolve(env.buyHome), 'receipts.json');
-  if (!existsSync(path)) return [];
-  const parsed = JSON.parse(readFileSync(path, 'utf8'));
-  const list: Receipt[] = Array.isArray(parsed) ? parsed : (parsed.receipts ?? []);
-  return list;
+  const dir = resolve(env.buyHome);
+  let names: string[];
+  try {
+    names = readdirSync(dir);
+  } catch {
+    return [];
+  }
+  const versions = names
+    .map((n) => n.match(/^receipts\.(\d+)\.json$/)?.[1])
+    .filter((v): v is string => v !== undefined)
+    .map(Number)
+    .sort((a, b) => b - a);
+  for (const v of versions) {
+    try {
+      const parsed: unknown = JSON.parse(readFileSync(join(dir, `receipts.${v}.json`), 'utf8'));
+      if (Array.isArray(parsed)) return parsed as Receipt[];
+    } catch {
+      /* pruned between listing and reading: the next one down */
+    }
+  }
+  const legacy = join(dir, 'receipts.json');
+  if (!existsSync(legacy)) return [];
+  const parsed = JSON.parse(readFileSync(legacy, 'utf8'));
+  return Array.isArray(parsed) ? parsed : (parsed.receipts ?? []);
+}
+
+/** A receipt's amount for people: buy records it in the token's smallest unit ("10000" for 0.01 USD₮). */
+export function paidAmount(amount: string | undefined, asset: string | undefined): { amount: string; symbol?: string; amountAtomic?: string; label: string } {
+  const token = Object.values(TOKENS).find((t) => asset && (isAddress(asset) ? isAddressEqual(t.address, asset) : t.symbol === asset.toUpperCase()));
+  if (amount && /^\d+$/.test(amount) && token) {
+    const whole = formatUnits(BigInt(amount), token.decimals);
+    return { amount: whole, symbol: token.display, amountAtomic: amount, label: `${whole} ${token.display}` };
+  }
+  return { amount: amount ?? '?', symbol: token?.display, label: `${amount ?? '?'} ${token?.display ?? asset ?? ''}`.trim() };
+}
+
+/**
+ * Who a settlement paid, from its ERC-20 Transfer log on Celo: buy's receipts do not record payTo. The
+ * transfer must be from the payer, in the asset and, when the receipt says, of exactly its amount (atomic):
+ * the hash comes from the provider's payment response, so it is matched, not trusted.
+ */
+export async function settlementPayee(txHash: Hex, payer: Address, asset?: string, amountAtomic?: string): Promise<Address | undefined> {
+  const { logs } = await publicClient.getTransactionReceipt({ hash: txHash });
+  const transfers = parseEventLogs({ abi: erc20Abi, eventName: 'Transfer', logs });
+  const exact = amountAtomic && /^\d+$/.test(amountAtomic) ? BigInt(amountAtomic) : undefined;
+  return transfers.find((t) => isAddressEqual(t.args.from, payer) && (!asset || !isAddress(asset) || isAddressEqual(t.address, asset)) && (exact === undefined || t.args.value === exact))?.args.to;
 }
 
 /** Receipts newer than `since`, newest first. */

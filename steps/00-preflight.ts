@@ -7,7 +7,7 @@ import { AskbotsClient, loadCreds } from '../lib/askbots.js';
 import { ensureBuyAccount } from '../lib/buy.js';
 import { builderCode, publicClient } from '../lib/clients.js';
 import { env, hasRole, roleAddress, type Role } from '../lib/env.js';
-import { flushLog, log } from '../lib/log.js';
+import { flushLog, log, setMirror } from '../lib/log.js';
 import { publish } from '../lib/publish.js';
 
 /**
@@ -39,6 +39,7 @@ async function balances(role: Role) {
 }
 
 async function main() {
+  setMirror(false); // setup state and balances are for the operator, not the courtroom
   log.host(`preflight · round ${env.round} · storage ${env.storage} · dispute ${env.dispute} · model ${env.anthropicModel}`);
 
   // Keys and balances
@@ -53,6 +54,13 @@ async function main() {
   }
   if (hasRole('agent') && hasRole('counterparty')) {
     add('keys differ', getAddress(roleAddress('agent')) !== getAddress(roleAddress('counterparty')), 'the counterparty must not own the agent (self-feedback is refused)');
+    // A writer role on a wallet of its own pays its own gas: the arbitrator signs the two ruling halves in act 4.
+    const shared = [roleAddress('agent'), roleAddress('counterparty')].map((a) => getAddress(a));
+    for (const role of ['witness', 'arbitrator', 'jury'] as Role[]) {
+      if (shared.includes(getAddress(roleAddress(role)))) continue;
+      const b = await balances(role);
+      add(`${role} ${b.address}`, b.celo >= 0.05, `${b.celo.toFixed(3)} CELO (need ≥ 0.05 for its feedback transactions)`);
+    }
   }
   add('builder code', true, builderCode(), false);
 
@@ -61,6 +69,9 @@ async function main() {
     try {
       const owner = await publicClient.readContract({ address: IDENTITY_REGISTRY, abi: IDENTITY_REGISTRY_ABI, functionName: 'ownerOf', args: [BigInt(env.agentId)] });
       add(`agent ${env.agentId}`, getAddress(owner) === getAddress(roleAddress('agent')), `owner ${owner}`);
+      // Those who write on the agent must not own it: the registry refuses self-feedback.
+      const clash = (['witness', 'arbitrator', 'jury'] as Role[]).filter((r) => hasRole(r) && getAddress(roleAddress(r)) === getAddress(owner));
+      if (clash.length) add(`${clash.join(', ')} key`, false, `owns agent ${env.agentId}: its feedback on the agent would revert (self-feedback); give it a key of its own`);
     } catch (err) {
       add(`agent ${env.agentId}`, false, `cannot read: ${(err as Error).message.split('\n')[0]}`);
     }
@@ -68,11 +79,30 @@ async function main() {
     add('agent id', true, 'AGENT_ID unset: act identity will mint one', false);
   }
   add('shady agent id', Boolean(env.shadyAgentId), env.shadyAgentId ?? 'SHADY_AGENT_ID unset: run pnpm shady:register', false);
+  if (env.shadyAgentId) {
+    // The registry refuses feedback from an agent's owner. The arbitrator (ruling) and the agent ("dispute") write on the
+    // provider, and with two keys the arbitrator and the shady identity are the same counterparty key.
+    try {
+      const owner = await publicClient.readContract({ address: IDENTITY_REGISTRY, abi: IDENTITY_REGISTRY_ABI, functionName: 'ownerOf', args: [BigInt(env.shadyAgentId)] });
+      const clash = (['arbitrator', 'agent'] as Role[]).filter((r) => hasRole(r) && getAddress(roleAddress(r)) === getAddress(owner));
+      add(
+        `shady agent ${env.shadyAgentId}`,
+        !clash.length,
+        clash.length
+          ? `owner ${owner} is also the ${clash.join(' and ')} key: its feedback on the provider would revert (self-feedback); ${
+              clash.includes('agent') ? 'register the shady identity from another key (SHADY_PRIVATE_KEY, clear SHADY_AGENT_ID, pnpm shady:register)' : 'give the shady provider a wallet of its own (SHADY_PRIVATE_KEY, clear SHADY_AGENT_ID, pnpm shady:register), or set ARBITRATOR_PRIVATE_KEY to a third funded wallet'
+            }`
+          : `owner ${owner}`,
+      );
+    } catch (err) {
+      add(`shady agent ${env.shadyAgentId}`, false, `cannot read: ${(err as Error).message.split('\n')[0]}`);
+    }
+  }
 
   // Services
   await probe('facilitator', `${FACILITATOR_URL}/health`);
   await probe('askbots', `${ASKBOTS_URL}/api/chain`);
-  add('facilitator api key', Boolean(env.facilitatorApiKey), env.facilitatorApiKey ? 'set' : 'BUY_FACILITATOR_API_KEY unset: act dispute cannot serve the shady paywall', false);
+  add('facilitator api key', true, env.facilitatorApiKey ? 'set: the Celo facilitator settles the shady sales' : 'BUY_FACILITATOR_API_KEY unset: the shady provider settles its own sales and pays their gas (buy gate sponsor mode)', false);
   if (env.courtroomUrl) {
     await probe('courtroom', `${env.courtroomUrl}/api/round`);
     add('courtroom host secret', Boolean(env.hostSecret), env.hostSecret ? 'set' : 'HOST_SECRET unset: the live log will not be mirrored', false);
@@ -84,7 +114,7 @@ async function main() {
   const s = await getStorage().health();
   add(`storage ${getStorage().name}`, s.ok, s.detail ?? '');
   const d = await getDispute().health();
-  add(`dispute ${getDispute().name}`, d.ok, d.detail ?? '', false);
+  add(`dispute ${getDispute().name}`, d.ok, d.detail ?? '', getDispute().name === 'kleros');
 
   // Anthropic
   if (process.env.ANTHROPIC_API_KEY) {
@@ -95,7 +125,7 @@ async function main() {
       add('anthropic', false, (err as Error).message.split('\n')[0]);
     }
   } else {
-    add('anthropic', false, 'ANTHROPIC_API_KEY unset');
+    add('anthropic', env.scriptedAgent, env.scriptedAgent ? 'ANTHROPIC_API_KEY unset: act dispute runs with --scripted-agent (no model)' : 'ANTHROPIC_API_KEY unset', !env.scriptedAgent);
   }
 
   // buy

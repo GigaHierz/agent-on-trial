@@ -10,7 +10,7 @@ export const TAGS = {
   paid: 'paid',
   /** A client disputes what a provider delivered. tag2: junk-response */
   dispute: 'dispute',
-  /** Arbitrator: outcome of a dispute. tag2: complainant-wins | respondent-wins | refused | complaint-upheld */
+  /** Arbitrator: an upheld complaint. tag2: complainant-wins (provider, -100) | complaint-upheld (buyer, +100). A rejected claim or a refusal writes nothing. */
   ruling: 'ruling',
   /** Jury: the audience verdict. value = percent who trust. tag2: the event name */
   jury: 'jury',

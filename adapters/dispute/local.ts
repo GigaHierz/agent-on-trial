@@ -25,7 +25,7 @@ export class LocalDispute implements DisputeAdapter {
     const stored = await this.storage.put(canonicalJson(file), { name: 'dispute.json' });
     const disputeId = `local-${stored.hash.slice(2, 14)}`;
     this.open_.set(disputeId, { evidence, uri: stored.uri, status: 'open', ruling: null });
-    return { disputeId, uri: stored.uri, url: stored.gatewayUrl };
+    return { disputeId, uri: stored.uri, gatewayUrl: stored.gatewayUrl, url: stored.gatewayUrl };
   }
 
   async status(disputeId: string): Promise<DisputeStatus> {

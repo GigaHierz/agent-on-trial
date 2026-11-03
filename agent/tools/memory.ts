@@ -4,6 +4,7 @@ import { canonicalJson } from '@trial/shared';
 import { z } from 'zod';
 import { getStorage, NotImplemented } from '../../adapters/storage/index.js';
 import type { StoredRef } from '../../adapters/storage/types.js';
+import { RUN_DIR } from '../../lib/env.js';
 import { log } from '../../lib/log.js';
 import type { ActContext } from '../context.js';
 
@@ -29,7 +30,7 @@ export class Memory {
     readonly agentId: string | undefined,
     readonly runId: string,
   ) {
-    this.path = `.runs/${runId}/memory.json`;
+    this.path = `${RUN_DIR}/${runId}/memory.json`;
     try {
       const parsed = JSON.parse(readFileSync(this.path, 'utf8')) as { entries: MemoryEntry[]; head: StoredRef | null };
       this.entries = parsed.entries ?? [];
@@ -59,7 +60,7 @@ export class Memory {
     } catch (err) {
       if (!(err instanceof NotImplemented)) throw err;
     }
-    mkdirSync(`.runs/${this.runId}`, { recursive: true });
+    mkdirSync(`${RUN_DIR}/${this.runId}`, { recursive: true });
     writeFileSync(this.path, JSON.stringify({ entries: this.entries, head: this.head }, null, 2));
     return ref;
   }

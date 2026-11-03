@@ -1,9 +1,13 @@
 import { betaTool } from '@anthropic-ai/sdk/helpers/beta/json-schema';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { DEMO_TOKEN } from '@trial/shared';
+import { parseUnits } from 'viem';
 import { approve } from '../../lib/approve.js';
-import { mcpServeCommand, receiptsSince } from '../../lib/buy.js';
+import { mcpServeCommand, paidAmount, receiptsSince } from '../../lib/buy.js';
+import { env } from '../../lib/env.js';
 import { log } from '../../lib/log.js';
+import { dryRunBuyTools } from './dry-run-buy.js';
 import type { ActContext } from '../context.js';
 
 /**
@@ -14,8 +18,12 @@ import type { ActContext } from '../context.js';
 const ALLOWED = ['buy_whoami', 'buy_balance', 'buy_discover', 'buy_pay_quote', 'buy_curl', 'buy_verify_status'];
 const PAYING = new Set(['buy_curl']);
 const DEFAULT_TOKEN = 'USDT';
-/** Hard ceiling per paid call, in USD₮. The system prompt says the same; this one the model cannot talk its way past. */
-const MAX_AMOUNT = process.env.AGENT_MAX_AMOUNT ?? '0.05';
+/**
+ * Hard ceiling per paid call. AGENT_MAX_AMOUNT is in USD₮; buy_curl takes it in
+ * the token's smallest unit (6 decimals), so 0.05 goes out as "50000". The system
+ * prompt says the same; this one the model cannot talk its way past.
+ */
+const MAX_AMOUNT = parseUnits(process.env.AGENT_MAX_AMOUNT ?? '0.05', DEMO_TOKEN.decimals).toString();
 
 let client: Client | null = null;
 
@@ -26,7 +34,7 @@ export async function connectBuy(): Promise<Client> {
   const c = new Client({ name: 'agent-on-trial', version: '0.1.0' });
   await c.connect(transport);
   client = c;
-  log.info(`connected to buy MCP (${command.split('/').pop()} ${args.join(' ')})`);
+  log.ops(`connected to buy MCP (${command.split('/').pop()} ${args.join(' ')})`);
   return c;
 }
 
@@ -46,6 +54,7 @@ interface McpTool {
 }
 
 export async function buyTools(ctx: ActContext) {
+  if (env.dryRun) return dryRunBuyTools(ctx) as unknown as ReturnType<typeof betaTool>[];
   const c = await connectBuy();
   const { tools } = (await c.listTools()) as { tools: McpTool[] };
   const names = tools.map((t) => t.name);
@@ -76,12 +85,22 @@ export async function buyTools(ctx: ActContext) {
             ctx.artifacts.push({ kind: 'x402_response', url, body: text });
             for (const r of receiptsSince(since)) {
               ctx.artifacts.push({ kind: 'x402_receipt', url: r.url, txHash: r.txHash, amount: r.amount, asset: r.asset, network: r.network, raw: r as unknown as Record<string, unknown> });
-              if (r.txHash) log.tx(`x402 settled ${r.amount} ${r.asset} for ${r.url}`, r.txHash);
+              if (r.txHash) log.tx(`x402 settled ${paidAmount(r.amount, r.asset).label} for ${r.url}`, r.txHash);
             }
           }
-          log.toolResult(t.name, res.isError ? `error: ${text}` : text);
+          log.toolResult(t.name, res.isError ? `error: ${text}` : t.name === 'buy_pay_quote' ? quoteLine(text) : text);
           return res.isError ? `error: ${text}` : text;
         },
       });
     });
+}
+
+/** buy calls a quote a "DRY RUN" (nothing is signed); on the live log it reads as the price and who would be paid. */
+function quoteLine(text: string): string {
+  try {
+    const q = JSON.parse(text.slice(text.indexOf('{'))) as { price?: { formatted?: string; atomic?: string }; payTo?: string; description?: string };
+    return `quote: ${q.price?.formatted ?? q.price?.atomic ?? '?'} to ${q.payTo ?? '?'}${q.description ? ` · ${q.description}` : ''}`;
+  } catch {
+    return text;
+  }
 }

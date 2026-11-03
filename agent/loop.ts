@@ -32,7 +32,7 @@ export type AnyTool = BetaRunnableTool<any>;
  */
 export async function allTools(ctx: ActContext, askbots: AskbotsClient | null, act?: ActName): Promise<AnyTool[]> {
   const tools: AnyTool[] = [...memoryTools(ctx, act), ...reputationTools(), ...disputeTools(ctx)];
-  if (askbots) tools.push(...askbotsTools(ctx, askbots));
+  if (askbots && !env.dryRun) tools.push(...askbotsTools(ctx, askbots)); // askbots is a live service: not in a rehearsal
   try {
     tools.push(...(await buyTools(ctx)));
   } catch (err) {
@@ -103,5 +103,44 @@ export async function runAct(ctx: ActContext, act: ActName, askbots: AskbotsClie
   const missing = spec.tools.filter((n) => !tools.some((t) => t.name === n));
   if (missing.length) log.warn(`act ${act} is missing tools: ${missing.join(', ')}`);
   log.host(`act ${act}: ${spec.task(ctx.params).split('\n')[0]}`);
+  if (act === 'dispute' && (env.scriptedAgent || (env.dryRun && !process.env.ANTHROPIC_API_KEY))) return scriptedDisputeTurn(ctx, tools);
   return runTurn({ ctx, tools, messages, userText: spec.task(ctx.params) });
+}
+
+/**
+ * --scripted-agent, or --dry-run with no ANTHROPIC_API_KEY: act 4's turn played by a script that calls the act's own tools in
+ * the order the task asks for, so the dispute path can be rehearsed before the key is in. With the key,
+ * the model plays it.
+ */
+async function scriptedDisputeTurn(ctx: ActContext, tools: AnyTool[]): Promise<string> {
+  log.opsWarn(`${env.scriptedAgent ? '--scripted-agent' : 'dry run: no ANTHROPIC_API_KEY, so'}: the agent's turn is played by a script (the same tools, in the order the task asks; no model)`);
+  const call = async (name: string, input: Record<string, unknown>) => {
+    const tool = tools.find((t) => t.name === name) as { run: (i: unknown) => unknown } | undefined;
+    if (!tool) throw new Error(`act dispute has no ${name} tool`);
+    const out = await tool.run(input);
+    return typeof out === 'string' ? out : JSON.stringify(out);
+  };
+  const url = ctx.params.shadyUrl ?? 'http://localhost:4402/report/celo';
+  if (ctx.params.shadyAgentId) {
+    const rep = JSON.parse(await call('check_reputation', { agentId: ctx.params.shadyAgentId })) as { summaries?: { tag1: string; count: number; value: number }[]; error?: string };
+    const seen = (rep.summaries ?? []).filter((s) => s.count > 0).map((s) => `${s.count} ${s.tag1} (avg ${s.value})`).join(', ');
+    log.agent(`Provider ${ctx.params.shadyAgentId} on ERC-8004: ${seen || 'no feedback yet'}.`);
+  }
+  log.agent('Getting a quote.');
+  await call('buy_pay_quote', { url, token: 'USDT' });
+  const paid = await call('buy_curl', { url, token: 'USDT' });
+  const body = paid.split('--- response body ---\n')[1] ?? '';
+  const receipt = paid.match(/tx=(0x[0-9a-fA-F]{64})/)?.[1];
+  if (!receipt) return 'the purchase did not settle';
+  log.agent('The report has none of the advertised sections: no price, no volume, no sources. Opening a dispute.');
+  const opened = await call('open_dispute', {
+    providerAgentId: ctx.params.shadyAgentId,
+    providerEndpoint: url,
+    receiptTxHash: receipt,
+    expected: 'a Celo market report with sections: price, volume, sources',
+    deliveredBody: body,
+    claim: 'I paid 0.01 USD₮ for a Celo market report advertised with three sections: price, volume and sources. What came back is one sentence of opinion with none of them: no price, no volume, no source. The delivery does not match what was advertised.',
+  });
+  await call('memory_write', { text: 'Bought a market report from an unrated provider; it had none of the advertised sections, so I opened a dispute.', txHash: receipt });
+  return opened;
 }

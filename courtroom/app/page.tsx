@@ -35,6 +35,12 @@ export default async function Home() {
         </Link>
       </nav>
       {!redis && <RedisNotice />}
+      <footer className="mt-6 w-full border-t border-neutral-800 pt-6 text-lg text-neutral-400">
+        Why the ruling takes a vote, and who votes:{' '}
+        <Link className="text-neutral-100 underline" href={`/how?r=${encodeURIComponent(round)}`}>
+          How a dispute works
+        </Link>
+      </footer>
     </main>
   );
 }

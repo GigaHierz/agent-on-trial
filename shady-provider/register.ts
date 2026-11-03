@@ -36,7 +36,7 @@ async function main() {
   log.tx(`shady provider registered as agent ${agentId}`, hash, { agentId });
   try {
     appendFileSync('.env', `\nSHADY_AGENT_ID=${agentId}\n`);
-    log.info(`SHADY_AGENT_ID=${agentId} appended to .env`);
+    log.ops(`SHADY_AGENT_ID=${agentId} appended to .env`);
   } catch {
     log.warn(`add SHADY_AGENT_ID=${agentId} to .env`);
   }

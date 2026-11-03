@@ -11,6 +11,7 @@ import { identityAct } from '../steps/01-identity.js';
 import { earnAct } from '../steps/02-earn.js';
 import { spendAct } from '../steps/03-spend.js';
 import { disputeAct } from '../steps/04-dispute.js';
+import { rulingAct } from '../steps/04-ruling.js';
 import { verdictAct } from '../steps/05-verdict.js';
 import type { ActContext } from './context.js';
 import { crossExamine, type Role } from './cross.js';
@@ -28,6 +29,7 @@ import { Memory } from './tools/memory.js';
 const HELP = `
 commands
   /act identity|earn|spend|dispute|verdict   run one act (same as pnpm act:<name>)
+  /act ruling                                write a dispute ruling that arrived after act dispute
   /approve on|off                            ask y/N before paying or writing to chain (now: %APPROVE%)
   /ask <question>                            cross-examine the defendant from the evidence
   /closing                                   prosecutor and defense closing statements
@@ -47,8 +49,14 @@ async function main() {
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   setPrompter((q) => rl.question(q));
 
-  log.host(`trial session · run ${evidence.runId} · round ${env.round} · agent ${evidence.data.agentId ?? 'not minted yet'} · approve ${approveModeOn() ? 'on' : 'off'}`);
-  if (!publish.enabled()) log.warn('COURTROOM_URL or HOST_SECRET unset: the public live log is off');
+  log.ops(`trial session · run ${evidence.runId} · round ${env.round} · agent ${evidence.data.agentId ?? 'not minted yet'} · approve ${approveModeOn() ? 'on' : 'off'}`);
+  if (env.dryRun) {
+    log.opsWarn(
+      `DRY RUN · run ${evidence.runId} · round ${env.round}: ${process.env.ANTHROPIC_API_KEY ? 'the model is real' : "no ANTHROPIC_API_KEY, so act dispute's turn is scripted"}; the shady seller is scripted (nothing is paid), Kleros is a stand-in in this process (ruling ${process.env.DRY_RUN_RULING || '1'} readable about a minute after filing: /act ruling), and feedback is checked but never signed`,
+    );
+  }
+  if (env.scriptedAgent) log.warn('--scripted-agent: /act dispute is played by a script that calls its tools in order (no model)');
+  if (!publish.enabled()) log.warn(env.dryRun && env.courtroomUrl ? `dry run: ${env.courtroomUrl} is not a local courtroom, so nothing is mirrored to it` : 'COURTROOM_URL or HOST_SECRET unset: the public live log is off');
   if (!askbots) log.warn('no askbots credentials yet; run /act identity first');
   console.log(HELP.replace('%APPROVE%', approveModeOn() ? 'on' : 'off'));
 
@@ -93,6 +101,10 @@ async function main() {
       if (line.startsWith('/act ')) {
         const name = line.slice(5).trim();
         log.host(`/act ${name}`);
+        if (env.dryRun && name !== 'dispute' && name !== 'ruling') {
+          log.warn(`dry run: only /act dispute and /act ruling are rehearsed; /act ${name} would move money or sign on Celo`);
+          continue;
+        }
         if (name === 'identity') {
           await identityAct(ctx);
           continue;
@@ -100,6 +112,7 @@ async function main() {
         if (name === 'earn') await earnAct(ctx, await askbotsFromCreds());
         else if (name === 'spend') await spendAct(ctx);
         else if (name === 'dispute') await disputeAct(ctx);
+        else if (name === 'ruling') await rulingAct(ctx);
         else if (name === 'verdict') await verdictAct(ctx);
         else log.warn(`unknown act ${name}`);
         continue;

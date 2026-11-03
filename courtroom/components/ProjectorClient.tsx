@@ -26,19 +26,33 @@ function Badge({ children, tone }: { children: string; tone: 'muted' | 'data' })
   return <span className={`rounded border px-2 py-0.5 text-sm uppercase tracking-wide ${cls}`}>{children}</span>;
 }
 
-function ExhibitRow({ ex, gateway }: { ex: Exhibit; gateway: string }) {
+/** Disputes whose ruling has come in: a ruling exhibit or a no-feedback note names them. */
+function ruledDisputes(evidence: Evidence | null): Set<string> {
+  const ids = new Set<string>();
+  for (const e of evidence?.exhibits ?? []) {
+    const d = e.detail as { disputeId?: unknown; pending?: unknown; noFeedback?: unknown } | undefined;
+    if (d?.disputeId !== undefined && d.pending !== true && (/Ruling on the /.test(e.title) || d.noFeedback === true)) ids.add(String(d.disputeId));
+  }
+  return ids;
+}
+
+function ExhibitRow({ ex, gateway, ruled }: { ex: Exhibit; gateway: string; ruled: Set<string> }) {
   const link = exhibitHref(ex, gateway);
   const isData = ex.uri?.startsWith('data:') && !ex.gatewayUrl;
   const isVerdict = ex.id.startsWith('V');
+  // A "Ruling pending" note stays in the record; once its ruling is on the board it reads as done, not waiting.
+  const d = ex.detail as { pending?: unknown; disputeId?: unknown } | undefined;
+  const resolved = d?.pending === true && ruled.has(String(d.disputeId));
+  const title = resolved ? ex.title.replace(/Ruling pending|Ruling read, not fully written/, 'Ruling came in') : ex.title;
   return (
-    <li className="flex items-start gap-3 border-b border-neutral-800 py-2">
+    <li className={`flex items-start gap-3 border-b border-neutral-800 py-2 ${resolved ? 'opacity-60' : ''}`}>
       <span className={`shrink-0 font-mono text-xl font-bold ${isVerdict ? 'text-amber-300' : 'text-neutral-300'}`}>
         {ex.id}
       </span>
       <div className="min-w-0 flex-1">
         <p className="text-xl leading-tight">
           {isVerdict && <span className="mr-2 text-amber-300">Verdict</span>}
-          {ex.title}
+          {title}
         </p>
         <div className="mt-1 flex flex-wrap items-center gap-2">
           {link && (
@@ -61,6 +75,7 @@ export function ProjectorClient({ round, gateway, qrSvg }: { round: string; gate
   const agentId = evidence?.agentId ?? null;
   const { data: chain } = usePoll<AgentSummary>(agentId ? `/api/chain/agent/${agentId}` : null, CHAIN_POLL_MS);
   const groups = groupExhibits(evidence);
+  const ruled = ruledDisputes(evidence);
   const jury = chain?.summary.jury;
 
   return (
@@ -82,7 +97,7 @@ export function ProjectorClient({ round, gateway, qrSvg }: { round: string; gate
             </h2>
             <ul>
               {groups[col]?.map((ex) => (
-                <ExhibitRow key={ex.id} ex={ex} gateway={gateway} />
+                <ExhibitRow key={ex.id} ex={ex} gateway={gateway} ruled={ruled} />
               ))}
             </ul>
             {(groups[col]?.length ?? 0) === 0 && <p className="py-2 text-lg text-neutral-600">Nothing yet.</p>}

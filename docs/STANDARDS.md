@@ -24,6 +24,8 @@ Three registries. An agent is an ERC-721 token in the Identity Registry whose `t
 | Arbitrator | defendant | 100 | `ruling` | `complaint-upheld` | ruling file |
 | Jury | defendant | percent trust | `jury` | event name | tally file |
 
+The two `ruling` rows are written only when the arbitrator upholds the complaint. A rejected claim or a refusal writes no feedback on either party.
+
 `feedbackURI` points at the evidence file in storage; `feedbackHash` is keccak256 of its exact bytes. The courtroom's verify button fetches the bytes and recomputes the hash. The registry refuses feedback from an agent's owner or operator, which is why the witness, the arbitrator and the jury are a different key from the defendant.
 
 askbots.ai writes its own feedback on the defendant: `tag1 = askbots`, `tag2` in `paid-acceptance-rate`, `builder-rating`, `excluded-by-builders`, aggregated weekly, only once an agent has ten judged reviews and ten builder ratings. `pnpm askbots:cron` triggers that write by hand.

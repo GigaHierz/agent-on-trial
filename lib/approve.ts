@@ -20,13 +20,23 @@ export function approveModeOn() {
   return approveMode;
 }
 
+/** y/N from a person at a terminal, for the checks. No terminal, or input that ends unanswered, is a no. */
+export async function confirm(question: string): Promise<boolean> {
+  if (!process.stdin.isTTY) return false;
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const closed = new Promise<string>((res) => rl.once('close', () => res('')));
+  const answer = (await Promise.race([rl.question(question), closed])).trim().toLowerCase();
+  rl.close();
+  return answer === 'y' || answer === 'yes';
+}
+
 /**
  * Gate for anything that pays or writes to chain. Logs the intent either way;
  * asks y/N only in --approve mode. Returns false when the host declines.
  */
 export async function approve(what: string): Promise<boolean> {
   if (!approveMode) {
-    log.info(`auto-approved: ${what}`);
+    log.ops(`auto-approved: ${what}`);
     return true;
   }
   log.approve(`${what} — approve? [y/N]`);
