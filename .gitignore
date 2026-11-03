@@ -9,5 +9,6 @@ courtroom/.next/
 courtroom/.vercel/
 *.log
 .DS_Store
+evidence/dry-run.json
 .vercel/
 .playwright-mcp/

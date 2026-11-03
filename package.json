@@ -16,6 +16,7 @@
     "act:earn": "tsx steps/02-earn.ts",
     "act:spend": "tsx steps/03-spend.ts",
     "act:dispute": "tsx steps/04-dispute.ts",
+    "act:ruling": "tsx steps/04-ruling.ts",
     "act:verdict": "tsx steps/05-verdict.ts",
     "askbots:cron": "tsx steps/askbots-cron.ts",
     "shady:register": "tsx shady-provider/register.ts",
@@ -23,10 +24,14 @@
     "rehearse": "tsx checks/rehearse.ts",
     "check:storage": "tsx checks/storage.ts",
     "check:dispute": "tsx checks/dispute.ts",
+    "check:kleros": "tsx checks/kleros.ts",
+    "kleros:fake": "tsx checks/kleros-fake.ts",
     "check:buy": "tsx checks/buy-mcp.ts",
     "vote:simulate": "tsx checks/vote-simulate.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit && pnpm --filter courtroom typecheck",
+    "simulate:kleros": "SIMULATE_REPORT=1 vitest run tests/simulate.test.ts",
+    "rehearse:dispute": "tsx agent/session.ts --dry-run --approve",
     "fresh:defendant": "tsx checks/fresh-defendant.ts"
   },
   "dependencies": {

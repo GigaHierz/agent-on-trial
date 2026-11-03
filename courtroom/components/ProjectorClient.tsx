@@ -27,20 +27,44 @@ function groupExhibits(evidence: Evidence | null): Record<string, Exhibit[]> {
   return groups;
 }
 
-function ExhibitRow({ ex, gateway, onOpenSwarm }: { ex: Exhibit; gateway: string; onOpenSwarm: (ex: Exhibit) => void }) {
+/**
+ * Disputes whose ruling is all on the board: a no-feedback note, or every review the pending note calls for
+ * (two with the provider's identity, one without). Half a ruling is still pending.
+ */
+function ruledDisputes(evidence: Evidence | null): Set<string> {
+  const ids = new Set<string>();
+  const want = new Map<string, number>();
+  const got = new Map<string, number>();
+  for (const e of evidence?.exhibits ?? []) {
+    const d = e.detail as { disputeId?: unknown; pending?: unknown; noFeedback?: unknown; shadyAgentId?: unknown } | undefined;
+    if (d?.disputeId === undefined) continue;
+    const id = String(d.disputeId);
+    if (d.pending === true) want.set(id, d.shadyAgentId ? 2 : 1);
+    else if (d.noFeedback === true) ids.add(id);
+    else if (/Ruling on the /.test(e.title)) got.set(id, (got.get(id) ?? 0) + 1);
+  }
+  for (const [id, n] of got) if (n >= (want.get(id) ?? 1)) ids.add(id);
+  return ids;
+}
+
+function ExhibitRow({ ex, gateway, ruled, onOpenSwarm }: { ex: Exhibit; gateway: string; ruled: Set<string>; onOpenSwarm: (ex: Exhibit) => void }) {
   const link = exhibitHref(ex, gateway);
   const swarm = swarmTarget(ex, gateway);
   // A tx exhibit keeps its celoscan link; its evidence file on Swarm gets its own button.
   const linkIsSwarm = !!swarm && link?.href === swarm.url;
   const isData = ex.uri?.startsWith('data:') && !ex.gatewayUrl;
   const isVerdict = ex.id.startsWith('V');
+  // A "Ruling pending" note stays in the record; once its ruling is on the board it reads as done, not waiting.
+  const d = ex.detail as { pending?: unknown; disputeId?: unknown } | undefined;
+  const resolved = d?.pending === true && ruled.has(String(d.disputeId));
+  const title = resolved ? ex.title.replace(/Ruling pending|Ruling read, not fully written/, 'Ruling came in') : ex.title;
   return (
-    <li className="flex items-start gap-3 border-b border-line/60 py-2.5">
+    <li className={`flex items-start gap-3 border-b border-line/60 py-2.5 ${resolved ? 'opacity-60' : ''}`}>
       <LetterBadge id={ex.id} className={`text-xl ${isVerdict ? 'text-amber-300' : ''}`} />
       <div className="min-w-0 flex-1">
         <p className="text-xl leading-tight">
           {isVerdict && <span className="mr-2 text-amber-300">Verdict</span>}
-          {ex.title}
+          {title}
         </p>
         <div className="mt-1.5 flex flex-wrap items-center gap-2">
           {link && !linkIsSwarm && (
@@ -80,6 +104,7 @@ export function ProjectorClient({ round, voteRound, gateway, qrSvg }: { round: s
   const liveAgentId = (liveRound === round ? evidence : liveEvidence)?.agentId ?? null;
   const { data: chain } = usePoll<AgentSummary>(liveAgentId ? `/api/chain/agent/${liveAgentId}` : null, CHAIN_POLL_MS);
   const groups = groupExhibits(evidence);
+  const ruled = ruledDisputes(evidence);
   const jury = chain?.summary.jury;
   const [viewing, setViewing] = useState<Exhibit | null>(null);
   const viewingTarget = viewing ? swarmTarget(viewing, gateway) : null;
@@ -130,7 +155,7 @@ export function ProjectorClient({ round, voteRound, gateway, qrSvg }: { round: s
             </h2>
             <ul className="min-h-0 flex-1 overflow-y-auto pr-2">
               {groups[col]?.map((ex) => (
-                <ExhibitRow key={ex.id} ex={ex} gateway={gateway} onOpenSwarm={setViewing} />
+                <ExhibitRow key={ex.id} ex={ex} gateway={gateway} ruled={ruled} onOpenSwarm={setViewing} />
               ))}
             </ul>
             {(groups[col]?.length ?? 0) === 0 && <p className="py-2 text-lg text-fg-3">Nothing yet.</p>}

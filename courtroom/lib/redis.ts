@@ -1,4 +1,5 @@
 import { Redis } from '@upstash/redis';
+import { memoryRedis } from './memory-redis';
 
 let client: Redis | null = null;
 
@@ -20,12 +21,18 @@ function credentials(): { url: string; token: string } | null {
   return url && token ? { url, token } : null;
 }
 
+/** A local run without Upstash: COURTROOM_MEMORY=1 keeps the store in this process. */
+function memoryMode(): boolean {
+  return !credentials() && process.env.COURTROOM_MEMORY === '1';
+}
+
 export function redisConfigured(): boolean {
-  return credentials() !== null;
+  return credentials() !== null || memoryMode();
 }
 
 /** Null when the Upstash env is missing. Pages use this to render a notice. */
 export function getRedis(): Redis | null {
+  if (memoryMode()) return memoryRedis() as unknown as Redis;
   const creds = credentials();
   if (!creds) return null;
   if (!client) client = new Redis(creds);

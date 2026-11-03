@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { LogoMark } from '@/components/ui/Logo';
 import { BUILT_WITH, REPO_URL, SPEAKERS } from '@/lib/speakers';
 
@@ -18,6 +19,9 @@ export function Footer() {
               <LogoMark size={14} />
               An Agent on Trial
             </span>
+            <Link href="/how" className="text-mint no-underline hover:text-fg">
+              How a dispute works
+            </Link>
           </div>
         </div>
         <div>

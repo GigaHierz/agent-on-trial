@@ -43,6 +43,11 @@ function run(script: string, extra: string[] = []) {
 }
 
 async function main() {
+  if (env.dryRun) {
+    log.error('pnpm rehearse is the live mainnet rehearsal: every act pays and signs. For a dry run use pnpm rehearse:dispute');
+    await flushLog();
+    process.exit(1);
+  }
   const runId = newRunId();
   EvidenceStore.fresh(runId);
   log.host(`rehearsal run ${runId} · round ${env.round}`);
@@ -54,6 +59,8 @@ async function main() {
   run('act:earn');
   run('act:spend');
   run('act:dispute');
+  // A Kleros ruling takes 20 to 70 minutes: wait for it here (KLEROS_REHEARSE_WAIT_MS, default 90 min).
+  if (env.dispute === 'kleros') run('act:ruling', ['--wait', String(Number(process.env.KLEROS_REHEARSE_WAIT_MS ?? 5_400_000))]);
   if (env.courtroomUrl) run('vote:simulate', ['--n', '50']);
   run('act:verdict', env.courtroomUrl ? [] : ['--trust', '7', '--distrust', '3']);
 
@@ -87,7 +94,19 @@ async function main() {
 
   // Feedback counts went up
   const after = await summaryCounts();
+  // Only a Kleros ruling may still be pending, or not exist at all (a simulating Preset files nothing).
+  // A rejected claim or a refusal writes no ruling feedback at all.
+  const noFeedback = ev.exhibits.some((e) => e.act === 'dispute' && e.kind === 'note' && e.detail?.noFeedback === true);
+  const rulingPending =
+    !noFeedback &&
+    ev.exhibits.some((e) => e.act === 'dispute' && e.kind === 'note' && e.detail?.pending === true && e.detail?.adapter === 'kleros') &&
+    !ev.exhibits.some((e) => e.title.startsWith('Ruling on the defendant'));
+  const simulated = ev.exhibits.some((e) => e.act === 'dispute' && e.detail?.simulated === true);
+  if (rulingPending) log.warn('the Kleros ruling is still pending: the ruling count is not checked (pnpm act:ruling writes it later)');
+  if (simulated) log.warn('the Kleros Preset only simulates: no dispute exists, so the ruling count is not checked');
+  if (noFeedback) log.warn('the jurors did not uphold the claim: no ruling feedback is written, so the ruling count is not checked');
   for (const tag of [TAGS.earned, TAGS.paid, TAGS.ruling, TAGS.jury]) {
+    if (tag === TAGS.ruling && (rulingPending || simulated || noFeedback)) continue;
     assert((after[tag] ?? 0) > (before[tag] ?? 0), `getSummary(${tag}) count grew (${before[tag] ?? 0} → ${after[tag] ?? 0})`);
   }
 

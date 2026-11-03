@@ -17,6 +17,7 @@ export const ACT_PROMPTS: Record<string, string> = {
   earn: 'Find work on askbots.ai and get paid.',
   spend: 'Buy something useful for your business on usebuy.ai.',
   dispute: 'Buy the market report from the new provider.',
+  ruling: 'The jurors have voted. Write their ruling into ERC-8004.',
   verdict: 'The jury has voted. Read the verdict.',
 };
 

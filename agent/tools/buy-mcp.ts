@@ -4,8 +4,10 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { DEMO_TOKEN } from '@trial/shared';
 import { parseUnits } from 'viem';
 import { approve } from '../../lib/approve.js';
-import { describeReceipt, mcpServeCommand, receiptsSince } from '../../lib/buy.js';
+import { mcpServeCommand, paidAmount, receiptsSince } from '../../lib/buy.js';
+import { env } from '../../lib/env.js';
 import { log } from '../../lib/log.js';
+import { dryRunBuyTools } from './dry-run-buy.js';
 import type { ActContext } from '../context.js';
 
 /**
@@ -30,7 +32,7 @@ export async function connectBuy(): Promise<Client> {
   const c = new Client({ name: 'agent-on-trial', version: '0.1.0' });
   await c.connect(transport);
   client = c;
-  log.info(`connected to buy MCP (buy ${args.slice(args.indexOf('mcp')).join(' ')})`);
+  log.ops(`connected to buy MCP (buy ${args.slice(args.indexOf('mcp')).join(' ')})`);
   return c;
 }
 
@@ -50,6 +52,7 @@ interface McpTool {
 }
 
 export async function buyTools(ctx: ActContext) {
+  if (env.dryRun) return dryRunBuyTools(ctx) as unknown as ReturnType<typeof betaTool>[];
   const c = await connectBuy();
   const { tools } = (await c.listTools()) as { tools: McpTool[] };
   const names = tools.map((t) => t.name);
@@ -80,12 +83,22 @@ export async function buyTools(ctx: ActContext) {
             ctx.artifacts.push({ kind: 'x402_response', url, body: text });
             for (const r of receiptsSince(since)) {
               ctx.artifacts.push({ kind: 'x402_receipt', url: r.url, txHash: r.txHash, amount: r.amount, asset: r.asset, network: r.network, raw: r as unknown as Record<string, unknown> });
-              if (r.txHash) log.tx(`x402 settled ${describeReceipt(r).amount} ${describeReceipt(r).asset} for ${r.url}`, r.txHash);
+              if (r.txHash) log.tx(`x402 settled ${paidAmount(r.amount, r.asset).label} for ${r.url}`, r.txHash);
             }
           }
-          log.toolResult(t.name, res.isError ? `error: ${text}` : text);
+          log.toolResult(t.name, res.isError ? `error: ${text}` : t.name === 'buy_pay_quote' ? quoteLine(text) : text);
           return res.isError ? `error: ${text}` : text;
         },
       });
     });
+}
+
+/** buy calls a quote a "DRY RUN" (nothing is signed); on the live log it reads as the price and who would be paid. */
+function quoteLine(text: string): string {
+  try {
+    const q = JSON.parse(text.slice(text.indexOf('{'))) as { price?: { formatted?: string; atomic?: string }; payTo?: string; description?: string };
+    return `quote: ${q.price?.formatted ?? q.price?.atomic ?? '?'} to ${q.payTo ?? '?'}${q.description ? ` · ${q.description}` : ''}`;
+  } catch {
+    return text;
+  }
 }

@@ -98,3 +98,163 @@ a {
   height: auto;
   display: block;
 }
+
+/* Motion: the deck's curves (How AI Agents Act). Explanatory beats only, ordered by --i. */
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-snap: cubic-bezier(0.34, 1.36, 0.64, 1);
+  --beat: 180ms;
+}
+
+.diagram {
+  border: 1px solid var(--color-line);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  background: rgb(255 255 255 / 0.03);
+}
+
+/* Until the diagram scrolls into view, its beats wait unseen (the noscript style in /how shows them). */
+[data-reveal='wait'] [data-beat] {
+  opacity: 0;
+}
+[data-reveal='in'] [data-beat] {
+  animation: beat-in 700ms var(--ease-out) calc(var(--i, 0) * var(--beat)) both;
+}
+
+@keyframes beat-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+
+/* The draw: the pool appears, dims, and three are picked. */
+.juror {
+  position: relative;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.32);
+}
+.juror::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 2px solid var(--color-mint);
+  border-radius: 9999px;
+  opacity: 0;
+}
+[data-reveal='in'] [data-beat='pool'] {
+  animation:
+    beat-in 600ms var(--ease-out) calc(var(--i, 0) * var(--beat)) both,
+    dim 700ms var(--ease-out) 1.8s forwards;
+}
+[data-reveal='in'] [data-beat='drawn'] {
+  animation: beat-in 600ms var(--ease-out) calc(var(--i, 0) * var(--beat)) both;
+}
+[data-reveal='in'] .juror.is-drawn::after {
+  animation: picked 600ms var(--ease-snap) calc(2s + var(--p, 0) * 450ms) both;
+}
+@keyframes dim {
+  to { opacity: 0.3; }
+}
+@keyframes picked {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Sealed, then revealed. */
+.vote {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.5rem;
+}
+.vote-face {
+  grid-area: 1 / 1;
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+}
+.vote-face.is-sealed {
+  color: var(--color-fg-3);
+  letter-spacing: 0.1em;
+}
+.chip {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+[data-reveal='in'] [data-beat='unseal'] {
+  animation: unseal 500ms var(--ease-in-out) calc(var(--i, 0) * var(--beat)) both;
+}
+[data-reveal='in'] [data-beat='open'] {
+  animation: beat-in 600ms var(--ease-out) calc(var(--i, 0) * var(--beat)) both;
+}
+[data-reveal='wait'] [data-beat='unseal'] {
+  opacity: 1;
+}
+@keyframes unseal {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translateY(-6px); }
+}
+
+/* Appeals: each round a bigger panel; the last one human. */
+.dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.6);
+}
+.dot.is-human {
+  background: #fcd34d;
+}
+.dot.is-wrong {
+  background: #fb7185;
+}
+[data-reveal='in'] [data-beat='pop'] {
+  animation: pop 450ms var(--ease-snap) calc(var(--i, 0) * var(--beat)) both;
+}
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+
+/* The live card: the step being waited on breathes. */
+.step.is-live {
+  animation: live 2.4s var(--ease-in-out) infinite;
+}
+@keyframes live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Fewer and gentler: the same beats, faded in place, nothing moves or breathes. */
+  [data-reveal='in'] [data-beat],
+  [data-reveal='in'] [data-beat='pop'],
+  [data-reveal='in'] [data-beat='open'],
+  [data-reveal='in'] [data-beat='drawn'] {
+    animation: fade 400ms ease calc(var(--i, 0) * var(--beat)) both;
+  }
+  [data-reveal='in'] [data-beat='pool'] {
+    animation: fade 400ms ease calc(var(--i, 0) * var(--beat)) both, dim 400ms ease 1.8s forwards;
+  }
+  [data-reveal='in'] [data-beat='unseal'] {
+    animation: fade-out 400ms ease calc(var(--i, 0) * var(--beat)) both;
+  }
+  [data-reveal='in'] .juror.is-drawn::after {
+    animation: fade 400ms ease calc(2s + var(--p, 0) * 450ms) both;
+  }
+  .step.is-live {
+    animation: none;
+  }
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

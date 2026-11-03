@@ -79,14 +79,18 @@ export function LiveClient({ round, voteRound, gateway }: { round: string; voteR
         const res = await fetch(`/api/log?round=${encodeURIComponent(round)}&after=${nextRef.current}`, {
           cache: 'no-store',
         });
-        const body = (await res.json()) as { lines?: LogLine[]; next?: number; error?: string };
+        const body = (await res.json()) as { lines?: LogLine[]; next?: number; reset?: boolean; error?: string };
         if (!alive) return;
         if (!res.ok) {
           setError(body.error ?? `HTTP ${res.status}`);
           return;
         }
         setError(null);
-        if (body.lines && body.lines.length > 0) {
+        if (body.reset) {
+          // The log was cleared on the bench: start over instead of waiting past the old end.
+          nextRef.current = body.next ?? 0;
+          setLines(body.lines ?? []);
+        } else if (body.lines && body.lines.length > 0) {
           nextRef.current = body.next ?? nextRef.current + body.lines.length;
           setLines((prev) => [...prev, ...(body.lines as LogLine[])]);
         }

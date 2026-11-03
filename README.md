@@ -15,12 +15,12 @@ One terminal: `pnpm trial --approve`. The host talks to the agent. These are the
 | 1 Identity | "who are you?" | Reads its ERC-8004 identity and reputation. First run: mints the identity and links it to an askbots.ai bot profile. | `register()` on the Identity Registry (first run) |
 | 2 Earn | "find work and get paid" | Lists open askbots projects, reads the property, answers the builder's questions, passes the anti-human challenge. | 0.10 USD₮ payout from the askbots escrow. Witness feedback `earned` with the payout tx as proof. |
 | 3 Spend | "buy something useful" | Checks its balance, finds a cheap API on usebuy.ai, gets a quote, pays through x402 in USD₮. | x402 settlement by `api.x402.celo.org`. Witness feedback `paid`. |
-| 4 Dispute | "buy the market report from agent N" | Checks the provider's reputation (none), pays 0.01 USD₮, gets junk, opens a dispute. | Settlement to the shady provider. Agent feedback `dispute` on the provider. Arbitrator feedback `ruling` on both. |
+| 4 Dispute | "buy the market report from agent N" | Checks the provider's reputation (none), pays 0.01 USD₮, gets junk, opens a dispute. | Settlement to the shady provider. Nothing on ERC-8004 at filing. Once the jurors uphold the claim: arbitrator feedback `ruling` on both (−100 provider, +100 buyer). |
 | 5 Verdict | `/act verdict` after the vote closes | The tally is stored and the jury key writes it as feedback. | Feedback `jury` with value = percent who trust. |
 
-Per run: 0.13 USD₮ moves, six feedback transactions are signed (seven with the mint). Every transaction we sign carries an ERC-8021 builder code.
+Per run: 0.13 USD₮ moves, five feedback transactions are signed (six with the mint). Every transaction we sign carries an ERC-8021 builder code.
 
-The same acts exist as scripts for rehearsal: `pnpm act:identity`, `pnpm act:earn`, `pnpm act:spend`, `pnpm act:dispute`, `pnpm act:verdict`.
+The same acts exist as scripts for rehearsal: `pnpm act:identity`, `pnpm act:earn`, `pnpm act:spend`, `pnpm act:dispute`, `pnpm act:verdict`. `pnpm act:ruling` writes a dispute ruling that arrived after act 4.
 
 ## The evidence
 
@@ -106,7 +106,7 @@ tx    askbots paid 0.10 USDT https://celoscan.io/tx/0x…
 ?     witness writes giveFeedback(agent 9912, 100, earned/askbots-review) — approve? [y/N]
 ```
 
-`/approve on|off` toggles the y/N gate for anything that pays or writes to chain. `/ask <question>` cross-examines the defendant: it answers from its evidence and memory only, every claim cites an exhibit id. `/closing` generates the prosecutor's and the defense's closing statements. `/vote open|close` controls the audience vote. `/exhibits` lists what the run has produced.
+`/approve on|off` toggles the y/N gate for anything that pays or writes to chain. `/ask <question>` cross-examines the defendant: it answers from its evidence and memory only, every claim cites an exhibit id. `/closing` generates the prosecutor's and the defense's closing statements. `/vote open|close` controls the audience vote. `/exhibits` lists what the run has produced. After `/act dispute` the session watches the Kleros ruling in the background and writes it when the vote is over (`/act ruling` with `--approve`); `/ruling` shows the last check and `/ruling stop` stops waiting.
 
 ## The courtroom
 
@@ -143,11 +143,17 @@ The server talks to a Bee node (`BEE_API_URL`) and signs the feed with its own k
 
 ## Plug in Kleros
 
-The dispute goes through `adapters/dispute/types.ts`: open with evidence, read status, read the ruling. Set `DISPUTE=kleros` and the stub in `adapters/dispute/kleros.ts` is where the Kleros Court or Escrow calls go. The adapter never signs on Celo; our arbitrator key writes the ruling to the Reputation Registry quoting the Kleros proof. One file, one check command. See [docs/PLUG-IN-KLEROS.md](docs/PLUG-IN-KLEROS.md).
+The dispute goes through `adapters/dispute/types.ts`: open with evidence, read status, read the ruling. Set `DISPUTE=kleros` and `adapters/dispute/kleros.ts` files a real Kleros v2 dispute through the [Kleros Dispute Service](https://docs.kleros.io/ai-tools/dispute-service/overview): no arbitrable contract of ours, one API key per deployment (`KLEROS_API_KEY_TESTNET`, `KLEROS_API_KEY_BETA`; `KLEROS_CHAIN` picks one). It publishes the juror attachment, files with the buyer and the provider as parties, submits the evidence and reads the jurors' ruling back. The adapter never signs on Celo; when the jurors accept the claim, our arbitrator key writes the ruling to the Reputation Registry quoting the Kleros case (provider −100, buyer +100; a rejected claim or a refusal writes nothing). A ruling takes 20 to 70 minutes: the act moves on, the session watches for the ruling in the background, and `pnpm act:ruling` writes it from any terminal. See [docs/PLUG-IN-KLEROS.md](docs/PLUG-IN-KLEROS.md).
 
 ```bash
-DISPUTE=kleros pnpm check:dispute --wait 60000
+pnpm check:kleros                                         # read only: what the key's Preset is
+DISPUTE=kleros pnpm check:dispute --file --wait 0         # files one dispute (Testnet by default)
+DISPUTE=kleros pnpm check:dispute --id <dispute id> --wait 5400000
 ```
+
+To run the dispute on the Kleros Testnet or live on Kleros Beta, step by step: [docs/RUN-THE-DISPUTE.md](docs/RUN-THE-DISPUTE.md).
+
+No key yet? `pnpm kleros:fake` serves a stand-in with the same wire, and `pnpm simulate:kleros` runs act 4 and its ruling end to end against it, with Celo stood in, and writes `.runs/simulation.md`. The shady provider needs a wallet of its own, `SHADY_PRIVATE_KEY`: the counterparty relays the Kleros ruling into ERC-8004, and the registry refuses feedback from an agent's owner.
 
 ## Standards
 
@@ -171,7 +177,7 @@ steps/        the five acts as scripts, preflight, askbots cron trigger
 lib/          env, viem clients, feedback writer, askbots client, buy CLI, evidence store, log
 adapters/     storage (local, swarm) and dispute (local, kleros)
 shady-provider/  the x402 paywall that sells junk
-checks/       check:storage, check:dispute, check:buy, rehearse, vote:simulate
+checks/       check:storage, check:dispute, check:kleros, kleros:fake, check:buy, rehearse, vote:simulate
 courtroom/    Next.js app
 shared/       schema and chain constants used by both
 evidence/     submission template, fixtures, the current run
@@ -180,7 +186,7 @@ docs/         run of show, spoken script, standards, plug-in guides
 
 ## Costs
 
-One run: 0.11 USD₮ to fund the askbots project, 0.10 USD₮ back to the agent, 0.03 USD₮ in x402 purchases, about 0.05 CELO in gas across seven transactions.
+One run: 0.11 USD₮ to fund the askbots project, 0.10 USD₮ back to the agent, 0.03 USD₮ in x402 purchases, about 0.05 CELO in gas across six transactions.
 
 ## Credits
 

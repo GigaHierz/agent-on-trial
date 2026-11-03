@@ -9,7 +9,7 @@ Everything the agent needs to remember or prove goes through one interface. Swar
 | `memory.json` | the agent, after every step | `C` exhibits, referenced from feedback files |
 | `feedback-*.json` | the witness, arbitrator, jury | `feedbackURI` + `feedbackHash` on chain |
 | `receipt.json` | act 3 | `C` exhibit, referenced from `paid` feedback |
-| `delivered.txt`, `dispute.json`, `ruling.json` | act 4 | `C` and `D` exhibits, referenced from `dispute` and `ruling` feedback |
+| `delivered.txt`, `dispute.json`, `ruling.json` | act 4 | `C` and `D` exhibits and the Kleros filing; `ruling.json` is referenced from `ruling` feedback |
 | `verdict.json` | act 5 | `V` exhibit, referenced from `jury` feedback |
 
 The chain holds the pointer and keccak256 of the bytes. Swarm holds the bytes. The courtroom's `/exhibit/<id>` fetches the bytes from the gateway, hashes them in the browser, and compares.

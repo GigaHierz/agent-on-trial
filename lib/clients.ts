@@ -2,7 +2,7 @@ import { codeFromHostname, verifyTx, withAttribution } from '@celo/attribution-t
 import { createPublicClient, createWalletClient, http, type Hex } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { celo } from 'viem/chains';
-import { env, roleKey, type Role } from './env.js';
+import { env, isDryRun, roleKey, type Role } from './env.js';
 
 /**
  * viem clients for Celo mainnet. Every wallet client is extended with the
@@ -29,6 +29,8 @@ function makeWallet(key: Hex) {
 }
 
 export function walletFor(role: Role) {
+  // The one way to sign on Celo: closed in a dry run, whatever act or tool asks.
+  if (isDryRun()) throw new Error(`dry run: no wallet signs on Celo (${role} was asked to)`);
   let w = wallets.get(role);
   if (!w) {
     w = makeWallet(roleKey(role));

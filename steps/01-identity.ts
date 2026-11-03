@@ -47,6 +47,11 @@ export async function identityAct(ctx: ActContext): Promise<{ agentId: string; a
   }
   ctx.evidence.setAgent(agentId, address);
 
+  // --mint-only: the ERC-8004 identity alone; the askbots bot profile is linked by a later pnpm act:identity.
+  if (process.argv.includes('--mint-only')) {
+    log.warn('--mint-only: no askbots profile linked yet; run pnpm act:identity to link it');
+    return { agentId, address };
+  }
   const askbots = await ensureAskbots(ctx, agentId, address);
   if (askbots) await showReputation(ctx, agentId);
   // The act is scripted, so the defendant's reply is written here, in its own voice.
@@ -97,7 +102,7 @@ async function mint(ctx: ActContext, address: `0x${string}`): Promise<string> {
   writeFileSync('.runs/agent-id', agentId);
   try {
     appendFileSync('.env', `\nAGENT_ID=${agentId}\n`);
-    log.info(`AGENT_ID=${agentId} appended to .env`);
+    log.ops(`AGENT_ID=${agentId} appended to .env`);
   } catch {
     log.warn(`add AGENT_ID=${agentId} to .env`);
   }

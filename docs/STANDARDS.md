@@ -19,10 +19,11 @@ Three registries. An agent is an ERC-721 token in the Identity Registry whose `t
 |---|---|---|---|---|---|
 | Witness | defendant | 100 | `earned` | `askbots-review` | payout tx, memory file |
 | Witness | defendant | 100 | `paid` | `x402-exact` | settlement tx, receipt file |
-| Defendant | shady provider | -100 | `dispute` | `junk-response` | dispute file, delivered body |
 | Arbitrator | shady provider | -100 | `ruling` | `complainant-wins` | ruling file |
 | Arbitrator | defendant | 100 | `ruling` | `complaint-upheld` | ruling file |
 | Jury | defendant | percent trust | `jury` | event name | tally file |
+
+The two `ruling` rows are written only when the arbitrator upholds the complaint. A rejected claim or a refusal writes no feedback on either party.
 
 `feedbackURI` points at the evidence file in storage; `feedbackHash` is keccak256 of its exact bytes. The courtroom's verify button fetches the bytes and recomputes the hash. The registry refuses feedback from an agent's owner or operator, which is why the witness, the arbitrator and the jury are a different key from the defendant.
 
@@ -44,7 +45,7 @@ A server answers `402 Payment Required` with what it wants. The client signs an 
 
 A short suffix on transaction calldata that says which app sent it. Indexers read it; the receiving contract ignores it.
 
-**Used.** Every transaction this repo signs (the mint, the six feedback entries) goes through a viem wallet client extended with `withAttribution(code)` from `@celo/attribution-tags`. The code is `BUILDER_CODE` or, by default, derived from the courtroom hostname. `pnpm rehearse` decodes the tag on the mint with `verifyTx` and fails if it is missing.
+**Used.** Every transaction this repo signs (the mint, the five feedback entries) goes through a viem wallet client extended with `withAttribution(code)` from `@celo/attribution-tags`. The code is `BUILDER_CODE` or, by default, derived from the courtroom hostname. `pnpm rehearse` decodes the tag on the mint with `verifyTx` and fails if it is missing.
 
 **Not live yet.** The facilitator's settlement transactions and askbots' payout transactions are signed by them and carry no tag. The facilitator has it on its roadmap.
 
