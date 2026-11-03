@@ -9,6 +9,7 @@ import {
   buildRegistrationFile,
   canonicalJson,
   celoscanAddress,
+  REPUTATION_REGISTRY,
   encodeDataUri,
 } from '@trial/shared';
 import { getAddress, parseEventLogs } from 'viem';
@@ -138,6 +139,7 @@ async function showReputation(ctx: ActContext, agentId: string) {
     act: 'identity',
     kind: 'read',
     title: summaries.length ? `Reputation before the trial: ${summaries.map((s) => `${s.tag1} ${s.count}×`).join(', ')}` : 'Reputation before the trial: none',
+    url: celoscanAddress(REPUTATION_REGISTRY),
     detail: { clients: clients.length, summaries, recent: recent.map((r) => ({ client: r.client, value: r.value, tag1: r.tag1, tag2: r.tag2, revoked: r.revoked })) },
   });
 }
