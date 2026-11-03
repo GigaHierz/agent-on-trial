@@ -5,7 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { DEMO_TOKEN, TOKENS } from '@trial/shared';
 import { erc20Abi, formatUnits, isAddress, isAddressEqual, parseEventLogs, type Address, type Hex } from 'viem';
 import { publicClient } from './clients.js';
-import { env, roleKey } from './env.js';
+import { env, IPV4_NODE_OPTIONS, roleKey } from './env.js';
 
 /**
  * The `buy` CLI (npm @celo/buy) is the defendant's wallet for x402. State
@@ -36,6 +36,8 @@ export function buyEnv(extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
     BUY_HOME: resolve(env.buyHome),
     // buy 0.8 signs on mainnet only from the OS keychain ("system"); its plaintext "file" backend is for development.
     BUY_KEYSTORE_BACKEND: process.env.BUY_KEYSTORE_BACKEND || 'system',
+    // The wallet talks to the facilitator and the gateway over IPv4 too (see lib/env.ts).
+    NODE_OPTIONS: [process.env.NODE_OPTIONS, IPV4_NODE_OPTIONS].filter(Boolean).join(' '),
     ...extra,
   };
 }

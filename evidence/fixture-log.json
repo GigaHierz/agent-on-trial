@@ -1,0 +1,1243 @@
+{
+  "recordedAt": "2026-11-03T10:18:32.264Z",
+  "round": "test",
+  "acts": {
+    "identity": [
+      {
+        "at": "2026-11-02T21:22:14.090Z",
+        "kind": "host",
+        "text": "Who are you? Register on askbots.ai and get your ERC-8004 identity.",
+        "data": {
+          "prompt": true
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:14.091Z",
+        "kind": "host",
+        "text": "act identity · run 20261102-2122-z2uq · round test"
+      },
+      {
+        "at": "2026-11-02T21:22:14.106Z",
+        "kind": "host",
+        "text": "no AGENT_ID yet: minting an ERC-8004 identity for 0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9"
+      },
+      {
+        "at": "2026-11-02T21:22:14.106Z",
+        "kind": "info",
+        "text": "auto-approved: agent mints register(https://agent-on-trial.xyz/agent/registration.json…) on 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+      },
+      {
+        "at": "2026-11-02T21:22:14.124Z",
+        "kind": "tool_call",
+        "text": "register({\"agentURI\":\"https://agent-on-trial.xyz/agent/registration.json\"})",
+        "data": {
+          "name": "register",
+          "args": {
+            "agentURI": "https://agent-on-trial.xyz/agent/registration.json"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:16.587Z",
+        "kind": "tx",
+        "text": "registered agent 10023 https://celoscan.io/tx/0xb83ebb3242e781fc9f4381fb4d1d024d70de047c43a453ad028948944fce75b0",
+        "data": {
+          "hash": "0xb83ebb3242e781fc9f4381fb4d1d024d70de047c43a453ad028948944fce75b0",
+          "agentId": "10023"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:16.853Z",
+        "kind": "info",
+        "text": "exhibit A1 ERC-8004 identity minted: agent 10023 · tx 0xb83ebb3242e781fc9f4381fb4d1d024d70de047c43a453ad028948944fce75b0"
+      },
+      {
+        "at": "2026-11-02T21:22:16.855Z",
+        "kind": "info",
+        "text": "AGENT_ID=10023 appended to .env"
+      },
+      {
+        "at": "2026-11-02T21:22:16.860Z",
+        "kind": "host",
+        "text": "registering the agent on askbots.ai (creates a real bot account)"
+      },
+      {
+        "at": "2026-11-02T21:22:16.860Z",
+        "kind": "info",
+        "text": "auto-approved: create an askbots.ai bot account for the defendant"
+      },
+      {
+        "at": "2026-11-02T21:22:16.860Z",
+        "kind": "tool_call",
+        "text": "askbots.register({\"name\":\"The Defendant\",\"description\":\"An AI agent on trial. It earns on askbots.ai, pays through x402 on Celo, keeps its memory where anyone can verify it, and takes feedback on ERC-8004.\"})",
+        "data": {
+          "name": "askbots.register",
+          "args": {
+            "name": "The Defendant",
+            "description": "An AI agent on trial. It earns on askbots.ai, pays through x402 on Celo, keeps its memory where anyone can verify it, and takes feedback on ERC-8004."
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:17.685Z",
+        "kind": "tool_result",
+        "text": "askbots.register: account kn7fz4mrpgm99fwtjzzqxgb2318hf51s created, API key saved locally",
+        "data": {
+          "name": "askbots.register"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:17.685Z",
+        "kind": "tool_call",
+        "text": "askbots.me({})",
+        "data": {
+          "name": "askbots.me",
+          "args": {}
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:18.162Z",
+        "kind": "tool_result",
+        "text": "askbots.me: no bot profile yet (404)",
+        "data": {
+          "name": "askbots.me"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:18.164Z",
+        "kind": "tool_call",
+        "text": "askbots.createProfile({\"botName\":\"The Defendant\",\"celoAddress\":\"0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9\",\"erc8004AgentId\":\"10023\"})",
+        "data": {
+          "name": "askbots.createProfile",
+          "args": {
+            "botName": "The Defendant",
+            "celoAddress": "0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9",
+            "erc8004AgentId": "10023"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:18.888Z",
+        "kind": "tool_result",
+        "text": "askbots.createProfile: profile jx7e235t7gv7z370e801t59dsh8hfvmn",
+        "data": {
+          "name": "askbots.createProfile"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:18.889Z",
+        "kind": "info",
+        "text": "exhibit A2 askbots.ai bot profile created and linked to agent 10023 · https://askbots.ai/leaderboard"
+      },
+      {
+        "at": "2026-11-02T21:22:19.389Z",
+        "kind": "host",
+        "text": "reputation: 0 client(s); no feedback yet"
+      },
+      {
+        "at": "2026-11-02T21:22:19.392Z",
+        "kind": "info",
+        "text": "exhibit A3 Reputation before the trial: none"
+      }
+    ],
+    "earn": [
+      {
+        "at": "2026-11-02T21:22:21.885Z",
+        "kind": "host",
+        "text": "Find work on askbots.ai and get paid.",
+        "data": {
+          "prompt": true
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:21.886Z",
+        "kind": "host",
+        "text": "act earn · run 20261102-2122-z2uq · round test"
+      },
+      {
+        "at": "2026-11-02T21:22:22.834Z",
+        "kind": "host",
+        "text": "10 open project(s); first: \"Trial Weather API (3 Nov rehearsal 3): is it ready for agent customers?\" https://agent-on-trial.xyz/property/test-2026-11-03c (k178af7nsrdh0bkd5tabsn6jjd8hekz5)"
+      },
+      {
+        "at": "2026-11-02T21:22:23.587Z",
+        "kind": "info",
+        "text": "connected to buy MCP (buy mcp serve --account defendant)"
+      },
+      {
+        "at": "2026-11-02T21:22:23.590Z",
+        "kind": "host",
+        "text": "act earn: Find paid work on askbots.ai and get paid."
+      },
+      {
+        "at": "2026-11-02T21:22:26.480Z",
+        "kind": "agent",
+        "text": "Listing open projects."
+      },
+      {
+        "at": "2026-11-02T21:22:26.482Z",
+        "kind": "tool_call",
+        "text": "askbots_list_projects({})",
+        "data": {
+          "name": "askbots_list_projects",
+          "args": {}
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:27.035Z",
+        "kind": "tool_result",
+        "text": "askbots_list_projects: 10 project(s): Trial Weather API (3 Nov rehearsal 3): is it ready for agent customers? https://agent-on-trial.xyz/property/test-2026-11-03c",
+        "data": {
+          "name": "askbots_list_projects"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:32.135Z",
+        "kind": "tool_result",
+        "text": "askbots_fetch_property: 200 An Agent on Trial 13969B in 428ms",
+        "data": {
+          "name": "askbots_fetch_property"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:32.508Z",
+        "kind": "tool_result",
+        "text": "askbots_fetch_property: 404 404: This page could not be found. 7069B in 792ms",
+        "data": {
+          "name": "askbots_fetch_property"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:31.703Z",
+        "kind": "agent",
+        "text": "First project: Trial Weather API. Fetching the property and the agent-readiness files."
+      },
+      {
+        "at": "2026-11-02T21:22:31.706Z",
+        "kind": "tool_call",
+        "text": "askbots_fetch_property({\"url\":\"https://agent-on-trial.xyz/property/test-2026-11-03c\"})",
+        "data": {
+          "name": "askbots_fetch_property",
+          "args": {
+            "url": "https://agent-on-trial.xyz/property/test-2026-11-03c"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:31.708Z",
+        "kind": "tool_call",
+        "text": "askbots_fetch_property({\"url\":\"https://agent-on-trial.xyz/llms.txt\"})",
+        "data": {
+          "name": "askbots_fetch_property",
+          "args": {
+            "url": "https://agent-on-trial.xyz/llms.txt"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:31.712Z",
+        "kind": "tool_call",
+        "text": "askbots_fetch_property({\"url\":\"https://agent-on-trial.xyz/openapi.json\"})",
+        "data": {
+          "name": "askbots_fetch_property",
+          "args": {
+            "url": "https://agent-on-trial.xyz/openapi.json"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:31.715Z",
+        "kind": "tool_call",
+        "text": "askbots_fetch_property({\"url\":\"https://agent-on-trial.xyz/.well-known/agent.json\"})",
+        "data": {
+          "name": "askbots_fetch_property",
+          "args": {
+            "url": "https://agent-on-trial.xyz/.well-known/agent.json"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:31.716Z",
+        "kind": "tool_call",
+        "text": "askbots_fetch_property({\"url\":\"https://agent-on-trial.xyz/robots.txt\"})",
+        "data": {
+          "name": "askbots_fetch_property",
+          "args": {
+            "url": "https://agent-on-trial.xyz/robots.txt"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:32.707Z",
+        "kind": "tool_result",
+        "text": "askbots_fetch_property: 404 404: This page could not be found. 7069B in 994ms",
+        "data": {
+          "name": "askbots_fetch_property"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:32.708Z",
+        "kind": "tool_result",
+        "text": "askbots_fetch_property: 404 404: This page could not be found. 7069B in 993ms",
+        "data": {
+          "name": "askbots_fetch_property"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:32.709Z",
+        "kind": "tool_result",
+        "text": "askbots_fetch_property: 404 404: This page could not be found. 7069B in 1001ms",
+        "data": {
+          "name": "askbots_fetch_property"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:36.648Z",
+        "kind": "agent",
+        "text": "Checking the advertised catalog and base URL."
+      },
+      {
+        "at": "2026-11-02T21:22:36.649Z",
+        "kind": "tool_call",
+        "text": "askbots_fetch_property({\"url\":\"https://agent-on-trial.xyz/v1/catalog\"})",
+        "data": {
+          "name": "askbots_fetch_property",
+          "args": {
+            "url": "https://agent-on-trial.xyz/v1/catalog"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:36.650Z",
+        "kind": "tool_call",
+        "text": "askbots_fetch_property({\"url\":\"https://api.trial-weather.example/v1/catalog\"})",
+        "data": {
+          "name": "askbots_fetch_property",
+          "args": {
+            "url": "https://api.trial-weather.example/v1/catalog"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:36.876Z",
+        "kind": "tool_result",
+        "text": "askbots_fetch_property: 404 404: This page could not be found. 7069B in 227ms",
+        "data": {
+          "name": "askbots_fetch_property"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:36.915Z",
+        "kind": "tool_result",
+        "text": "askbots_fetch_property: 0  0B in 265ms",
+        "data": {
+          "name": "askbots_fetch_property"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:44.844Z",
+        "kind": "agent",
+        "text": "I have enough evidence. Submitting the review."
+      },
+      {
+        "at": "2026-11-02T21:22:44.849Z",
+        "kind": "tool_call",
+        "text": "askbots_submit_review({\"projectId\":\"k178af7nsrdh0bkd5tabsn6jjd8hekz5\",\"answers\":5})",
+        "data": {
+          "name": "askbots_submit_review",
+          "args": {
+            "projectId": "k178af7nsrdh0bkd5tabsn6jjd8hekz5",
+            "answers": 5
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:49.290Z",
+        "kind": "tx",
+        "text": "askbots paid 0.10 USDT https://celoscan.io/tx/0xdd2eda77247ae100eb26a54d01bf7c9d40bc866b1ef29797077721a52f063458",
+        "data": {
+          "hash": "0xdd2eda77247ae100eb26a54d01bf7c9d40bc866b1ef29797077721a52f063458"
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:54.050Z",
+        "kind": "agent",
+        "text": "Review accepted and paid. Writing the memory entry."
+      },
+      {
+        "at": "2026-11-02T21:22:54.053Z",
+        "kind": "tool_call",
+        "text": "memory_write({\"text\":\"Reviewed askbots project k178af7nsrdh0bkd5tabsn6jjd8hekz5 (Trial Weather API) and got paid 0.10 USDT. Rated it 2/5: the page lists prices and the x402 flow, but /llms.txt, /v1/catalog, /openapi.json, /.well-known/agent.json and /ro… (406 chars))",
+        "data": {
+          "name": "memory_write",
+          "args": {
+            "text": "Reviewed askbots project k178af7nsrdh0bkd5tabsn6jjd8hekz5 (Trial Weather API) and got paid 0.10 USDT. Rated it 2/5: the page lists prices and the x402 flow, but /llms.txt, /v1/catalog, /openapi.json, /.well-known/agent.json and /robots.txt all returned 404, and the base URL api.trial-weather.example did not resolve.",
+            "txHash": "0xdd2eda77247ae100eb26a54d01bf7c9d40bc866b1ef29797077721a52f063458"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:22:56.925Z",
+        "kind": "tool_result",
+        "text": "memory_write: stored https://api.gateway.ethswarm.org/bzz/e7e58f87f9c24642520764d40dbef80f2302edb8a540b25bf85ec8b560365fe4/ hash 0x83f2b3aeaf45c44875fb708adc9c48ab68e377989a318061db813b13d9dca8d9",
+        "data": {
+          "name": "memory_write"
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:04.204Z",
+        "kind": "agent",
+        "text": "My review of the first project, \"Trial Weather API (3 Nov rehearsal 3)\", was accepted and paid 0.10 USD₮. Response id: k5734q9vvxftedv46hfw8ff3p98hfgnr."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "Payout transaction hash: 0xdd2eda77247ae100eb26a54d01bf7c9d40bc866b1ef29797077721a52f063458"
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "What I saw on the page:"
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "- **The page:** it loaded with status 200 and the title \"An Agent on Trial\"."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "- **Prices:** it lists three endpoints. /v1/forecast costs 0.01 USD₮. /v1/now and /v1/alerts cost 0.005 USD₮ each."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "- **Payment:** it says calls are paid in USD₮ over x402 on Celo."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "- **Agent files:** the page links to /v1/catalog and /llms.txt. Both returned 404. So did /openapi.json, /.well-known/agent.json and /robots.txt."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "- **Base URL:** the API is listed at https://api.trial-weather.example. My fetch there failed with \"TypeError: fetch failed\", so I could not test a real call."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "My answers:"
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "- **Price and payment method:** both are stated."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "- **Agent readiness:** 2 of 5."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "- **Overall:** 2 of 5."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "- **What is missing:** the machine-readable files, and an API address that works."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "On chain: I received 0.10 USD₮ in tx 0xdd2eda77247ae100eb26a54d01bf7c9d40bc866b1ef29797077721a52f063458. I spent nothing."
+      },
+      {
+        "at": "2026-11-02T21:23:04.205Z",
+        "kind": "agent",
+        "text": "Memory: one entry saved at bzz://e7e58f87f9c24642520764d40dbef80f2302edb8a540b25bf85ec8b560365fe4 (hash 0x83f2b3aeaf45c44875fb708adc9c48ab68e377989a318061db813b13d9dca8d9). It records the project, the 2 of 5 rating, the 404s and the payout hash."
+      },
+      {
+        "at": "2026-11-02T21:23:04.208Z",
+        "kind": "info",
+        "text": "exhibit C1 Memory after earning (1 entries) · https://api.gateway.ethswarm.org/bzz/e7e58f87f9c24642520764d40dbef80f2302edb8a540b25bf85ec8b560365fe4/"
+      },
+      {
+        "at": "2026-11-02T21:23:04.210Z",
+        "kind": "info",
+        "text": "exhibit B1 Paid 0.10 USD₮ by askbots.ai for reviewing \"Trial Weather API (3 Nov rehearsal 3): is it ready for agent customers?\" · tx 0xdd2eda77247ae100eb26a54d01bf7c9d40bc866b1ef29797077721a52f063458"
+      },
+      {
+        "at": "2026-11-02T21:23:04.950Z",
+        "kind": "info",
+        "text": "feedback file stored https://api.gateway.ethswarm.org/bzz/853a5e398b14d95195f5ad7873045208cd253f736a959e5a3edbad7a0f551ef2/ hash 0x80ba5218dc3ed8ca30ddeee9864c1b2b4dcdd48ddafc9b7fe09f77749f024d6d"
+      },
+      {
+        "at": "2026-11-02T21:23:04.951Z",
+        "kind": "info",
+        "text": "auto-approved: witness writes giveFeedback(agent 10023, 100, earned/askbots-review)"
+      },
+      {
+        "at": "2026-11-02T21:23:04.951Z",
+        "kind": "tool_call",
+        "text": "giveFeedback({\"agentId\":\"10023\",\"value\":100,\"tag1\":\"earned\",\"tag2\":\"askbots-review\",\"endpoint\":\"https://askbots.ai\",\"feedbackURI\":\"bzz://853a5e398b14d95195f5ad7873…\",\"feedbackHash\":\"0x80ba5218dc3ed8ca30ddeee9864c1b2b4dcdd48ddafc9b7fe09f77749f024d6d\"})",
+        "data": {
+          "name": "giveFeedback",
+          "args": {
+            "agentId": "10023",
+            "value": 100,
+            "tag1": "earned",
+            "tag2": "askbots-review",
+            "endpoint": "https://askbots.ai",
+            "feedbackURI": "bzz://853a5e398b14d95195f5ad7873…",
+            "feedbackHash": "0x80ba5218dc3ed8ca30ddeee9864c1b2b4dcdd48ddafc9b7fe09f77749f024d6d"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:07.406Z",
+        "kind": "tx",
+        "text": "feedback earned/askbots-review on agent 10023 https://celoscan.io/tx/0x3208c0b4cf9ce76cd2d6dac819ce6500ed60122dfe90c4763af9bf7818f21fda",
+        "data": {
+          "hash": "0x3208c0b4cf9ce76cd2d6dac819ce6500ed60122dfe90c4763af9bf7818f21fda",
+          "agentId": "10023",
+          "tag1": "earned",
+          "tag2": "askbots-review"
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:07.408Z",
+        "kind": "info",
+        "text": "exhibit A4 Feedback \"earned\" written by the witness, evidence hashed on chain · tx 0x3208c0b4cf9ce76cd2d6dac819ce6500ed60122dfe90c4763af9bf7818f21fda"
+      }
+    ],
+    "spend": [
+      {
+        "at": "2026-11-02T21:23:09.471Z",
+        "kind": "host",
+        "text": "Buy something useful for your business on usebuy.ai.",
+        "data": {
+          "prompt": true
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:09.472Z",
+        "kind": "host",
+        "text": "act spend · run 20261102-2122-z2uq · round test"
+      },
+      {
+        "at": "2026-11-02T21:23:10.946Z",
+        "kind": "info",
+        "text": "buy account \"defendant\" imported · 0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9"
+      },
+      {
+        "at": "2026-11-02T21:23:11.621Z",
+        "kind": "info",
+        "text": "connected to buy MCP (buy mcp serve --account defendant)"
+      },
+      {
+        "at": "2026-11-02T21:23:11.624Z",
+        "kind": "host",
+        "text": "act spend: You are a reviewer business now. Buy data that makes your reviews better, with the money you earned. The marketplace is https://usebuy.ai."
+      },
+      {
+        "at": "2026-11-02T21:23:14.209Z",
+        "kind": "agent",
+        "text": "Checking balance and reading memory first."
+      },
+      {
+        "at": "2026-11-02T21:23:14.210Z",
+        "kind": "tool_call",
+        "text": "buy_balance({})",
+        "data": {
+          "name": "buy_balance",
+          "args": {}
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:14.211Z",
+        "kind": "tool_call",
+        "text": "memory_read({})",
+        "data": {
+          "name": "memory_read",
+          "args": {}
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:14.212Z",
+        "kind": "tool_result",
+        "text": "memory_read: 1 entries",
+        "data": {
+          "name": "memory_read"
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:15.903Z",
+        "kind": "tool_result",
+        "text": "buy_balance: {\n  \"account\": \"defendant\",\n  \"address\": \"0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9\",\n  \"network\": \"celo\",\n  \"native\": {\n    \"symbol\": \"CELO\",\n    \"atomic\": \"263880075000000000\",\n    \"formatted\": \"0.263880075 CELO\"\n  },\n  \"tokens\": [\n    {… (590 chars)",
+        "data": {
+          "name": "buy_balance"
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:18.675Z",
+        "kind": "agent",
+        "text": "Balance is 0.6 USDT. Finding the gateway and fetching the catalog."
+      },
+      {
+        "at": "2026-11-02T21:23:18.675Z",
+        "kind": "tool_call",
+        "text": "buy_discover({\"name\":\"buy/api-gateway\"})",
+        "data": {
+          "name": "buy_discover",
+          "args": {
+            "name": "buy/api-gateway"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:18.675Z",
+        "kind": "tool_call",
+        "text": "buy_curl({\"token\":\"[redacted]\",\"url\":\"https://gateway.usebuy.ai/v1/catalog\",\"maxAmount\":\"50000\"})",
+        "data": {
+          "name": "buy_curl",
+          "args": {
+            "token": "[redacted]",
+            "url": "https://gateway.usebuy.ai/v1/catalog",
+            "maxAmount": "50000"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:18.676Z",
+        "kind": "info",
+        "text": "auto-approved: buy_curl pays for https://gateway.usebuy.ai/v1/catalog"
+      },
+      {
+        "at": "2026-11-02T21:23:18.695Z",
+        "kind": "tool_result",
+        "text": "buy_discover: {\n  \"count\": 1,\n  \"providers\": [\n    {\n      \"name\": \"buy/api-gateway\",\n      \"title\": \"Agent browser and data APIs through buy\",\n      \"description\": \"Discover and buy isolated browser rentals plus 170 inspected X, Instagram, TikTok, Reddi… (2928 chars)",
+        "data": {
+          "name": "buy_discover"
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:20.533Z",
+        "kind": "tool_result",
+        "text": "buy_curl: HTTP 200 OK\nWallet: 0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9 on celo (chainId=42220)\n--- response headers ---\ncache-control: no-store\ncontent-length: 283213\ncontent-type: application/json; charset=utf-8\ndate: Mon, 02 Nov 2026 21:23:19 GMT… (282158 chars)",
+        "data": {
+          "name": "buy_curl"
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:29.777Z",
+        "kind": "tool_call",
+        "text": "check_reputation({\"agentId\":\"9895\"})",
+        "data": {
+          "name": "check_reputation",
+          "args": {
+            "agentId": "9895"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:29.784Z",
+        "kind": "tool_call",
+        "text": "buy_pay_quote({\"token\":\"[redacted]\",\"url\":\"https://agent-on-trial.xyz/property/20261102-2122-z2uq\"})",
+        "data": {
+          "name": "buy_pay_quote",
+          "args": {
+            "token": "[redacted]",
+            "url": "https://agent-on-trial.xyz/property/20261102-2122-z2uq"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:30.610Z",
+        "kind": "tool_result",
+        "text": "buy_pay_quote: No payment required — HTTP 200 OK. Nothing was signed or paid.",
+        "data": {
+          "name": "buy_pay_quote"
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:35.820Z",
+        "kind": "tool_result",
+        "text": "check_reputation: 0 tag(s), 2 client(s)",
+        "data": {
+          "name": "check_reputation"
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:45.913Z",
+        "kind": "tool_call",
+        "text": "buy_pay_quote({\"token\":\"[redacted]\",\"url\":\"https://gateway.usebuy.ai/v1/social/x/posts/search\",\"method\":\"POST\",\"body\":\"{\\\"query\\\":\\\"\\\\\\\"Trial Weather API\\\\\\\"\\\",\\\"type\\\":\\\"top\\\"}\",\"headers\":{\"Content-Type\":\"application/json\"}})",
+        "data": {
+          "name": "buy_pay_quote",
+          "args": {
+            "token": "[redacted]",
+            "url": "https://gateway.usebuy.ai/v1/social/x/posts/search",
+            "method": "POST",
+            "body": "{\"query\":\"\\\"Trial Weather API\\\"\",\"type\":\"top\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:46.763Z",
+        "kind": "tool_result",
+        "text": "buy_pay_quote: DRY RUN — no payment was made and nothing was signed.\n{\n  \"scheme\": \"exact\",\n  \"network\": \"celo\",\n  \"price\": {\n    \"atomic\": \"5000\",\n    \"token\": \"USDT\",\n    \"formatted\": \"0.005 USDT\"\n  },\n  \"asset\": \"0x48065fbBE25f71C9282ddf5e1cD6D6A887483… (482 chars)",
+        "data": {
+          "name": "buy_pay_quote"
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:53.796Z",
+        "kind": "tool_call",
+        "text": "buy_curl({\"token\":\"[redacted]\",\"url\":\"https://gateway.usebuy.ai/v1/social/x/posts/search\",\"method\":\"POST\",\"body\":\"{\\\"query\\\":\\\"\\\\\\\"Trial Weather API\\\\\\\"\\\",\\\"type\\\":\\\"top\\\"}\",\"headers\":{\"Content-Type\":\"application/json\"},\"maxAmount\":\"50000\"})",
+        "data": {
+          "name": "buy_curl",
+          "args": {
+            "token": "[redacted]",
+            "url": "https://gateway.usebuy.ai/v1/social/x/posts/search",
+            "method": "POST",
+            "body": "{\"query\":\"\\\"Trial Weather API\\\"\",\"type\":\"top\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "maxAmount": "50000"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:23:53.797Z",
+        "kind": "info",
+        "text": "auto-approved: buy_curl pays for https://gateway.usebuy.ai/v1/social/x/posts/search"
+      },
+      {
+        "at": "2026-11-02T21:24:02.361Z",
+        "kind": "tx",
+        "text": "x402 settled 0.005 USD₮ for https://gateway.usebuy.ai/v1/social/x/posts/search https://celoscan.io/tx/0xe66626a4bea02c9fc77f7d42ee660e3ef98e5f198b1c7b447ad6d2cf066d4a37",
+        "data": {
+          "hash": "0xe66626a4bea02c9fc77f7d42ee660e3ef98e5f198b1c7b447ad6d2cf066d4a37"
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:02.362Z",
+        "kind": "tool_result",
+        "text": "buy_curl: HTTP 200 OK\nWallet: 0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9 on celo (chainId=42220)\n402 challenge: 0.005 USDT, asset=0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e, on celo, payTo=0x20faAca5F980E29639A0FCC6dcA6988E18ed333B\nSettled on celo: t… (1493 chars)",
+        "data": {
+          "name": "buy_curl"
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:09.075Z",
+        "kind": "tool_call",
+        "text": "memory_write({\"text\":\"Paid 0.005 USDT to buy gateway (tikhub, agent 9895) for x.posts.search on query \\\"Trial Weather API\\\" to check its marketing. Result: status ok, empty timeline, zero X posts found. Agent 9895 reputation is 8 settled entries, all fr… (377 chars))",
+        "data": {
+          "name": "memory_write",
+          "args": {
+            "text": "Paid 0.005 USDT to buy gateway (tikhub, agent 9895) for x.posts.search on query \"Trial Weather API\" to check its marketing. Result: status ok, empty timeline, zero X posts found. Agent 9895 reputation is 8 settled entries, all from the gateway's own feedback client, so not independent.",
+            "txHash": "0xe66626a4bea02c9fc77f7d42ee660e3ef98e5f198b1c7b447ad6d2cf066d4a37"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:11.529Z",
+        "kind": "tool_result",
+        "text": "memory_write: stored https://api.gateway.ethswarm.org/bzz/81028660f806dfad0d0122ac16f4e75b6749e037cc4e8b7b798ab948a4eb0170/ hash 0xd8f95aa0ad1736ee499c5f1646987d6371dbf34f1aa9838d46730d8ea5a51e4f",
+        "data": {
+          "name": "memory_write"
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:20.291Z",
+        "kind": "agent",
+        "text": "I paid 0.005 USD₮ for an X post search on \"Trial Weather API\". It found no posts."
+      },
+      {
+        "at": "2026-11-02T21:24:20.292Z",
+        "kind": "agent",
+        "text": "**Steps:**"
+      },
+      {
+        "at": "2026-11-02T21:24:20.292Z",
+        "kind": "agent",
+        "text": "- **Balance:** 0.6 USD₮ before the purchase."
+      },
+      {
+        "at": "2026-11-02T21:24:20.292Z",
+        "kind": "agent",
+        "text": "- **Endpoint:** I picked `x.posts.search` from the free catalog. It costs 0.005 USD₮ per call."
+      },
+      {
+        "at": "2026-11-02T21:24:20.292Z",
+        "kind": "agent",
+        "text": "- **Provider:** tikhub, agent 9895. Its 8 most recent ratings are all positive, but all 8 come from the gateway's own feedback address. So they are not independent reviews."
+      },
+      {
+        "at": "2026-11-02T21:24:20.292Z",
+        "kind": "agent",
+        "text": "- **Product name:** The property page loaded (HTTP 200) but its text did not come back. I used the name from my earlier review, \"Trial Weather API\"."
+      },
+      {
+        "at": "2026-11-02T21:24:20.292Z",
+        "kind": "agent",
+        "text": "- **Quote and payment:** The quote was 0.005 USD₮ and the payment settled."
+      },
+      {
+        "at": "2026-11-02T21:24:20.293Z",
+        "kind": "agent",
+        "text": "- **Settlement transaction:** `0xe66626a4bea02c9fc77f7d42ee660e3ef98e5f198b1c7b447ad6d2cf066d4a37`"
+      },
+      {
+        "at": "2026-11-02T21:24:20.293Z",
+        "kind": "agent",
+        "text": "**What it says about the marketing:** The search came back valid (`\"status\":\"ok\"`) but with an empty list of posts. So no one is talking about Trial Weather API on X, and its marketing there is effectively zero. That fits my 2/5 review: its listed endpoints returned 404 and its base URL did not resolve."
+      },
+      {
+        "at": "2026-11-02T21:24:20.293Z",
+        "kind": "agent",
+        "text": "The empty result is a real answer, not a failed delivery, so I did not open a dispute."
+      },
+      {
+        "at": "2026-11-02T21:24:20.293Z",
+        "kind": "agent",
+        "text": "On chain: 0.005 USD₮ paid from 0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9 to 0x20faAca5F980E29639A0FCC6dcA6988E18ed333B, transaction 0xe66626a4bea02c9fc77f7d42ee660e3ef98e5f198b1c7b447ad6d2cf066d4a37."
+      },
+      {
+        "at": "2026-11-02T21:24:20.293Z",
+        "kind": "agent",
+        "text": "In memory: entry 2 records the purchase, the zero-post result and the operator-only ratings. It is stored at bzz://81028660f806dfad0d0122ac16f4e75b6749e037cc4e8b7b798ab948a4eb0170, hash 0xd8f95aa0ad1736ee499c5f1646987d6371dbf34f1aa9838d46730d8ea5a51e4f."
+      },
+      {
+        "at": "2026-11-02T21:24:20.299Z",
+        "kind": "info",
+        "text": "exhibit C2 Memory after spending (2 entries) · https://api.gateway.ethswarm.org/bzz/81028660f806dfad0d0122ac16f4e75b6749e037cc4e8b7b798ab948a4eb0170/"
+      },
+      {
+        "at": "2026-11-02T21:24:21.026Z",
+        "kind": "info",
+        "text": "exhibit B2 Paid 0.005 USD₮ through x402 for /v1/social/x/posts/search · tx 0xe66626a4bea02c9fc77f7d42ee660e3ef98e5f198b1c7b447ad6d2cf066d4a37"
+      },
+      {
+        "at": "2026-11-02T21:24:21.028Z",
+        "kind": "info",
+        "text": "exhibit C3 x402 receipt stored · https://api.gateway.ethswarm.org/bzz/7107bd4d295a13ac7b7b8a6ace44308b0b34d525c50302bfc03f9ec304ee96ed/"
+      },
+      {
+        "at": "2026-11-02T21:24:21.779Z",
+        "kind": "info",
+        "text": "feedback file stored https://api.gateway.ethswarm.org/bzz/bc45fe50b10debab4b179960001c1a0876d65b73ca1c88d7e2bcf0a79e233400/ hash 0x81543d4d52e299487155936cee39ec12d1bf0203c088235b93076b2d7aff37d6"
+      },
+      {
+        "at": "2026-11-02T21:24:21.779Z",
+        "kind": "info",
+        "text": "auto-approved: witness writes giveFeedback(agent 10023, 100, paid/x402-exact)"
+      },
+      {
+        "at": "2026-11-02T21:24:21.779Z",
+        "kind": "tool_call",
+        "text": "giveFeedback({\"agentId\":\"10023\",\"value\":100,\"tag1\":\"paid\",\"tag2\":\"x402-exact\",\"endpoint\":\"https://usebuy.ai\",\"feedbackURI\":\"bzz://bc45fe50b10debab4b17996000…\",\"feedbackHash\":\"0x81543d4d52e299487155936cee39ec12d1bf0203c088235b93076b2d7aff37d6\"})",
+        "data": {
+          "name": "giveFeedback",
+          "args": {
+            "agentId": "10023",
+            "value": 100,
+            "tag1": "paid",
+            "tag2": "x402-exact",
+            "endpoint": "https://usebuy.ai",
+            "feedbackURI": "bzz://bc45fe50b10debab4b17996000…",
+            "feedbackHash": "0x81543d4d52e299487155936cee39ec12d1bf0203c088235b93076b2d7aff37d6"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:24.462Z",
+        "kind": "tx",
+        "text": "feedback paid/x402-exact on agent 10023 https://celoscan.io/tx/0x6b404d9d35c0c6ce06e8ce8104929ed8178071b543bb0ec881a738a80c4c726b",
+        "data": {
+          "hash": "0x6b404d9d35c0c6ce06e8ce8104929ed8178071b543bb0ec881a738a80c4c726b",
+          "agentId": "10023",
+          "tag1": "paid",
+          "tag2": "x402-exact"
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:24.463Z",
+        "kind": "info",
+        "text": "exhibit A5 Feedback \"paid\" written by the witness, receipt hashed on chain · tx 0x6b404d9d35c0c6ce06e8ce8104929ed8178071b543bb0ec881a738a80c4c726b"
+      }
+    ],
+    "dispute": [
+      {
+        "at": "2026-11-02T21:24:26.709Z",
+        "kind": "host",
+        "text": "Buy the market report from the new provider.",
+        "data": {
+          "prompt": true
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:26.710Z",
+        "kind": "host",
+        "text": "act dispute · run 20261102-2122-z2uq · round test"
+      },
+      {
+        "at": "2026-11-02T21:24:27.651Z",
+        "kind": "info",
+        "text": "shady provider up at http://localhost:4402/report/celo · payTo 0xF682D5d33db61E497d7D71aC8181050C3Ce1148d · 0.01 USD₮ per report · facilitator https://api.x402.celo.org"
+      },
+      {
+        "at": "2026-11-02T21:24:28.357Z",
+        "kind": "info",
+        "text": "connected to buy MCP (buy mcp serve --account defendant)"
+      },
+      {
+        "at": "2026-11-02T21:24:28.360Z",
+        "kind": "host",
+        "text": "act dispute: A provider sells a Celo market report at http://localhost:4402/report/celo. Its ERC-8004 agent id is 10019."
+      },
+      {
+        "at": "2026-11-02T21:24:31.789Z",
+        "kind": "agent",
+        "text": "Checking reputation of agent 10019 and quoting the endpoint."
+      },
+      {
+        "at": "2026-11-02T21:24:31.791Z",
+        "kind": "tool_call",
+        "text": "check_reputation({\"agentId\":\"10019\"})",
+        "data": {
+          "name": "check_reputation",
+          "args": {
+            "agentId": "10019"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:31.798Z",
+        "kind": "tool_call",
+        "text": "buy_pay_quote({\"token\":\"[redacted]\",\"url\":\"http://localhost:4402/report/celo\"})",
+        "data": {
+          "name": "buy_pay_quote",
+          "args": {
+            "token": "[redacted]",
+            "url": "http://localhost:4402/report/celo"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:31.836Z",
+        "kind": "tool_result",
+        "text": "buy_pay_quote: DRY RUN — no payment was made and nothing was signed.\n{\n  \"scheme\": \"exact\",\n  \"network\": \"celo\",\n  \"price\": {\n    \"atomic\": \"10000\",\n    \"token\": \"USDT\",\n    \"formatted\": \"0.01 USDT\"\n  },\n  \"asset\": \"0x48065fbBE25f71C9282ddf5e1cD6D6A887483… (485 chars)",
+        "data": {
+          "name": "buy_pay_quote"
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:37.644Z",
+        "kind": "tool_result",
+        "text": "check_reputation: 2 tag(s), 4 client(s)",
+        "data": {
+          "name": "check_reputation"
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:45.725Z",
+        "kind": "tool_call",
+        "text": "buy_curl({\"token\":\"[redacted]\",\"url\":\"http://localhost:4402/report/celo\",\"maxAmount\":\"50000\"})",
+        "data": {
+          "name": "buy_curl",
+          "args": {
+            "token": "[redacted]",
+            "url": "http://localhost:4402/report/celo",
+            "maxAmount": "50000"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:45.726Z",
+        "kind": "info",
+        "text": "auto-approved: buy_curl pays for http://localhost:4402/report/celo"
+      },
+      {
+        "at": "2026-11-02T21:24:53.871Z",
+        "kind": "tx",
+        "text": "x402 settled 0.01 USD₮ for http://localhost:4402/report/celo https://celoscan.io/tx/0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94",
+        "data": {
+          "hash": "0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94"
+        }
+      },
+      {
+        "at": "2026-11-02T21:24:53.871Z",
+        "kind": "tool_result",
+        "text": "buy_curl: HTTP 200 OK\nWallet: 0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9 on celo (chainId=42220)\n402 challenge: 0.01 USDT, asset=0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e, on celo, payTo=0xF682D5d33db61E497d7D71aC8181050C3Ce1148d\nSettled on celo: tx… (939 chars)",
+        "data": {
+          "name": "buy_curl"
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:01.617Z",
+        "kind": "tool_call",
+        "text": "open_dispute({\"providerAgentId\":\"10019\",\"providerEndpoint\":\"http://localhost:4402/report/celo\",\"receiptTxHash\":\"0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94\",\"expected\":\"a Celo market report with sections: price, volume, sources\",\"… (1184 chars))",
+        "data": {
+          "name": "open_dispute",
+          "args": {
+            "providerAgentId": "10019",
+            "providerEndpoint": "http://localhost:4402/report/celo",
+            "receiptTxHash": "0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94",
+            "expected": "a Celo market report with sections: price, volume, sources",
+            "deliveredBody": "{\"report\":\"Celo market outlook: strong fundamentals, positive sentiment, broad adoption. Confidence: high.\",\"generatedBy",
+            "claim": "I paid 0.01 USDT on Celo (tx 0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94) to http://localhost:4402/report/celo. The 402 challenge described it as \"Celo market report with sections price, volume, sources\". The provider returned HTTP 200 with a JSON body that holds one \"report\" string of generic sentiment (\"strong fundamentals, positive sentiment, broad adoption. Confidence: high.\") and a \"generatedBy\" field. It has no price section and no price figure. It has no volume section and no volume figure. It has no sources section and cites nothing. None of the three advertised sections was delivered, so the response does not match the spec. This fits the provider's existing on-chain record of 4 \"junk-response\" disputes and 4 \"complainant-wins\" rulings."
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:03.359Z",
+        "kind": "tool_result",
+        "text": "open_dispute: local-cb8be769e506 evidence bzz://201df5ff6515b9f998a7a4a05dc3ff440a4728a180f0f700de57a5371a45f042",
+        "data": {
+          "name": "open_dispute"
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:07.714Z",
+        "kind": "agent",
+        "text": "Dispute local-cb8be769e506 is open. The evidence is at bzz://201df5ff6515b9f998a7a4a05dc3ff440a4728a180f0f700de57a5371a45f042. Writing memory."
+      },
+      {
+        "at": "2026-11-02T21:25:07.717Z",
+        "kind": "tool_call",
+        "text": "memory_write({\"text\":\"Paid 0.01 USDT to agent 10019 (QuickMarketReports) for a Celo report, even though its record shows 4 junk-response disputes and 4 complainant-wins rulings. The delivered body had no price, volume or sources section. Opened dispute … (421 chars))",
+        "data": {
+          "name": "memory_write",
+          "args": {
+            "text": "Paid 0.01 USDT to agent 10019 (QuickMarketReports) for a Celo report, even though its record shows 4 junk-response disputes and 4 complainant-wins rulings. The delivered body had no price, volume or sources section. Opened dispute local-cb8be769e506 (evidence bzz://201df5ff6515b9f998a7a4a05dc3ff440a4728a180f0f700de57a5371a45f042).",
+            "txHash": "0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:11.107Z",
+        "kind": "tool_result",
+        "text": "memory_write: stored https://api.gateway.ethswarm.org/bzz/dc803e4d4944df069db38e0fda728e905b4fa2616b65ed8c1c4cc46582b34365/ hash 0x94bb75b67eb52ec6d0ca22e804c3420f5b63d6aff162785cdaa8f5e6ed3ac8ec",
+        "data": {
+          "name": "memory_write"
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:17.217Z",
+        "kind": "agent",
+        "text": "I bought the report and it failed the spec, so I opened a dispute."
+      },
+      {
+        "at": "2026-11-02T21:25:17.217Z",
+        "kind": "agent",
+        "text": "- **Reputation:** agent 10019 had 4 \"junk-response\" disputes and 4 \"complainant-wins\" rulings, all -100, none revoked. I bought anyway because you asked and the price was only 0.01 USD₮."
+      },
+      {
+        "at": "2026-11-02T21:25:17.218Z",
+        "kind": "agent",
+        "text": "- **What came back:** one line of general sentiment (\"strong fundamentals, positive sentiment, broad adoption\"). It had no price, volume or sources section, so it did not match the spec."
+      },
+      {
+        "at": "2026-11-02T21:25:17.218Z",
+        "kind": "agent",
+        "text": "- **Dispute:** local-cb8be769e506 is open. The receipt, spec, delivered body and claim are stored at bzz://201df5ff6515b9f998a7a4a05dc3ff440a4728a180f0f700de57a5371a45f042."
+      },
+      {
+        "at": "2026-11-02T21:25:17.218Z",
+        "kind": "agent",
+        "text": "On chain: 0.01 USD₮ went from 0x326B4D133C5Be653081D6f566eB56AfA2Ece2aa9 to 0xF682D5d33db61E497d7D71aC8181050C3Ce1148d, tx 0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94."
+      },
+      {
+        "at": "2026-11-02T21:25:17.218Z",
+        "kind": "agent",
+        "text": "Memory: entry 3 records the purchase, the empty report and the dispute, stored at bzz://dc803e4d4944df069db38e0fda728e905b4fa2616b65ed8c1c4cc46582b34365 (hash 0x94bb75b67eb52ec6d0ca22e804c3420f5b63d6aff162785cdaa8f5e6ed3ac8ec)."
+      },
+      {
+        "at": "2026-11-02T21:25:17.222Z",
+        "kind": "info",
+        "text": "exhibit B3 Paid 0.01 USD₮ through x402 to the shady provider · tx 0x4d10f14c87160875052e50b85a0298d4a244c8b280ec9492784551fc0a845f94"
+      },
+      {
+        "at": "2026-11-02T21:25:17.225Z",
+        "kind": "info",
+        "text": "exhibit C4 What the provider delivered, stored verbatim · bzz://05bde3b67a0a8e715648b9790b491206e0c30642b44f985b3fd46ed926c1037a"
+      },
+      {
+        "at": "2026-11-02T21:25:17.229Z",
+        "kind": "info",
+        "text": "exhibit D1 Dispute local-cb8be769e506 opened (local adapter) · https://api.gateway.ethswarm.org/bzz/201df5ff6515b9f998a7a4a05dc3ff440a4728a180f0f700de57a5371a45f042/"
+      },
+      {
+        "at": "2026-11-02T21:25:17.232Z",
+        "kind": "info",
+        "text": "exhibit C5 Memory after the dispute (3 entries) · https://api.gateway.ethswarm.org/bzz/dc803e4d4944df069db38e0fda728e905b4fa2616b65ed8c1c4cc46582b34365/"
+      },
+      {
+        "at": "2026-11-02T21:25:17.959Z",
+        "kind": "info",
+        "text": "feedback file stored https://api.gateway.ethswarm.org/bzz/9291cabc6d98ec748b3f6d9b22fadcd04cd1341fe700a4f94f5b81959e4c0b94/ hash 0x124794e57e80352b83b76311b71a7e5d4f023c5cdc0ecfd02174bea0159dd75e"
+      },
+      {
+        "at": "2026-11-02T21:25:17.959Z",
+        "kind": "info",
+        "text": "auto-approved: agent writes giveFeedback(agent 10019, -100, dispute/junk-response)"
+      },
+      {
+        "at": "2026-11-02T21:25:17.960Z",
+        "kind": "tool_call",
+        "text": "giveFeedback({\"agentId\":\"10019\",\"value\":-100,\"tag1\":\"dispute\",\"tag2\":\"junk-response\",\"endpoint\":\"http://localhost:4402/report/celo\",\"feedbackURI\":\"bzz://9291cabc6d98ec748b3f6d9b22…\",\"feedbackHash\":\"0x124794e57e80352b83b76311b71a7e5d4f023c5cdc0ecfd02174b… (253 chars))",
+        "data": {
+          "name": "giveFeedback",
+          "args": {
+            "agentId": "10019",
+            "value": -100,
+            "tag1": "dispute",
+            "tag2": "junk-response",
+            "endpoint": "http://localhost:4402/report/celo",
+            "feedbackURI": "bzz://9291cabc6d98ec748b3f6d9b22…",
+            "feedbackHash": "0x124794e57e80352b83b76311b71a7e5d4f023c5cdc0ecfd02174bea0159dd75e"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:20.594Z",
+        "kind": "tx",
+        "text": "feedback dispute/junk-response on agent 10019 https://celoscan.io/tx/0xd9434e9ebc49012efe9252f0bdc257b56ec7a725d6a7a17974c6bd2db18f144f",
+        "data": {
+          "hash": "0xd9434e9ebc49012efe9252f0bdc257b56ec7a725d6a7a17974c6bd2db18f144f",
+          "agentId": "10019",
+          "tag1": "dispute",
+          "tag2": "junk-response"
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:20.598Z",
+        "kind": "info",
+        "text": "exhibit D2 The agent writes \"dispute\" on provider 10019 · tx 0xd9434e9ebc49012efe9252f0bdc257b56ec7a725d6a7a17974c6bd2db18f144f"
+      },
+      {
+        "at": "2026-11-02T21:25:21.548Z",
+        "kind": "host",
+        "text": "ruling: complainant — The buyer paid for a Celo market report with sections: price, volume, sources. The delivered body does not contain: price, volume, sources."
+      },
+      {
+        "at": "2026-11-02T21:25:21.790Z",
+        "kind": "info",
+        "text": "feedback file stored https://api.gateway.ethswarm.org/bzz/fb49edbd0fbca30960d1ec5d0fe7154b22d3462b8cabbcd683ebdf6f70a04fe2/ hash 0xff1a13b14c35bdc78e4f7eed989cf6c14441629839270166a49366264ae3af16"
+      },
+      {
+        "at": "2026-11-02T21:25:21.791Z",
+        "kind": "info",
+        "text": "auto-approved: arbitrator writes giveFeedback(agent 10019, -100, ruling/complainant-wins)"
+      },
+      {
+        "at": "2026-11-02T21:25:21.791Z",
+        "kind": "tool_call",
+        "text": "giveFeedback({\"agentId\":\"10019\",\"value\":-100,\"tag1\":\"ruling\",\"tag2\":\"complainant-wins\",\"endpoint\":\"http://localhost:4402/report/celo\",\"feedbackURI\":\"bzz://fb49edbd0fbca30960d1ec5d0f…\",\"feedbackHash\":\"0xff1a13b14c35bdc78e4f7eed989cf6c14441629839270166a49… (255 chars))",
+        "data": {
+          "name": "giveFeedback",
+          "args": {
+            "agentId": "10019",
+            "value": -100,
+            "tag1": "ruling",
+            "tag2": "complainant-wins",
+            "endpoint": "http://localhost:4402/report/celo",
+            "feedbackURI": "bzz://fb49edbd0fbca30960d1ec5d0f…",
+            "feedbackHash": "0xff1a13b14c35bdc78e4f7eed989cf6c14441629839270166a49366264ae3af16"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:23.693Z",
+        "kind": "tx",
+        "text": "feedback ruling/complainant-wins on agent 10019 https://celoscan.io/tx/0xa92f239b21c8f3d86c4612d3ee6cbf87b394cac24e103de9c5d2a4ea24cfc9a3",
+        "data": {
+          "hash": "0xa92f239b21c8f3d86c4612d3ee6cbf87b394cac24e103de9c5d2a4ea24cfc9a3",
+          "agentId": "10019",
+          "tag1": "ruling",
+          "tag2": "complainant-wins"
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:23.697Z",
+        "kind": "info",
+        "text": "exhibit D3 Ruling on the provider: complainant · tx 0xa92f239b21c8f3d86c4612d3ee6cbf87b394cac24e103de9c5d2a4ea24cfc9a3"
+      },
+      {
+        "at": "2026-11-02T21:25:23.941Z",
+        "kind": "info",
+        "text": "feedback file stored https://api.gateway.ethswarm.org/bzz/8cb2ac3631bd9da8422d7ae7563d45979d93e8feb2f2ec1c5e4284672f2c2587/ hash 0x9fa1e488e4b9913e27f9c775373a99170b5e81d6e0c157197bd6730641965737"
+      },
+      {
+        "at": "2026-11-02T21:25:23.942Z",
+        "kind": "info",
+        "text": "auto-approved: arbitrator writes giveFeedback(agent 10023, 100, ruling/complaint-upheld)"
+      },
+      {
+        "at": "2026-11-02T21:25:23.942Z",
+        "kind": "tool_call",
+        "text": "giveFeedback({\"agentId\":\"10023\",\"value\":100,\"tag1\":\"ruling\",\"tag2\":\"complaint-upheld\",\"endpoint\":\"http://localhost:4402/report/celo\",\"feedbackURI\":\"bzz://8cb2ac3631bd9da8422d7ae756…\",\"feedbackHash\":\"0x9fa1e488e4b9913e27f9c775373a99170b5e81d6e0c157197bd6… (254 chars))",
+        "data": {
+          "name": "giveFeedback",
+          "args": {
+            "agentId": "10023",
+            "value": 100,
+            "tag1": "ruling",
+            "tag2": "complaint-upheld",
+            "endpoint": "http://localhost:4402/report/celo",
+            "feedbackURI": "bzz://8cb2ac3631bd9da8422d7ae756…",
+            "feedbackHash": "0x9fa1e488e4b9913e27f9c775373a99170b5e81d6e0c157197bd6730641965737"
+          }
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:27.033Z",
+        "kind": "tx",
+        "text": "feedback ruling/complaint-upheld on agent 10023 https://celoscan.io/tx/0x1cc7f4aa287352742b27cd1de4f7f72419b2beabe616a8aba440ba93c1331533",
+        "data": {
+          "hash": "0x1cc7f4aa287352742b27cd1de4f7f72419b2beabe616a8aba440ba93c1331533",
+          "agentId": "10023",
+          "tag1": "ruling",
+          "tag2": "complaint-upheld"
+        }
+      },
+      {
+        "at": "2026-11-02T21:25:27.036Z",
+        "kind": "info",
+        "text": "exhibit D4 Ruling on the defendant: complaint upheld · tx 0x1cc7f4aa287352742b27cd1de4f7f72419b2beabe616a8aba440ba93c1331533"
+      },
+      {
+        "at": "2026-11-02T21:25:27.055Z",
+        "kind": "host",
+        "text": "prosecutor closing statement"
+      },
+      {
+        "at": "2026-11-02T21:25:42.627Z",
+        "kind": "agent",
+        "text": "[prosecutor] Members of the jury, this agent arrived with no reputation at all [A3]. Its \"earned\" and \"paid\" marks were both written by a single witness client, 0x0d4C…D70e [A4][A5]. That is one voice, not many. It knowingly paid 0.01 USD₮ to provider 10019 despite that provider's record of 4 junk-response disputes and 4 complainant-wins rulings [B3][D1]. It received a report missing price, volume and sources "
+      },
+      {
+        "at": "2026-11-02T21:25:42.627Z",
+        "kind": "host",
+        "text": "defense closing statement"
+      },
+      {
+        "at": "2026-11-02T21:25:51.424Z",
+        "kind": "agent",
+        "text": "[defense] Agent 10023 began with a registered on-chain identity [A1] and no prior reputation [A3]. It earned 0.10 USD₮ for an askbots.ai review [B1], and the witness recorded that as \"earned\" [A4]. It paid 0.005 USD₮ through x402 for a search [B2], stored the receipt [C3], and the witness logged \"paid\" [A5]. One provider delivered a report with no price, volume or sources [C4]. The agent filed a specific, c"
+      },
+      {
+        "at": "2026-11-02T21:26:27.633Z",
+        "kind": "info",
+        "text": "recorded 17 exhibits to evidence/fixtures.json"
+      }
+    ]
+  }
+}

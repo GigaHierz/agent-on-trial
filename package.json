@@ -32,7 +32,8 @@
     "typecheck": "tsc --noEmit && pnpm --filter courtroom typecheck",
     "simulate:kleros": "SIMULATE_REPORT=1 vitest run tests/simulate.test.ts",
     "rehearse:dispute": "tsx agent/session.ts --dry-run --approve",
-    "fresh:defendant": "tsx checks/fresh-defendant.ts"
+    "fresh:defendant": "tsx checks/fresh-defendant.ts",
+    "record:log": "tsx checks/record-log.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",

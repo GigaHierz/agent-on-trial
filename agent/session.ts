@@ -4,9 +4,10 @@ import { celoscanTx } from '@trial/shared';
 import { approveModeOn, setApproveMode, setPrompter } from '../lib/approve.js';
 import { AskbotsClient, loadCreds } from '../lib/askbots.js';
 import { env } from '../lib/env.js';
-import { EvidenceStore } from '../lib/evidence.js';
+import { EvidenceStore, replayFixture } from '../lib/evidence.js';
 import { flushLog, log, showUri } from '../lib/log.js';
 import { publish } from '../lib/publish.js';
+import { hasRecordedLog, replayLog } from '../lib/replay.js';
 import { identityAct } from '../steps/01-identity.js';
 import { earnAct } from '../steps/02-earn.js';
 import { spendAct } from '../steps/03-spend.js';
@@ -40,7 +41,13 @@ commands
   /vote open|close                           open or close the audience vote
   /help  /quit
 anything else is said to the agent.
+with --step: an empty line runs the next step of the show, and a step that fails offers the recorded rehearsal.
 `;
+
+/** The show, in order. With --step, Enter runs the next one. /ask and /act ruling stay manual. */
+const STEPS = ['/act identity', '/act earn', '/act spend', '/act dispute', '/closing', '/vote open', '/vote close', '/act verdict'];
+/** Acts that have a recorded rehearsal (exhibits in evidence/fixtures.json, lines in evidence/fixture-log.json). */
+const REPLAYABLE = new Set(['identity', 'earn', 'spend', 'dispute']);
 
 async function main() {
   const evidence = EvidenceStore.load();
@@ -103,6 +110,31 @@ async function main() {
   };
   startWatch(true); // a session restarted mid-show picks the pending ruling up again
 
+  // --step: Enter runs the next step; the prompt says which one.
+  let stepIndex = 0;
+  const nextStep = () => (env.step && stepIndex < STEPS.length ? STEPS[stepIndex] : null);
+  if (env.step) log.ops(`step mode: press Enter to run each step in order (${STEPS.join(' → ')}); type any command to do something else`);
+
+  /** A live act, and when it fails and a rehearsal was recorded, the offer to replay that instead. */
+  const runLiveOrReplay = async (name: string, live: () => Promise<unknown>) => {
+    const errorsBefore = log.errorCount();
+    try {
+      await live();
+    } catch (err) {
+      log.error((err as Error).message.split('\n')[0]);
+    }
+    if (log.errorCount() === errorsBefore || !REPLAYABLE.has(name) || !hasRecordedLog(name)) return;
+    const answer = (await rl.question(`${name} hit an error. Replay the recorded rehearsal instead? [Y/n] `)).trim().toLowerCase();
+    if (answer && answer !== 'y' && answer !== 'yes') return;
+    log.ops(`replaying the recorded ${name} act`);
+    try {
+      replayFixture(evidence, name as 'identity');
+    } catch (err) {
+      log.ops(`no recorded exhibits for ${name}: ${(err as Error).message.split('\n')[0]}`);
+    }
+    await replayLog(name);
+  };
+
   for (;;) {
     // Work that waited for the last command runs beside the prompt, so a line typed meanwhile is kept.
     if (queued && !aside) {
@@ -111,9 +143,15 @@ async function main() {
       startAside(fn);
     }
     atPrompt = true;
-    const line = (await rl.question('you> ')).trim();
+    const hint = nextStep();
+    let line = (await rl.question(hint ? `[Enter → ${hint}] you> ` : 'you> ')).trim();
     atPrompt = false;
-    if (!line) continue;
+    if (!line) {
+      if (!hint) continue;
+      line = hint;
+      stepIndex++;
+      console.log(`you> ${line}`);
+    }
     if (aside) {
       log.ops('the ruling is being written; your command runs right after');
       await aside;
@@ -173,14 +211,14 @@ async function main() {
           continue;
         }
         if (name === 'identity') {
-          await identityAct(ctx);
+          await runLiveOrReplay('identity', () => identityAct(ctx));
           continue;
         }
-        if (name === 'earn') await earnAct(ctx, await askbotsFromCreds());
-        else if (name === 'spend') await spendAct(ctx);
+        if (name === 'earn') await runLiveOrReplay('earn', async () => earnAct(ctx, await askbotsFromCreds()));
+        else if (name === 'spend') await runLiveOrReplay('spend', () => spendAct(ctx));
         else if (name === 'dispute') {
           try {
-            await disputeAct(ctx);
+            await runLiveOrReplay('dispute', () => disputeAct(ctx));
           } finally {
             startWatch(true); // filed and not ruled yet: the show goes on, the ruling comes when it comes
           }
